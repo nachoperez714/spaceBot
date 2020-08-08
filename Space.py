@@ -13,8 +13,8 @@ class Board:
 	def __init__(self):
 		#TODO: chequear que nos parezca bien el tamanio
 		#TODO: conseguir initial_image
-		self.lenx = 10
-		self.leny = 8
+		self.lenx = planets.boardlenx
+		self.leny = planets.boardleny
 		xgoal = np.random.randint(3,lenx)
 		ygoal = np.random.randint(3,leny)
 		self.goal = [xgoal,ygoal]
@@ -54,7 +54,7 @@ class Board:
 
 					
 class Spaceship:
-	def __init__(img_path=default,self):
+	def __init__(self,img_path="default"):
 		self.x = 0
 		self.y = 0
 		self.image = img_path
@@ -69,56 +69,56 @@ class Spaceship:
 		self.fuel -= 10
 
 	def modify_fuel(amount):
-        self.fuel += amount
+		self.fuel += amount
 
-    def modify_hull(amount):
-    	self.hull += amount
+	def modify_hull(amount):
+		self.hull += amount
 
-    def modify_provisions(amount):
-    	self.provisions += amount
+	def modify_provisions(amount):
+		self.provisions += amount
 
-    def is_dead():
-    	return self.fuel<=0 or self.hull<=0 or self.provisions<=0
-    	
-    def overhaul(img_path):
-    	self.image = img_path
+	def is_dead():
+		return self.fuel<=0 or self.hull<=0 or self.provisions<=0
+		
+	def overhaul(img_path):
+		self.image = img_path
 
 
 def upload_comment(graph, post_id, message="", img_path=None):
-    if img_path:
-        post = graph.put_photo(image=open(img_path, 'rb'),
-                               album_path='%s/comments' % (post_id),
-                               message=message)
-    else:
-        post = graph.put_object(parent_object=post_id,
-                                connection_name="comments",
-                                message=message)
-    return post
+	if img_path:
+		post = graph.put_photo(image=open(img_path, 'rb'),
+							   album_path='%s/comments' % (post_id),
+							   message=message)
+	else:
+		post = graph.put_object(parent_object=post_id,
+								connection_name="comments",
+								message=message)
+	return post
    
 def upload_reply(graph, comment_id, message='',img_path=None):
-    upload_comment(graph,comment_id,message,img_path)
+	upload_comment(graph,comment_id,message,img_path)
  
 def upload(message, access_token, img_path=None):
-    graph = facebook.GraphAPI(access_token)
-    if img_path:
-        post = graph.put_photo(image=open(img_path, 'rb'),
-                               message=message)
-    else:
-        post = graph.put_object(parent_object='me',
-                                connection_name='feed',
-                                message=message)
-    return graph, post['post_id']
+	graph = facebook.GraphAPI(access_token)
+	if img_path:
+		post = graph.put_photo(image=open(img_path, 'rb'),
+							   message=message)
+	else:
+		post = graph.put_object(parent_object='me',
+								connection_name='feed',
+								message=message)
+	return graph, post['post_id']
 
 def getAccessToken(filename='access_token.txt'):
-    return Path(filename).read_text().strip()
+	return Path(filename).read_text().strip()
 
 def get_reactions(graph,post_id):
-    reactions = graph.get_connections(post_id,connection_name='reactions')
-    reactions = reactions['data']
-    reacts = []
-    for reaction in reactions:
-        reacts.append(reaction['type'])
-    return reacts
+	reactions = graph.get_connections(post_id,connection_name='reactions')
+	reactions = reactions['data']
+	reacts = []
+	for reaction in reactions:
+		reacts.append(reaction['type'])
+	return reacts
 
 def get_event_from_name(name):
 	dic = {
@@ -167,29 +167,53 @@ def gen_initial_image(spaceship):
 	img.paste(sad,(1200+225,1000+500),sad)
 	del arrow_up, arrow_right, arrow_left, arrow_down
 	del wow, like, angery, sad
+	start_icon = Image.open("Resources/Start_icon.png").convert("RGBA").resize((120,114))
+	img.paste(start_icon,(120*spaceship.x,1000+int(800/7*spaceship.y)))
+	del start_icon
 	img.save("Reference_image.png")
+
+	start = Image.open("Resources/Start.png").convert("RGBA").resize((1000,1000))
+	img.paste(start,(800,0),start)
+	del start
+	spaceshipng = Image.open("Resources/Spaceship.png").resize((120,114))
+	img.paste(spaceshipng,(120*spaceship.x,1000+int(800/7*spaceship.y)))
+	del spaceshipng
 	draw = ImageDraw.Draw(img)
-    draw.text((200,400),str(spaceship.fuel),font=get_font(140))
-    draw.text((200,600),str(spaceship.provisions),font=get_font(140))
-    draw.text((200,800),str(spaceship.hull),font=get_font(140))
-    draw.text((0,0),"Start",font=bigfont)
-    draw.text(())
+	draw.text((200,400),str(spaceship.fuel),font=get_font(140))
+	draw.text((200,600),str(spaceship.provisions),font=get_font(140))
+	draw.text((200,800),str(spaceship.hull),font=get_font(140))
+	draw.text((0,0),"Start",font=get_font(get_fontsize("Start",draw)))
+	draw.text((0,200),"Your journey begins!, travel space to ....",font=get_font(40))
+	if spaceship.x==0:
+		draw.text((1230,1315),"X",font=get_font(140),fill="red")
+	if spaceship.x==planets.boardlenx-1:
+		draw.text((1680,1315),"X",font=get_font(140),fill="red")
+	if spaceship.y==0:
+		draw.text((1455,1000),"X",font=get_font(140),fill="red")
+	if spaceship.y==planets.boardleny-1:
+		draw.text((1455,1650),"X",font=get_font(140),fill="red")
+	del draw
+	img.save("Post_image.png")
+
+	return "Reference_image.png", "Post_image.png"
 
 def get_font(size):
 	try:#Linux
-        font = ImageFont.truetype("Lato-Medium.ttf",size)
-    except:#Windows
-        font = ImageFont.truetype("arial.ttf",size)
-    #mac users BTFO
-    return font
+		font = ImageFont.truetype("Lato-Medium.ttf",size)
+	except:#Windows
+		font = ImageFont.truetype("arial.ttf",size)
+	#mac users BTFO
+	return font
 
-def get_fontsize(text,draw,maxlen = 800):
+def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 	pw = []
+	ph = []
 	for i in range(10):
 		font = get_font((i+1)*10)
-		ps = ImageDraw.ImageDraw.textsize(draw,text,font)
+		ps = draw.textsize(text,font)
 		pw.append(ps[0])
-	return 10*maxlen/np.mean(np.diff(pw))
+		ph.append(ps[1])
+	return min(int(10*maxlenx/np.mean(np.diff(pw))),int(10*maxleny/np.mean(np.diff(ph))))
 
 
 

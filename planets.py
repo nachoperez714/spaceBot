@@ -1,3 +1,6 @@
+boardlenx = 10
+boardleny = 7
+
 class Event:
 	def __init__(self,name):
 		self.name = name
@@ -63,7 +66,7 @@ class Planet(Event):
 				},
 			"Pandora":{
 				"good" : "You fuck a blue alien, while they're asleep you take 10 of their provisions.",
-				"bad"  : "You fuck a blue alien, you give them 10 provisions for the cure to space AIDS".,
+				"bad"  : "You fuck a blue alien, you give them 10 provisions for the cure to space AIDS.",
 				"url"  : ""
 				},
 			"Magrathea":{
@@ -117,11 +120,11 @@ class Portal(Event):
 		self.bad_text = "You get violently transported across the universe, losing 10 hull."
 
 	def good_action(spaceship):
-		spaceship.move(np.random.randint(0,10),np.random.randint(0,8))
+		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
 		return spacehip
 
 	def bad_action(spaceship):
-		spaceship.move(np.random.randint(0,10),np.random.randint(0,8))
+		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
 		spaceship.modify_hull(-10)
 		return spacehip
 
@@ -154,7 +157,7 @@ class Asteroid(Event):
 			"Kuiper belt" : "",
 			"Asteroid belt outside Hoth" : "",
 			"Asteroid belt from Asteroids" : "",
-			""
+			"Stuff" : "Other stuff"
 			}
 		self.bad_text = "You crash into an asteroid and lose 10 hull."
 		self.good_text = "You mine an asteroid and gain 10 hull."
@@ -186,7 +189,6 @@ class Spaceport(Event):
 			"The Halo arrays" : "",
 			"Space colony ARK" : "",
 			"ISPV 7": "",
-			""
 		}
 		self.set_url()
 
@@ -219,7 +221,7 @@ class Being(Event):
 				"good" : "You are tasked with taking monolites to planets. All resources maxed up.",#Dead Space
 				"bad"  : "What do you and Nicole Brennan have in common? That's right.",
 				"url"  : ""
-				}
+				},
 			"Galactus" : {
 				"good" : "You are the new herald of Galactus. All resources maxed up.",
 				"bad"  : "Galactus accidentally swallows your ship whole. Permanently.",
@@ -275,6 +277,6 @@ Asteroids = ["Solar system asteroid belt","Kuiper belt","Asteroid belt outside H
 Spaceports = ["Knowhere","Death Star","International Space Station","Babylon 5",
 	"The Citadel","The Bunker","Death Egg","The Halo arrays","Space colony ARK",
 	"ISPV 7"]
-Being = ["Your Mom","Cthulhu","Reaper","Marker","Galactus","That dragon from Kill the Moon"]
+Beings = ["Your Mom","Cthulhu","Reaper","Marker","Galactus","That dragon from Kill the Moon"]
 BlackHoles = ["Sagittarius A","M87","Gargantua"]
 types = [Planets,Portals,Ships,Asteroids,Spaceports,Beings,BlackHoles]
