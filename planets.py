@@ -224,6 +224,11 @@ class Being(Event):
 				"good" : "You are the new herald of Galactus. All resources maxed up.",
 				"bad"  : "Galactus accidentally swallows your ship whole. Permanently.",
 				"url"  : ""
+				},
+			"That dragon from Kill the Moon" : {
+				"good" : "Moffat maxes up your resources so that you don't ever talk about this.",
+				"bad"  : "Your ship gets destroyed by the moonquakes the dragon causes.",
+				"url"  : ""
 				}
 		}
 		self.get_properties()

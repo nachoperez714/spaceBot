@@ -133,14 +133,73 @@ def get_event_from_name(name):
 		if name in tipo:
 			return dic[tipo](name)
 
+def gen_initial_image(spaceship):
+	img = Image.new("RGB",(1800,1800))
+	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((200,200))#transparent
+	img.paste(fuel,(0,400),fuel)
+	del fuel
+	provisions = Image.open("Resources/sanguche.png").convert("RGBA").resize((200,200))#transparent
+	img.paste(provisions,(0,600),provisions)
+	del provisions
+	hull = Image.open("Resources/hull.png").convert("RGBA").resize((200,200))#transparent
+	img.paste(hull,(0,800),hull)
+	del hull
+	background = Image.open("Resources/Background.jpg")
+	img.paste(background,(0,1000))
+	del background
+	arrow_right = Image.open("Resources/arrow_bien.png").convert("RGBA").resize((150,150))
+	arrow_up = arrow_right.rotate(90)
+	arrow_left = arrow_up.rotate(90)
+	arrow_down = arrow_left.rotate(90)
+	reacs = Image.open("Resources/reactions.png").convert("RGBA")
+	wow = reacs.crop((1011,503,1446,937)).resize((150,150))
+	like = reacs.crop((1011,0,1446,440)).resize((150,150))
+	angery = reacs.crop((504,0,939,440)).resize((150,150))
+	sad = reacs.crop((504,503,939,937)).resize((150,150))
+	del reacs
+	img.paste(arrow_right,(1200+450,1000+325),arrow_right)
+	img.paste(arrow_up,(1200+225,1000+0),arrow_up)
+	img.paste(arrow_left,(1200+0,1000+325),arrow_left)
+	img.paste(arrow_down,(1200+225,1000+650),arrow_down)
+	img.paste(wow,(1200+300,1000+325),wow)
+	img.paste(like,(1200+225,1000+150),like)
+	img.paste(angery,(1200+150,1000+325),angery)
+	img.paste(sad,(1200+225,1000+500),sad)
+	del arrow_up, arrow_right, arrow_left, arrow_down
+	del wow, like, angery, sad
+	img.save("Reference_image.png")
+	draw = ImageDraw.Draw(img)
+    draw.text((200,400),str(spaceship.fuel),font=get_font(140))
+    draw.text((200,600),str(spaceship.provisions),font=get_font(140))
+    draw.text((200,800),str(spaceship.hull),font=get_font(140))
+    draw.text((0,0),"Start",font=bigfont)
+    draw.text(())
 
-def main(isFirst):
+def get_font(size):
+	try:#Linux
+        font = ImageFont.truetype("Lato-Medium.ttf",size)
+    except:#Windows
+        font = ImageFont.truetype("arial.ttf",size)
+    #mac users BTFO
+    return font
+
+def get_fontsize(text,draw,maxlen = 800):
+	pw = []
+	for i in range(10):
+		font = get_font((i+1)*10)
+		ps = ImageDraw.ImageDraw.textsize(draw,text,font)
+		pw.append(ps[0])
+	return 10*maxlen/np.mean(np.diff(pw))
+
+
+
+def main(isFirst=False):
 	initial_message = "Hola"
 
 	if isFirst:
 		#generar el tablero
 		spaceship = Spaceship(get_random_ship())
-		postImage = gen_initial_image(spaceship.image)
+		postImage = gen_initial_image(spaceship)
 		gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
