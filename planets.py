@@ -61,7 +61,10 @@ class Goal(Event):
 		self.bad_chance = 0
 		self.good_text = "You've reached your destination: {}.".format(self.name)
 		self.urls = {
-			"Earth" : "https://media.npr.org/assets/img/2013/03/06/bluemarble3k-smaller-nasa_custom-644f0b7082d6d0f6814a9e82908569c07ea55ccb-s800-c85.jpg"
+			"Earth" : "https://media.npr.org/assets/img/2013/03/06/bluemarble3k-smaller-nasa_custom-644f0b7082d6d0f6814a9e82908569c07ea55ccb-s800-c85.jpg",
+			"Treasure Planet" : "https://vignette.wikia.nocookie.net/disney/images/2/2d/Treasure-planet-disneyscreencaps.com-233.jpg/revision/latest?cb=20130403024637",
+			"The Restaurant at the end of the Universe" : "https://i.pinimg.com/originals/f7/f7/ff/f7f7ffa4375050aa74c360b9ea65a0ef.jpg",
+			"Continuum Transfunctioner" : "https://wiki.godvillegame.com/images/0/03/ContinuumTransfunctioner.jpg",
 		}
 		if name:
 			self.set_url()
