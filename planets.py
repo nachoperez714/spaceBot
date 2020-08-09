@@ -53,7 +53,7 @@ class Planet(Event):
 		self.icon = "Resources/Planet_icon.png"
 		self.properties = {
 			"Mars":{
-				"good" : 'You find water in Mars,\nyour provisions increase by 10.',
+				"good" : 'You find water in Mars, your provisions increase by 10.',
 				"bad"  : "Martians rob you of 10 provisions.",
 				"url"  : "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg"
 				},

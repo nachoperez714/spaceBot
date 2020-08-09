@@ -6,6 +6,7 @@ import facebook
 from pathlib import Path
 import os
 import urllib.request
+import textwrap
 #import skimage.measure as skm
 #import matplotlib.pyplot as plt
 import planets
@@ -204,7 +205,7 @@ def update_image(spaceship,event):
 def add_text(img,event):
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),event.name,font=get_font(get_fontsize(event.name,draw)))
-	draw.text((0,200),event.text,font=get_font(get_fontsize(event.text,draw)))
+	draw.text((0,200),textwrap.fill(event.text,30),font=get_font(get_fontsize(event.text,draw)))
 	return img
 
 def add_icon(image,icon,x,y):
