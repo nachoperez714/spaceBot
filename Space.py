@@ -232,24 +232,29 @@ def update_image(spaceship,event):
 def gen_goal_image():
 	image = Image.open("Post_image.png")
 	draw = ImageDraw.Draw(image)
-	draw.text((800,500),"YOU WON",font=get_font(300),fill="green")
+	draw.text((200,800),"YOU WON",font=get_font(300),fill="green")
 	image.save("Victory_image.png")
 	return "Death_image.png"
 
 def gen_gameover_image():
 	image = Image.open("Post_image.png")
 	draw = ImageDraw.Draw(image)
-	draw.text((800,500),"YOU DIED",font=get_font(300),fill="red")
+	draw.text((200,800),"YOU DIED",font=get_font(300),fill="red")
 	image.save("Death_image.png")
 	return "Death_image.png"
 
 def add_text(img,event):
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),event.name,font=get_font(get_fontsize(event.name,draw)))
-	if len(event.text)<=90:
-		draw.text((0,200),textwrap.fill(event.text,30),font=get_font(get_fontsize(event.text,draw)))
+	font1 = get_fontsize(event.text,draw)
+	font2 = get_fontsize(textwrap.fill(event.text,len(event.text)//2+1),draw)
+	font3 = get_fontsize(textwrap.fill(event.text,len(event.text)//3+2),draw)
+	if font1>=font2 and font1>=font3:
+		draw.text((0,200),event.text,font=get_font(font1))
+	elif font2>=font3:
+		draw.text((0,200),textwrap.fill(event.text,len(event.text)//2+1),font=get_font(font2))
 	else:
-		draw.text((0,200),textwrap.fill(event.text,len(event.text)//3),font=get_font(get_fontsize(event.text,draw)))
+		draw.text((0,200),textwrap.fill(event.text,len(event.text)//3+2),font=get_font(font3))
 	return img
 
 def add_icon(image,icon,x,y):

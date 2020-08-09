@@ -61,7 +61,7 @@ class Goal(Event):
 		self.bad_chance = 0
 		self.good_text = "You've reached your destination: {}.".format(self.name)
 		self.urls = {
-			"Earth" : "https://nomoreplanet.com/wp-content/uploads/2020/02/Planet-Earth.jpg"
+			"Earth" : "https://media.npr.org/assets/img/2013/03/06/bluemarble3k-smaller-nasa_custom-644f0b7082d6d0f6814a9e82908569c07ea55ccb-s800-c85.jpg"
 		}
 		if name:
 			self.set_url()
@@ -156,12 +156,12 @@ class Planet(Event):
 			"Mars Colony":{
 				"good" : "You restore Mars' atmosphere and make up with a hot chick. You get 10 provisions",
 				"bad"  : "You may or may not be a secret double/triple agent whose memory was wiped intentionally or unintentionally once or twice. In the confusion you lose 10 provisions",
-				"url"  : "https://cms-assets.theasc.com/Total-Recall-Walk-copy.jpg?mtime=20200303055022"
+				"url"  : "https://3.bp.blogspot.com/-ulLqOBJWHWI/VgGE5XVBP2I/AAAAAAAABOk/HKJiC9PewJs/s2048/01%2BAstronauts%2Bon%2BMars%2BTotal%2BRecall%2B1990%2Bmovie%2Bimage.jpg"
 				},
 			"Namek":{
 				"good" : "You achieve SUPERSAYIAN. You get 10 provisions",
 				"bad"  : "You arrive just as a midget and a monkey destroy the planet. You lose 10 provisions",
-				"url"  : "https://cms-assets.theasc.com/Total-Recall-Walk-copy.jpg?mtime=20200303055022"
+				"url"  : "https://vignette.wikia.nocookie.net/dragonball/images/7/71/Namek_U7.png/revision/latest/top-crop/width/360/height/450?cb=20171203031332&path-prefix=es"
 				},
 			"Omicron persei 8":{
 				"good" : "You get some delicious Popplers. You get 10 provisions",
@@ -207,7 +207,7 @@ class Portal(Event):
 		self.urls = {
 			"Wormhole" : "https://qph.fs.quoracdn.net/main-qimg-79f468932c9222c1648c31fbe6112fbe",
 			"Mass Relay" : "https://i.ytimg.com/vi/BDq4a6PqAvM/maxresdefault.jpg",
-			"Infinite improbability Drive" : "https://miro.medium.com/max/560/1*URj2RSTjYvyegLZ51tq8ZA.jpeg",
+			"Infinite improbability Drive" : "https://i.redd.it/g8ofhhot01qz.jpg",
 			"Warp Station" : "https://vignette.wikia.nocookie.net/pulsar-game/images/2/24/Long_range_warp_station.png/revision/latest/scale-to-width-down/340?cb=20190626124313",
 			"Portal" : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT-HfXb1DmwshWvAErqfe4mxV7GAZtPQ0wpZw&usqp=CAU",
 			"Bifrost" : "https://i.ytimg.com/vi/hzqWcXA_Xrk/maxresdefault.jpg",
@@ -239,7 +239,7 @@ class Ship(Event):
 			"Millenium Falcon":{
 				"good" : "You entered a dogfight with it. You managed to steal 20 fuel from Disney",
 				"bad"  : "You entered a dogfight with it. You received damage by 10 hull",
-				"url"  : "https://toppng.com/uploads/preview/star-wars-millennium-falcon-11562863034ii1e8arwof.png"
+				"url"  : "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/veh-ia-1751-1576604159.jpg?crop=0.583xw:0.658xh;0.207xw,0.220xh&resize=640:*"
 				},
 			"Swordfish":{
 				"good" : "You encounter bounty hunters. They gift you 20 fuel",
@@ -486,6 +486,7 @@ class BlackHole(Event):
 
 	def bad_action(self,spaceship):
 		spaceship.modify_fuel(-10)
+		return spaceship
 
 #Planets = ["Mars","Solaris","Tatooine","Trantor","Pandora","Magrathea","Gallifrey",
 #	"Roboworld","Hoth","Terminus"]
