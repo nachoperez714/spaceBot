@@ -149,7 +149,7 @@ def get_input_from_reactions(reacs,spaceship):
 			nlike+=1
 		elif reac=='WOW' and spaceship.x!=planets.boardlenx-1:
 			nwow+=1
-		elif reac=='SAD' and spaceship.y!=planets.boardelny-1:
+		elif reac=='SAD' and spaceship.y!=planets.boardleny-1:
 			nsad+=1
 		elif reac=='ANGRY' and spaceship.x!=0:
 			nangry+=1
@@ -180,7 +180,7 @@ def get_event_from_name(name):
 		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
 			return cla(name)
 
-def gen_initial_image(spaceship):
+def gen_initial_image(spaceship,goal):
 	img = Image.new("RGB",(1800,1800))
 	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((200,200))#transparent
 	img.paste(fuel,(0,400),fuel)
@@ -224,7 +224,7 @@ def gen_initial_image(spaceship):
 	img = add_numbers(img,spaceship)
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),"Start",font=get_font(get_fontsize("Start",draw)))
-	draw.text((0,200),"Your journey begins!, travel space to ....",font=get_font(40))
+	draw.text((0,200),"Your journey begins!, travel space to find {}. Use reactions to move the ship".format(goal),font=get_font(40))
 	img = add_crosses(img,spaceship)
 	del draw
 	img.save("Post_image.png")
@@ -340,15 +340,20 @@ def get_image_from_url(url):
 	urllib.request.urlretrieve(url,'event_image')
 	return 'event_image'
 
-def main(isFirst=False):
-	initial_message = "Hola"
+def main(isFirst=False,direction=""):
+
 
 	if isFirst:
 		#generar el tablero
 		board  =Board()
+		initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
 		spaceship = Spaceship()#get_random_ship())
-		postImage = gen_initial_image(spaceship)
-		gr, p_id = upload(initial_message,getAccessToken(),postImage)
+		postImage = gen_initial_image(spaceship,board.goal)
+		if direction:
+			gr = 0
+			p_id = 0
+		else:
+			gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
 		return True
@@ -362,8 +367,17 @@ def main(isFirst=False):
 		if was_portal:
 			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
-			reacts = get_reactions(previous_gr,previous_id)
-			movement = get_input_from_reactions(reacts,spaceship)
+			if direction:
+				usertest = {
+					"up" : [0,-1],
+					"left" : [-1,0],
+					"right" : [1,0],
+					"down" : [0,1]
+					}
+				movement = usertest[direction]
+			else:
+				reacts = get_reactions(previous_gr,previous_id)
+				movement = get_input_from_reactions(reacts,spaceship)
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 			spaceship.modify_fuel(-10)
 
@@ -371,21 +385,37 @@ def main(isFirst=False):
 		spaceship,message = event.action(spaceship)
 
 		if spaceship.isHome:
-			message += '\nCongrats...'
+			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
 			victory_path = update_image(spaceship,event)
 			gen_goal_image()
-			gr, p_id = upload(message,getAccessToken(),victory_path)
+			if direction:
+				print (message)
+			else:
+				gr, p_id = upload(message,getAccessToken(),"Victory_image.png")
 			return False
 		if spaceship.is_dead():
-			message += '\nYou died...'
+			message += '\nYou died before reaching your destination, better luck on the next voyage.'
 			game_over_path = update_image(spaceship,event)
 			gen_gameover_image()
-			gr, p_id = upload(message,getAccessToken(),game_over_path)
+			if direction:
+				print(message)
+			else:
+				gr, p_id = upload(message,getAccessToken(),"Death_image.png")
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
 			return False
-
+		if not event.get_type()=="Portal":
+			message+=" Use the reactions to move the ship."
 		img_path = update_image(spaceship,event)
-		gr, p_id = upload(message,getAccessToken(),img_path)
+		if direction:
+			print(message)
+		else:
+			gr, p_id = upload(message,getAccessToken(),img_path)
+			upload_comment(gr,p_id,"Beep boop: I'm a Space Bot. Right now the ship has {} fuel, {} provisions and {} hull integrity. For further details on how everything works check the page description.".format(spaceship.fuel,spaceship.provisions,spaceship.hull))
+			space_comment = "SP"
+			As = np.random.randint(1,100)
+			for i in range(As):
+				space_comment+="A"
+			space_comment+="CE"
+			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
-		#TODO: Comments w/current state & SPAAAAAAAAAAAAAACE
 		return True

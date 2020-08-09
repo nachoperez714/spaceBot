@@ -1,6 +1,7 @@
 __pycache__
-*.png
+*png
 ./*jpg
 qui*
 event_image
 *txt
+*npy

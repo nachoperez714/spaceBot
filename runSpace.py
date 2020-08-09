@@ -3,5 +3,5 @@ import time
 
 seguir = True
 while seguir:
-	seguir = Space.main(True)
-	time.sleep(60*60)
+	seguir = Space.main()
+	time.sleep(60*15)
