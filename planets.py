@@ -60,67 +60,67 @@ class Planet(Event):
 			"Solaris":{
 				"good" : "Your ex-wife's ghost helps you find food in the abandoned base, you get 10 provisions.",
 				"bad"  : "Your ex-wife's ghost manipulates you into leaving her 10 provisions.",
-				"url"  : "wikimedia.poeticcinema.com"
+				"url"  : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Solaris.jpg/400px-Solaris.jpg"
 				},
 			"Tatooine":{
 				"good" : "You befriend an orphan that gifts you 10 provisions because you 'look like an angel'.",
 				"bad"  : "Jawas steal 10 of your provisions.",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/starwars/images/b/b0/Tatooine_TPM.png/revision/latest/top-crop/width/720/height/900?cb=20131019121937"
 				},
 			"Trantor":{
 				"good" : "Prime minister Eto Demerzel gifts you 10 provisions for your services to the Empire.",
 				"bad"  : "You wind up in Billibotton and get mugged with knives. You lose 10 provision.",
-				"url"  : ""
+				"url"  : "https://i.pinimg.com/originals/71/eb/53/71eb5317dd4b68f1df54e4eab5ce8fc7.jpg"
 				},
 			"Pandora":{
 				"good" : "You fuck a blue alien, while they're asleep you take 10 of their provisions.",
 				"bad"  : "You fuck a blue alien, you give them 10 provisions for the cure to space AIDS.",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/james-camerons-avatar/images/8/89/Luna_Pandora.png/revision/latest?cb=20150307030147&path-prefix=es"
 				},
 			"Magrathea":{
 				"good" : "Slartibartfast gifts you 10 provisions for listening to his talk about fjords.",
 				"bad"  : "10 provisions are taken from you as material for a planet made of food.",
-				"url"  : ""
+				"url"  : "https://www.42magrathea.com/images/magwel.jpg"
 				},
 			"Gallifrey":{
 				"good" : "You pick up 10 provisions from the corpse of a Gallifreyan.",
 				"bad"  : "10 of your provisions are destroyed in the crossfire between Daleks and Time Lords.",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/doctorwho/images/a/a3/250px-Gallifrey_modern.png/revision/latest?cb=20120122132630&path-prefix=es"
 				},
 			"Roboworld":{
 				"good" : "You catch 10 provisions that come flying out of a Redline's competitor's vehicle.",
 				"bad"  : "10 provisions get destroyed by a blast from Funky Boy.",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/topstrongest/images/8/89/Funky_Boy.jpg/revision/latest/scale-to-width-down/340?cb=20160913005120"
 				},
 			"Hoth":{
 				"good" : "You scavenge 10 provisions from the still warm corpse of a Tauntaun.",
 				"bad"  : "You throw 10 provisions to distract the Wampa that's chasing you.",
-				"url"  : ""
+				"url"  : "https://upload.wikimedia.org/wikipedia/en/d/d2/Hothplanetsurface.jpg"
 				},
 			"Terminus":{
 				"good" : "You buy 10 provisions at the market of Terminus City.",
 				"bad"  : "The Enciclopedists demand that you give them 10 provisions simply because you are dumb.",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/asimov/images/c/cf/Terminus-0.jpg/revision/latest/scale-to-width-down/340?cb=20150119102940"
 				},
 			"Naboo":{
 				"good" : "You land in Naboo and befriend the locals. They gift you 10 provisions",
 				"bad"  : "You fall in love with the princess but cant have sex with her. In impotence you lose 10 provisions",
-				"url"  : ""
+				"url"  : "https://uncyclopedia.ca/w/images/3/3c/Naboo.png"
 				},
 			"Thanos farm":{
 				"good" : "Thanos farm. You get you 10 provisions",
 				"bad"  : "Thanos farm. You lose 10 provisions",
-				"url"  : ""
+				"url"  : "https://mcucosmic.com/wp-content/uploads/2018/07/0408_titan_ext_titan_50s0z.jpg"
 				},
 			"Krypton":{
 				"good" : "Marlon Brando teaches you good morals. You get you 10 provisions",
 				"bad"  : "Just as you are arriving you see a baby fly by and the planet explodes. You lose 10 provisions",
-				"url"  : ""
+				"url"  : "https://upload.wikimedia.org/wikipedia/en/0/0a/Krypton_%28DC_Comics_planet_-_circa_2018%29.jpg"
 				},
 			"Arrakis":{
 				"good" : "You become a Messiah-like figure and lead the sand people on a Jihad. You get 10 Spice",
 				"bad"  : "JYou barely escape the jaws of a sandworm. You lose 10 provisions",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/dune/images/a/af/Arrakis_planet.jpg/revision/latest/scale-to-width-down/340?cb=20190804030356"
 				},
 			"Fezzan":{
 				"good" : "You entered mutually benefitial business agreements. You got 10 provisions.",
@@ -246,7 +246,7 @@ class Ship(Event):
 				},
 			"Iserlohn Fortress":{
 				"good" : "You discuss the benefits of democracy. You got 20 fuel",
-				"bad"  : "You barely escape it's cannon. You received damage by 10 hull",
+				"bad"  : "You barely escape its cannon. You received damage by 10 hull",
 				"url"  : "https://cdn-us.anidb.net/images/main/230347.jpg"
 				},
 			"Normandy":{
@@ -272,32 +272,32 @@ class Ship(Event):
 			"The Park":{
 				"good" : "You get a hat that says 'IM EGGSCELENT'. You got 20 fuel",
 				"bad"  : "Someone makes a joke about their mom. You dont get it. Your hull is damaged by 10",
-				"url"  : ""
+				"url"  : "https://ti-content-global.cdn.turner.com/PROD-APAC/C_REGSHO_0XXXX0141_REC_AFRICA/C_REGSHO_0XXXX0141_REC_AFRICA_VIDSCREENSHOT.jpg"
 				},
 			"Gunbuster":{
 				"good" : "You get sent 12000 years into the future but there's someone waiting for you with 20 fuel",
 				"bad"  : "You get sent 12000 years into the future. Your hull is damaged by 10",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/gunbuster/images/9/9b/Gunbuster.jpg/revision/latest/scale-to-width-down/340?cb=20150817233125"
 				},
 			"Cathedral Terra":{
 				"good" : "You discover that your unconquerable human spirit moves foward like a drill and pierces through the heavens. Spiral power materializes 20 fuel in your ship",
 				"bad"  : "You are a bitch ass utilitarian and dont understand spirals. Your hull is damaged by 10",
-				"url"  : ""
+				"url"  : "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/39c5b551-082f-4d2b-9d39-8e68cee8ba39/d8fq6iy-156bebaa-2d36-4d5a-b6b2-283643472d6a.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvMzljNWI1NTEtMDgyZi00ZDJiLTlkMzktOGU2OGNlZThiYTM5XC9kOGZxNml5LTE1NmJlYmFhLTJkMzYtNGQ1YS1iNmIyLTI4MzY0MzQ3MmQ2YS5qcGcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.1nstNgcN3QJ9mciTya7CN4h9TEpYbXgob_I7V-t0hn0"
 				},
 			"Yolkian Ship":{
 				"good" : "You defeat the eggs trying to kidnap your parents. You get 20 fuel",
 				"bad"  : "Eggs kidnap your parents. Your hull is damaged by 10",
-				"url"  : ""
+				"url"  : "https://vignette.wikia.nocookie.net/jimmyneutron/images/8/86/IMG_2416.jpg/revision/latest/scale-to-width-down/340?cb=20190224204450"
 				},
 			"Event Horizon":{
 				"good" : "You spend some quality time with Sam Neil before being sent to hell. You get 20 fuel",
 				"bad"  : "Oops, you are in hell. Your hull is damaged by 10",
-				"url"  : ""
+				"url"  : "https://i.pinimg.com/originals/57/47/bc/5747bc4aee4a76741d316333e6b184c3.jpg"
 				},
 			"Kang and Kodos' Ship":{
 				"good" : "They feed you and teach you how to cook for forty humans. You get 20 fuel",
 				"bad"  : "You voted for Kodos. He still impregnates your wife. Your hull is damaged by 10",
-				"url"  : ""
+				"url"  : "https://static.simpsonswiki.com/images/thumb/a/a4/Broken_spaceship.png/250px-Broken_spaceship.png"
 				},
 			}			
 		self.get_properties(self.name)

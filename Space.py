@@ -22,6 +22,8 @@ class Board:
 		self.generate_events()
 		self.img_path = 'background.png'
 
+
+	
 	def generate_events(self):
 		#TODO: cambiar probabilidad de cada tipo de evento
 		#Algoritmo de distribucion copado
