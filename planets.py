@@ -66,6 +66,10 @@ class Goal(Event):
 		if name:
 			self.set_url()
 
+	def good_action(self,spaceship):
+		spaceship.isHome = True 
+		return spaceship
+
 class Planet(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
@@ -399,6 +403,7 @@ class Spaceport(Event):
 
 	def good_action(self,spaceship):
 		spaceship.modify_fuel(100)
+		return spaceship
 	
 class Being(Event):
 	def __init__(self,name=""):

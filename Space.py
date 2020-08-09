@@ -7,6 +7,7 @@ from pathlib import Path
 import os
 import urllib.request
 import textwrap
+import random
 #import skimage.measure as skm
 #import matplotlib.pyplot as plt
 import planets
@@ -18,12 +19,12 @@ class Board:
 		self.goalLoc = 0
 		self.events = []
 		self.eventlist = []
-		self.generate_events()
-		self.img_path = 'background.png'
 		self.area = self.lenx*self.leny-2
 		self.goal = ""
 		self.set_goal()
-
+		self.generate_events()
+		self.img_path = 'background.png'
+	
 	def set_goal(self):
 		xgoal = np.random.randint(3,self.lenx)
 		ygoal = np.random.randint(3,self.leny)
@@ -32,33 +33,37 @@ class Board:
 
 	def generate_eventlist(self):
 		number = self.lenx*self.leny-2
-		self.eventlist+=np.random.sample([*planets.Planet().properties],20)
-		self.eventlist+=np.random.sample([*planets.Ship().properties],20)
-		self.eventlist+=np.random.sample([*planets.Being().properties],3)
-		self.eventlist+=np.random.sample([*planets.Spaceport().urls],11)
-		self.eventlist+=np.random.sample([*planets.Portal().urls],6)
-		self.eventlist+=np.random.sample([*planets.Asteroid().urls],6)
-		self.eventlist+=np.random.sample([*planets.BlackHole().properties],2)
+		self.eventlist+=random.sample([*planets.Planet().properties],20)
+		self.eventlist+=random.sample([*planets.Ship().properties],20)
+		self.eventlist+=random.sample([*planets.Being().properties],3)
+		self.eventlist+=random.sample([*planets.Spaceport().urls],11)
+		self.eventlist+=random.sample([*planets.Portal().urls],6)
+		self.eventlist+=random.sample([*planets.Asteroid().urls],6)
+		self.eventlist+=random.sample([*planets.BlackHole().urls],2)
 
 	def generate_events(self):
 		#TODO: cambiar probabilidad de cada tipo de evento
 		#Algoritmo de distribucion copado
 		self.generate_eventlist()
-		indexes = np.random.shuffle(list(range(self.area)))
+		indexes = list(range(self.area))
+		np.random.shuffle(indexes)
+		#print(indexes)
 		offset = 1
-		for i in range(lenx):
+		for i in range(self.lenx):
 			self.events.append([])
-			for j in range(leny):
+			for j in range(self.leny):
 				self.events[i].append([])
 				if i==0 and j ==0:
 					self.events[i][j] = "Start"
-				elif i==xgoal and j==ygoal:
+				elif i==self.goalLoc[0] and j==self.goalLoc[1]:
 					self.events[i][j] = self.goal
 					offset = 2
 				else:
-					self.events[i][j] = self.eventlist[indexes[i*leny+j-offset]]
+					#print(i,j,i*self.leny+j-offset,indexes[i*self.leny+j-offset],self.eventlist[indexes[i*self.leny+j-offset]])
+					self.events[i][j] = self.eventlist[indexes[i*self.leny+j-offset]]
 
-	def get_event_name(x,y,self):
+	def get_event_name(self,x,y):
+		#print (self)
 		return self.events[x][y]
 
 					
@@ -145,7 +150,7 @@ def get_event_from_name(name):
 		planets.Goal
 		]
 	for ic, cla in enumerate(clas):
-		if name in list(cla().properties.keys()):
+		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
 			return cla(name)
 
 def gen_initial_image(spaceship):
@@ -211,9 +216,9 @@ def update_image(spaceship,event):
 	lenx = img.size[0]
 	leny = img.size[1]
 	if lenx > leny:
-		img = img.resize(1000,int(1000*leny/lenx))
+		img = img.resize((1000,int(1000*leny/lenx)))
 	elif leny < lenx:
-		img = img.resize(int(1000*lenx/leny),1000)
+		img = img.resize((int(1000*lenx/leny),1000))
 	else:
 		img = img.resize((1000,1000))
 	previous = add_event_image(previous,img)
@@ -300,54 +305,57 @@ def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 	return min(int(10*maxlenx/np.mean(np.diff(pw))),int(10*maxleny/np.mean(np.diff(ph))))
 
 def get_image_from_url(url):
-	form = url.split('.')[-1]
-	urllib.request.urlretrieve(url,'event_image.{}'.format(form))
-	return 'event_image.{}'.format(form)
+	urllib.request.urlretrieve(url,'event_image')
+	return 'event_image'
 
 def main(isFirst=False):
 	initial_message = "Hola"
 
 	if isFirst:
 		#generar el tablero
-		spaceship = Spaceship(get_random_ship())
+		board  =Board()
+		spaceship = Spaceship()#get_random_ship())
 		postImage = gen_initial_image(spaceship)
-		gr, p_id = upload(initial_message,getAccessToken(),postImage)
+		#gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
-		np.save('data',[spaceship,gr,p_id,board,was_portal])
+		np.save('data',[spaceship,board,was_portal])
 		return True
 	else:
-		data = np.load("spaceship.npy",allow_pickle=True)
+		data = np.load("data.npy",allow_pickle=True)
 		spaceship = data[0]
-		previous_gr = data[1]
-		previous_id = data[2]
-		board = data[3]
-		was_portal = data[4]
+		#previous_gr = data[1]
+		#previous_id = data[2]
+		board = data[1]
+		was_portal = data[2]
 		if was_portal:
 			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
-			reacts = get_reactions(previous_gr,previous_id)
-			movement = get_movement_from_reactions()
+			#reacts = get_reactions(previous_gr,previous_id)
+			#movement = get_movement_from_reactions()
+			movement = [-1,0]
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 			spaceship.modify_fuel(-10)
 
-		new_event = gen_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
-		spaceship,message = new_event.action(spaceship)
+		event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
+		spaceship,message = event.action(spaceship)
 
 		if spaceship.isHome:
-			message += "Congrats..."
-			victory_path = gen_goal_image(spaceship,event)
-			gr, p_id = upload(message,getAccessToken(),img_path)
+			message += '\nCongrats...'
+			victory_path = update_image(spaceship,event)
+			gen_goal_image()
+			#gr, p_id = upload(message,getAccessToken(),victory_path)
 			return False
 		#message = gen_message(new_event,flavor_text)
 		if spaceship.is_dead():
 			message += '\nYou died...'
-			game_over_path = gen_gameover_image(spaceship,event)
-			gr, p_id = upload(message,getAccessToken(),game_over_im)
-			np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
+			game_over_path = update_image(spaceship,event)
+			gen_gameover_image()
+			#gr, p_id = upload(message,getAccessToken(),game_over_path)
+			np.save('data',[spaceship,board,event.get_type()=="Portal"])
 			return False
 
 		img_path = update_image(spaceship,event)
-		gr, p_id = upload(message,getAccessToken(),img_path)
-		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
+		#gr, p_id = upload(message,getAccessToken(),img_path)
+		np.save('data',[spaceship,board,event.get_type()=="Portal"])
 		#TODO: Comments w/current state & SPAAAAAAAAAAAAAACE
 		return True
