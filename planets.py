@@ -1,8 +1,10 @@
+import numpy as np
+
 boardlenx = 10
 boardleny = 7
 
 class Event:
-	def __init__(self,name):
+	def __init__(self,name=""):
 		self.name = name
 		self.text = ""
 		self.good_text = ""
@@ -14,14 +16,14 @@ class Event:
 		self.properties = {}
 		self.urls = {}
 
-	def action(spaceship):
+	def action(self,spaceship):
 		if np.random.rand()>self.bad_chance:
 			spaceship = self.good_action(spaceship)
 			self.text = self.good_text
 		else:
 			spaceship = self.bad_action(spaceship)
 			self.text = self.bad_text
-		return spaceship, text
+		return spaceship#, self.text
 
 	def get_type(self):
 		return self.type
@@ -37,17 +39,23 @@ class Event:
 		self.bad_text = self.properties[self.name]["bad"]
 		self.url = self.properties[self.name]["url"]
 
+class Start(Event):
+	def __init__(self):
+		super().__init__("Start")
+		self.text = ""#Texto para la primer imagen
+		self.icon = "Resources/Start_icon.png"
+
 class Planet(Event):
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.4
 		self.type = "Planet"
-		self.icon = "Planet.png"
+		self.icon = "Resources/Planet_icon.png"
 		self.properties = {
 			"Mars":{
-				"good" : "You find water in Mars, your provisions increase by 10.",
+				"good" : 'You find water in Mars,\nyour provisions increase by 10.',
 				"bad"  : "Martians rob you of 10 provisions.",
-				"url"  : "wikimedia.mars.com"#not real page
+				"url"  : "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg"
 				},
 			"Solaris":{
 				"good" : "Your ex-wife's ghost helps you find food in the abandoned base, you get 10 provisions.",
@@ -96,19 +104,19 @@ class Planet(Event):
 				},
 			#Reach, Cybertron, Namek, Todos los demas de Star Wars, Vulcan, el resto de los IRL
 			}	
-		self.get_properties(self.name)
+		self.get_properties()
 
-	def good_action(spaceship):
+	def good_action(self,spaceship):
 		spaceship.modify_provisions(+10)
-		return spacehip
+		return spaceship
 
-	def bad_action(spaceship):
+	def bad_action(self,spaceship):
 		spaceship.modify_provisions(-10)
-		return spacehip
+		return spaceship
 
 class Portal(Event):
 	
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.2
 		self.type = "Portal"
@@ -119,18 +127,18 @@ class Portal(Event):
 		self.good_text = "You get transported across the universe."
 		self.bad_text = "You get violently transported across the universe, losing 10 hull."
 
-	def good_action(spaceship):
+	def good_action(self,spaceship):
 		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
-		return spacehip
+		return spaceship
 
-	def bad_action(spaceship):
+	def bad_action(self,spaceship):
 		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
 		spaceship.modify_hull(-10)
-		return spacehip
+		return spaceship
 
 
 class Ship(Event):
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.7
 		self.type = "Ship"
@@ -138,16 +146,16 @@ class Ship(Event):
 		self.properties = {}
 		self.get_properties(self.name)
 
-	def good_action(spaceship):
+	def good_action(self,spaceship):
 		spaceship.modify_fuel(20)
-		return spacehip
+		return spaceship
 
-	def bad_action(spaceship):
+	def bad_action(self,spaceship):
 		spaceship.modify_hull(-10)
-		return spacehip
+		return spaceship
 
 class Asteroid(Event):
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.9
 		self.type = "Asteroid"
@@ -163,17 +171,17 @@ class Asteroid(Event):
 		self.good_text = "You mine an asteroid and gain 10 hull."
 		self.set_url
 
-	def good_action(spaceship):
+	def good_action(self,spaceship):
 		spaceship.modify_fuel(20)
-		return spacehip
+		return spaceship
 
-	def bad_action(spaceship):
+	def bad_action(self,spaceship):
 		spaceship.modify_hull(-10)
-		return spacehip
+		return spaceship
 
 
 class Spaceport(Event):
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.0
 		self.type = "Spaceport"
@@ -192,11 +200,11 @@ class Spaceport(Event):
 		}
 		self.set_url()
 
-	def good_action(spaceship):
+	def good_action(self,spaceship):
 		spaceship.modify_fuel(100)
 	
 class Being(Event):
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.5
 		self.type = "Being"
@@ -235,24 +243,24 @@ class Being(Event):
 		}
 		self.get_properties()
 
-	def good_action(spaceship):
+	def good_action(self,spaceship):
 		spaceship.modify_fuel(100)
 		spaceship.modify_hull(100)
 		spaceship.modify_provisions(100)
-		return spacehip
+		return spaceship
 
-	def bad_action(spaceship):
+	def bad_action(self,spaceship):
 		spaceship.modify_hull(-999)
 		spaceship.modify_fuel(-999)
 		spaceship.modify_provisions(-999)
-		return spacehip
+		return spaceship
 
 
 	#yourMom
 
 class BlackHole(Event):
 	#TODO: hacer funcion aparte para get solo url
-	def __init__(self,name):
+	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 1
 		self.type = "Portal"
@@ -265,18 +273,18 @@ class BlackHole(Event):
 		self.bad_text = "To escape the gravitational pull you use 10 extra fuel"
 		self.set_url()
 
-	def bad_action(spaceship):
+	def bad_action(self,spaceship):
 		spaceship.modify_fuel(-10)
 
-Planets = ["Mars","Solaris","Tatooine","Trantor","Pandora","Magrathea","Gallifrey",
-	"Roboworld","Hoth","Terminus"]
-Portals = ["Wormhole"]
-Ships = ["TIE fighter","Elon Musk Car"]
-Asteroids = ["Solar system asteroid belt","Kuiper belt","Asteroid belt outside Hoth",
-	"Asteroid belt from Asteroids"]
-Spaceports = ["Knowhere","Death Star","International Space Station","Babylon 5",
-	"The Citadel","The Bunker","Death Egg","The Halo arrays","Space colony ARK",
-	"ISPV 7"]
-Beings = ["Your Mom","Cthulhu","Reaper","Marker","Galactus","That dragon from Kill the Moon"]
-BlackHoles = ["Sagittarius A","M87","Gargantua"]
-types = [Planets,Portals,Ships,Asteroids,Spaceports,Beings,BlackHoles]
+#Planets = ["Mars","Solaris","Tatooine","Trantor","Pandora","Magrathea","Gallifrey",
+#	"Roboworld","Hoth","Terminus"]
+#Portals = ["Wormhole"]
+#Ships = ["TIE fighter","Elon Musk Car"]
+#Asteroids = ["Solar system asteroid belt","Kuiper belt","Asteroid belt outside Hoth",
+#	"Asteroid belt from Asteroids"]
+#Spaceports = ["Knowhere","Death Star","International Space Station","Babylon 5",
+#	"The Citadel","The Bunker","Death Egg","The Halo arrays","Space colony ARK",
+#	"ISPV 7"]
+#Beings = ["Your Mom","Cthulhu","Reaper","Marker","Galactus","That dragon from Kill the Moon"]
+#BlackHoles = ["Sagittarius A","M87","Gargantua"]
+#types = [Planets,Portals,Ships,Asteroids,Spaceports,Beings,BlackHoles]
