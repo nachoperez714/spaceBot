@@ -15,6 +15,7 @@ class Event:
 		self.type = ""
 		self.properties = {}
 		self.urls = {}
+		self.pretext = ""
 
 	def action(self,spaceship):
 		if np.random.rand()>self.bad_chance:
@@ -23,7 +24,7 @@ class Event:
 		else:
 			spaceship = self.bad_action(spaceship)
 			self.text = self.bad_text
-		return spaceship#, self.text
+		return spaceship, self.pretext+self.text
 
 	def get_type(self):
 		return self.type
@@ -40,10 +41,30 @@ class Event:
 		self.url = self.properties[self.name]["url"]
 
 class Start(Event):
-	def __init__(self):
-		super().__init__("Start")
-		self.text = ""#Texto para la primer imagen
+	def __init__(self,name=""):
+		super().__init__(name)
 		self.icon = "Resources/Start_icon.png"
+		self.type = "Start"
+		self.bad_chance = 0
+		self.good_text = "You're back where you started you silly space-goose"
+		self.urls = {
+			"Start" : "https://b.rgbimg.com/users/x/xy/xymonau/600/mVExAYa.jpg"
+		}
+		if name:
+			self.set_url()
+
+class Goal(Event):
+	def __init__(self,name=""):
+		super().__init__(name)
+		self.icon = "Resources/Goal_icon.png"
+		self.type = "Goal"
+		self.bad_chance = 0
+		self.good_text = "You've reached your destination: {}.".format(self.name)
+		self.urls = {
+			"Earth" : "https://nomoreplanet.com/wp-content/uploads/2020/02/Planet-Earth.jpg"
+		}
+		if name:
+			self.set_url()
 
 class Planet(Event):
 	def __init__(self,name=""):
@@ -51,6 +72,7 @@ class Planet(Event):
 		self.bad_chance = 0.4
 		self.type = "Planet"
 		self.icon = "Resources/Planet_icon.png"
+		self.pretext = "You've reached planet {}".format(self.name)
 		self.properties = {
 			"Mars":{
 				"good" : 'You find water in Mars, your provisions increase by 10.',
@@ -159,7 +181,8 @@ class Planet(Event):
 				},
 			#Reach, Cybertron, Todos los demas de Star Wars, Vulcan, el resto de los IRL
 			}	
-		self.get_properties()
+		if name:
+			self.get_properties()
 
 	def good_action(self,spaceship):
 		spaceship.modify_provisions(+10)
@@ -175,26 +198,28 @@ class Portal(Event):
 		super().__init__(name)
 		self.bad_chance = 0.2
 		self.type = "Portal"
-		self.icon = "Portal.png"
+		self.icon = "Resources/Portal_icon.png"
+		self.pretext = "You find a {}".format(self.name)
 		self.urls = {
 			"Wormhole" : "https://qph.fs.quoracdn.net/main-qimg-79f468932c9222c1648c31fbe6112fbe",
 			"Mass Relay" : "https://i.ytimg.com/vi/BDq4a6PqAvM/maxresdefault.jpg",
 			"Infinite improbability Drive" : "https://miro.medium.com/max/560/1*URj2RSTjYvyegLZ51tq8ZA.jpeg",
 			"Warp Station" : "https://vignette.wikia.nocookie.net/pulsar-game/images/2/24/Long_range_warp_station.png/revision/latest/scale-to-width-down/340?cb=20190626124313",
 			"Portal" : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT-HfXb1DmwshWvAErqfe4mxV7GAZtPQ0wpZw&usqp=CAU",
-			"The Bifrost" : "https://i.ytimg.com/vi/hzqWcXA_Xrk/maxresdefault.jpg",
+			"Bifrost" : "https://i.ytimg.com/vi/hzqWcXA_Xrk/maxresdefault.jpg",
 		}
 		#Wormhole, portal, warp station, improbability drive
-		self.set_url()
+		if name:
+			self.set_url()
 		self.good_text = "You get transported across the universe."
 		self.bad_text = "You get violently transported across the universe, losing 10 hull."
 
 	def good_action(self,spaceship):
-		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
+		#spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
 		return spaceship
 
 	def bad_action(self,spaceship):
-		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
+		#spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
 		spaceship.modify_hull(-10)
 		return spaceship
 
@@ -204,11 +229,12 @@ class Ship(Event):
 		super().__init__(name)
 		self.bad_chance = 0.7
 		self.type = "Ship"
-		self.icon = "Ship.png"
-				self.properties = {
+		self.icon = "Resources/Ship_icon.png"
+		self.pretext = "You've run into the {}".format(self.name)
+		self.properties = {
 			"Millenium Falcon":{
-				"good" : "You entered a dogfight with the Millenium Falcon. You managed to steal 20 fuel from Disney",
-				"bad"  : "You entered a dogfight with the Millenium Falcon. You received damage by 10 hull",
+				"good" : "You entered a dogfight with it. You managed to steal 20 fuel from Disney",
+				"bad"  : "You entered a dogfight with it. You received damage by 10 hull",
 				"url"  : "https://toppng.com/uploads/preview/star-wars-millennium-falcon-11562863034ii1e8arwof.png"
 				},
 			"Swordfish":{
@@ -306,8 +332,9 @@ class Ship(Event):
 				"bad"  : "You voted for Kodos. He still impregnates your wife. Your hull is damaged by 10",
 				"url"  : "https://static.simpsonswiki.com/images/thumb/a/a4/Broken_spaceship.png/250px-Broken_spaceship.png"
 				},
-			}			
-		self.get_properties(self.name)
+			}		
+		if name:	
+			self.get_properties()
 
 	def good_action(self,spaceship):
 		spaceship.modify_fuel(20)
@@ -322,7 +349,8 @@ class Asteroid(Event):
 		super().__init__(name)
 		self.bad_chance = 0.9
 		self.type = "Asteroid"
-		self.icon = "Asteroid.png"
+		self.icon = "Resources/Asteroid_icon.png"
+		self.pretext = "You find yourself in the midst of {}".format(self.name)
 		self.urls = {
 			"Solar system asteroid belt" : "https://i.ytimg.com/vi/cT3K1INjQJ0/maxresdefault.jpg",
 			"Kuiper belt" : "https://image.pbs.org/poster_images/assets/npls12_vid_kuiperbelt_thumb.jpg",
@@ -333,7 +361,8 @@ class Asteroid(Event):
 			}
 		self.bad_text = "You crash into an asteroid and lose 10 hull."
 		self.good_text = "You mine an asteroid and gain 10 hull."
-		self.set_url
+		if name:
+			self.set_url()
 
 	def good_action(self,spaceship):
 		spaceship.modify_fuel(20)
@@ -349,7 +378,8 @@ class Spaceport(Event):
 		super().__init__(name)
 		self.bad_chance = 0.0
 		self.type = "Spaceport"
-		self.icon = "Spaceport.png"
+		self.icon = "Resources/Spaceport_icon.png"
+		self.pretext = "You dock your ship at {}".format(self.text)
 		self.urls = {
 			"Knowhere" : "https://vignette.wikia.nocookie.net/marvelcinematicuniverse/images/e/e3/Knowhere_-_Guardianes_de_la_Galaxia.png/revision/latest?cb=20151219160642&path-prefix=es",
 			"Death Star" : "https://i.pinimg.com/originals/b2/f5/71/b2f571795a78175829228a409d9fa4f1.jpg",
@@ -362,8 +392,10 @@ class Spaceport(Event):
 			"Space colony ARK" : "https://steamuserimages-a.akamaihd.net/ugc/311117801426400066/41F15F108983679CD2D9EBEBCD601940645912CD/?imw=1024&imh=576&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
 			"ISPV 7": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRv8ug0_09vjw_vS3SMosuPX6GzSNB6zK_aGQ&usqp=CAU",
 			"Space Tree Station": "https://vignette.wikia.nocookie.net/theregularshow/images/7/71/S8E03.013_Space_Tree_Station.png/revision/latest?cb=20161003224144",
-		}
-		self.set_url()
+			}
+		self.good_text = "Your fuel tank is filled."
+		if name:
+			self.set_url()
 
 	def good_action(self,spaceship):
 		spaceship.modify_fuel(100)
@@ -373,7 +405,8 @@ class Being(Event):
 		super().__init__(name)
 		self.bad_chance = 0.5
 		self.type = "Being"
-		self.icon = "Being.png"
+		self.icon = "Resources/Being_icon.png"
+		self.pretext = "You find a cosmic entity: {}.".format(self.name)
 		self.properties = {
 			"Your Mom" : {
 				"good" : "Your mom is ver kind and loving. All resources maxed up.",
@@ -410,8 +443,9 @@ class Being(Event):
 				"bad"  : "Your ship gets destroyed by the moonquakes the dragon causes.",
 				"url"  : "https://vignette.wikia.nocookie.net/tardis/images/3/33/The_Moon_Hatches_-_Kill_The_Moon_-_Doctor_Who_-_BBC/revision/latest/scale-to-width-down/360?cb=20150920095900"
 				}
-		}
-		self.get_properties()
+			}
+		if name:
+			self.get_properties()
 
 	def good_action(self,spaceship):
 		spaceship.modify_fuel(100)
@@ -433,15 +467,17 @@ class BlackHole(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 1
-		self.type = "Portal"
-		self.icon = "Portal.png"
+		self.type = "Black Hole"
+		self.icon = "Resources/BlackHole_icon.png"
+		self.pretext = "Oh no! It's the black hole {}.".format(self.name)
 		self.urls = {
-			"Sagittarius A":"",
-			"M87" : "",
-			"Gargantua" : "",
+			"Sagittarius A*":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Sagittarius_A%2A.jpg/250px-Sagittarius_A%2A.jpg",
+			"Messier 87" : "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/330px-Black_hole_-_Messier_87.jpg",
+			"Gargantua" : "https://vignette.wikia.nocookie.net/interstellarfilm/images/9/9b/Black_hole.png/revision/latest?cb=20150322005003",
 		}
 		self.bad_text = "To escape the gravitational pull you use 10 extra fuel"
-		self.set_url()
+		if name:
+			self.set_url()
 
 	def bad_action(self,spaceship):
 		spaceship.modify_fuel(-10)

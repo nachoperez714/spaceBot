@@ -15,19 +15,37 @@ class Board:
 	def __init__(self):
 		self.lenx = planets.boardlenx
 		self.leny = planets.boardleny
-		xgoal = np.random.randint(3,lenx)
-		ygoal = np.random.randint(3,leny)
-		self.goal = [xgoal,ygoal]
+		self.goalLoc = 0
 		self.events = []
+		self.eventlist = []
 		self.generate_events()
 		self.img_path = 'background.png'
+		self.area = self.lenx*self.leny-2
+		self.goal = ""
+		self.set_goal()
 
+	def set_goal(self):
+		xgoal = np.random.randint(3,self.lenx)
+		ygoal = np.random.randint(3,self.leny)
+		self.goalLoc = [xgoal,ygoal]
+		self.goal = np.random.choice([*planets.Goal().urls])
 
-	
+	def generate_eventlist(self):
+		number = self.lenx*self.leny-2
+		self.eventlist+=np.random.sample([*planets.Planet().properties],20)
+		self.eventlist+=np.random.sample([*planets.Ship().properties],20)
+		self.eventlist+=np.random.sample([*planets.Being().properties],3)
+		self.eventlist+=np.random.sample([*planets.Spaceport().urls],11)
+		self.eventlist+=np.random.sample([*planets.Portal().urls],6)
+		self.eventlist+=np.random.sample([*planets.Asteroid().urls],6)
+		self.eventlist+=np.random.sample([*planets.BlackHole().properties],2)
+
 	def generate_events(self):
 		#TODO: cambiar probabilidad de cada tipo de evento
 		#Algoritmo de distribucion copado
-		indexes = np.random.sample(range(0,loquesea),self.lenx*self.leny-2)
+		self.generate_eventlist()
+		indexes = np.random.shuffle(list(range(self.area)))
+		offset = 1
 		for i in range(lenx):
 			self.events.append([])
 			for j in range(leny):
@@ -35,15 +53,10 @@ class Board:
 				if i==0 and j ==0:
 					self.events[i][j] = "Start"
 				elif i==xgoal and j==ygoal:
-					self.events[i][j] = "Goal"
+					self.events[i][j] = self.goal
+					offset = 2
 				else:
-					self.events[i][j] = planets.events[indexes[i*leny+j]]
-
-
-
-	def gen_gameover_image(x,y,event,self):
-		#TODO
-		return gameover_path
+					self.events[i][j] = self.eventlist[indexes[i*leny+j-offset]]
 
 	def get_event_name(x,y,self):
 		return self.events[x][y]
@@ -58,11 +71,15 @@ class Spaceship:
 		self.provisions = 100
 		self.hull = 100
 		self.hasWeapons = False
+		self.isHome = False
 
 	def move(self,x,y):
 		self.x = x
 		self.y = y
-		self.fuel -= 10
+		#self.fuel -= 10
+
+	def reach_goal(self):
+		self.isHome = True
 
 	def modify_fuel(self,amount):
 		self.fuel += amount
@@ -123,7 +140,9 @@ def get_event_from_name(name):
 		planets.BlackHole,
 		planets.Being,
 		planets.Asteroid,
-		planets.Portal
+		planets.Portal,
+		planets.Start,
+		planets.Goal
 		]
 	for ic, cla in enumerate(clas):
 		if name in list(cla().properties.keys()):
@@ -184,8 +203,9 @@ def update_image(spaceship,event):
 	#TODO: metodo correcto de insertar imagen
 	print (event.text)
 	previous = Image.open("Reference_image.png")
-	previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
-	previous.save("Reference_image.png")
+	if event.type!="Goal":
+		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
+		previous.save("Reference_image.png")
 	img_path = get_image_from_url(event.url)
 	img = Image.open(img_path)
 	lenx = img.size[0]
@@ -204,10 +224,27 @@ def update_image(spaceship,event):
 	previous.save("Post_image.png")
 	return "Post_image.png"
 
+def gen_goal_image():
+	image = Image.open("Post_image.png")
+	draw = ImageDraw.Draw(image)
+	draw.text((800,500),"YOU WON",font=get_font(300),fill="green")
+	image.save("Victory_image.png")
+	return "Death_image.png"
+
+def gen_gameover_image():
+	image = Image.open("Post_image.png")
+	draw = ImageDraw.Draw(image)
+	draw.text((800,500),"YOU DIED",font=get_font(300),fill="red")
+	image.save("Death_image.png")
+	return "Death_image.png"
+
 def add_text(img,event):
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),event.name,font=get_font(get_fontsize(event.name,draw)))
-	draw.text((0,200),textwrap.fill(event.text,30),font=get_font(get_fontsize(event.text,draw)))
+	if len(event.text)<=90:
+		draw.text((0,200),textwrap.fill(event.text,30),font=get_font(get_fontsize(event.text,draw)))
+	else:
+		draw.text((0,200),textwrap.fill(event.text,len(event.text)//3),font=get_font(get_fontsize(event.text,draw)))
 	return img
 
 def add_icon(image,icon,x,y):
@@ -286,24 +323,26 @@ def main(isFirst=False):
 		board = data[3]
 		was_portal = data[4]
 		if was_portal:
-			pass
+			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
 			reacts = get_reactions(previous_gr,previous_id)
 			movement = get_movement_from_reactions()
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 			spaceship.modify_fuel(-10)
-		if spaceship.x == board.xgoal and spaceship.y == board.ygoal:
-			victory_message = "Congrats..."
-			gr, p_id = upload(victory_message,getAccessToken(),img_path)
-			return False
+
 		new_event = gen_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
-		spaceship,flavor_text = new_event.action(spaceship)
-		
-		message = gen_message(new_event,flavor_text)
+		spaceship,message = new_event.action(spaceship)
+
+		if spaceship.isHome:
+			message += "Congrats..."
+			victory_path = gen_goal_image(spaceship,event)
+			gr, p_id = upload(message,getAccessToken(),img_path)
+			return False
+		#message = gen_message(new_event,flavor_text)
 		if spaceship.is_dead():
-			death_message = message + "\nYou died..."
-			game_over_path = board.gen_gameover_image(x,y,event)
-			gr, p_id = upload(death_message,getAccessToken(),game_over_im)
+			message += '\nYou died...'
+			game_over_path = gen_gameover_image(spaceship,event)
+			gr, p_id = upload(message,getAccessToken(),game_over_im)
 			np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 			return False
 
