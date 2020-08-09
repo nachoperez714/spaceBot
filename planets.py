@@ -24,7 +24,7 @@ class Event:
 		else:
 			spaceship = self.bad_action(spaceship)
 			self.text = self.bad_text
-		return spaceship, self.pretext+self.text
+		return spaceship, self.pretext+". "+self.text
 
 	def get_type(self):
 		return self.type
@@ -372,7 +372,7 @@ class Asteroid(Event):
 			self.set_url()
 
 	def good_action(self,spaceship):
-		spaceship.modify_fuel(20)
+		spaceship.modify_hull(10)
 		return spaceship
 
 	def bad_action(self,spaceship):

@@ -136,7 +136,34 @@ def get_reactions(graph,post_id):
 	reacts = []
 	for reaction in reactions:
 		reacts.append(reaction['type'])
+	print (reacts)
 	return reacts
+
+def get_input_from_reactions(reacs,spaceship):
+	nlike = 0
+	nwow = 0
+	nsad = 0
+	nangry = 0
+	for reac in reacs:
+		if reac=='LIKE' and spaceship.y!=0:
+			nlike+=1
+		elif reac=='WOW' and spaceship.x!=planets.boardlenx-1:
+			nwow+=1
+		elif reac=='SAD' and spaceship.y!=planets.boardelny-1:
+			nsad+=1
+		elif reac=='ANGRY' and spaceship.x!=0:
+			nangry+=1
+
+	if nlike==0 and nwow==0 and nsad==0 and nangry==0:
+		return [0,0]
+	elif nlike>=nwow and nlike>=nsad and nlike>= nangry:
+		return [0,-1]
+	elif nwow>=nsad and nwow>=nangry:
+		return [1,0]
+	elif nsad>=nangry:
+		return [0,1]
+	else:
+		return [-1,0]
 
 def get_event_from_name(name):
 	clas = [planets.Planet,
@@ -202,7 +229,7 @@ def gen_initial_image(spaceship):
 	del draw
 	img.save("Post_image.png")
 
-	return "Reference_image.png", "Post_image.png"
+	return "Post_image.png"
 
 def update_image(spaceship,event):
 	#TODO: metodo correcto de insertar imagen
@@ -321,23 +348,22 @@ def main(isFirst=False):
 		board  =Board()
 		spaceship = Spaceship()#get_random_ship())
 		postImage = gen_initial_image(spaceship)
-		#gr, p_id = upload(initial_message,getAccessToken(),postImage)
+		gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
-		np.save('data',[spaceship,board,was_portal])
+		np.save('data',[spaceship,gr,p_id,board,was_portal])
 		return True
 	else:
 		data = np.load("data.npy",allow_pickle=True)
 		spaceship = data[0]
-		#previous_gr = data[1]
-		#previous_id = data[2]
-		board = data[1]
-		was_portal = data[2]
+		previous_gr = data[1]
+		previous_id = data[2]
+		board = data[3]
+		was_portal = data[4]
 		if was_portal:
 			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
-			#reacts = get_reactions(previous_gr,previous_id)
-			#movement = get_movement_from_reactions()
-			movement = [-1,0]
+			reacts = get_reactions(previous_gr,previous_id)
+			movement = get_input_from_reactions(reacts,spaceship)
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 			spaceship.modify_fuel(-10)
 
@@ -348,19 +374,18 @@ def main(isFirst=False):
 			message += '\nCongrats...'
 			victory_path = update_image(spaceship,event)
 			gen_goal_image()
-			#gr, p_id = upload(message,getAccessToken(),victory_path)
+			gr, p_id = upload(message,getAccessToken(),victory_path)
 			return False
-		#message = gen_message(new_event,flavor_text)
 		if spaceship.is_dead():
 			message += '\nYou died...'
 			game_over_path = update_image(spaceship,event)
 			gen_gameover_image()
-			#gr, p_id = upload(message,getAccessToken(),game_over_path)
+			gr, p_id = upload(message,getAccessToken(),game_over_path)
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
 			return False
 
 		img_path = update_image(spaceship,event)
-		#gr, p_id = upload(message,getAccessToken(),img_path)
-		np.save('data',[spaceship,board,event.get_type()=="Portal"])
+		gr, p_id = upload(message,getAccessToken(),img_path)
+		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 		#TODO: Comments w/current state & SPAAAAAAAAAAAAAACE
 		return True
