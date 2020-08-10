@@ -434,6 +434,6 @@ def main(isFirst=False,direction=""):
 				space_comment+="A"
 			space_comment+="CE"
 			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
-                        upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
+			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 		return True
