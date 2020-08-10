@@ -453,7 +453,7 @@ class Asteroid(Event):
 		self.bad_chance = 0.9
 		self.type = "Asteroid"
 		self.icon = "Resources/Asteroid_icon.png"
-		self.pretext = "You find yourself in the midst of {}".format(self.name)
+		self.pretext = "You find yourself in the vicinity of {}".format(self.name)
 		self.urls = {
 			"Solar system asteroid belt" : "https://i.ytimg.com/vi/cT3K1INjQJ0/maxresdefault.jpg",
 			"Fox's Satelite" : "https://i.ytimg.com/vi/jGhirX5kH_k/hqdefault.jpg",
