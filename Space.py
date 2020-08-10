@@ -311,11 +311,11 @@ def add_numbers(img,ship):
 def get_fill(resource):
 	if resource==150:
 		return "green"
-	if resource==20:
+	if resource<=20 and resource>0:
 		return "orange"
-	if resource==10:
+	if resource<=0:
 		return "red"
-	if resource<40:
+	if resource<=40:
 		return "yellow"
 		return
 
