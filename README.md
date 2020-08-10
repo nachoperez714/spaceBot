@@ -7,16 +7,10 @@ Your ship exists in a space grid, use reactions to determine which way the ship 
 You can have different types of encounters while exploring the galaxy:
 
 
-Planets: you have a chance to either gain or lose provisions
-
-Ships: you have a chance to either gain fuel or lose hull
-
-Black holes: you spend extra fuel
-
-Portals: you get transported to a random location in the map
-
-Space stations: you get an increase in your lowest resource
-
-Debris: you have a chance to either gain or lose hull
-
-Higher Beings: you have a chance to either gain a tremendous amount of resources or instantly die
+-Planets: you have a chance to either gain or lose provisions
+-Ships: you have a chance to either gain fuel or lose hull
+-Black holes: you spend extra fuel
+-Portals: you get transported to a random location in the map
+-Space stations: you get an increase in your lowest resource
+-Debris: you have a chance to either gain or lose hul
+-Higher Beings: you have a chance to either gain a tremendous amount of resources or instantly die
