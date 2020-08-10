@@ -136,7 +136,7 @@ def get_reactions(graph,post_id):
 	reacts = []
 	for reaction in reactions:
 		reacts.append(reaction['type'])
-	print (reacts)
+	#print (reacts)
 	return reacts
 
 def get_input_from_reactions(reacs,spaceship):
@@ -233,7 +233,7 @@ def gen_initial_image(spaceship,goal):
 
 def update_image(spaceship,event):
 	#TODO: metodo correcto de insertar imagen
-	print (event.text)
+	#print (event.text)
 	previous = Image.open("Reference_image.png")
 	if event.type!="Goal":
 		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
