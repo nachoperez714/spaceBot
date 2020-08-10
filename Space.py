@@ -224,7 +224,7 @@ def gen_initial_image(spaceship,goal):
 	img = add_numbers(img,spaceship)
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),"Start",font=get_font(get_fontsize("Start",draw)))
-	draw.text((0,200),'Your journey begins!,\ntravel space to find {}.\nUse reactions to move the ship'.format(goal),font=get_font(40))
+	draw.text((0,200),'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(goal),font=get_font(40))
 	img = add_crosses(img,spaceship)
 	del draw
 	img.save("Post_image.png")

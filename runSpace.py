@@ -5,7 +5,7 @@ import os
 while True:
 	seguir = True
 	while seguir:
-		seguir = Space.main(!os.path.exists("sigo"))
+		seguir = Space.main(not(os.path.exists("sigo")))
 		open("sigo","w+")
 		time.sleep(60*30)
 
