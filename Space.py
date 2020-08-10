@@ -421,7 +421,7 @@ def main(isFirst=False,direction=""):
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
 			return False
 		if not event.get_type()=="Portal":
-			message+=" Use the reactions to move the ship."
+			message+="\n Use the reactions to move the ship."
 		img_path = update_image(spaceship,event)
 		if direction:
 			print(message)
