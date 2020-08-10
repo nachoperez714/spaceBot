@@ -427,7 +427,7 @@ def main(isFirst=False,direction=""):
 			print(message)
 		else:
 			gr, p_id = upload(message,getAccessToken(),img_path)
-			upload_comment(gr,p_id,"Beep boop: I'm a Space Bot. Right now the ship has {} fuel, {} provisions and {} hull integrity. For further details on how everything works check the page description.".format(spaceship.fuel,spaceship.provisions,spaceship.hull))
+			upload_comment(gr,p_id,"Beep boop: I'm a Space Bot. Right now the ship has {} fuel, {} provisions and {} hull integrity. For further details on how everything works check the post pinned at the top of the page.".format(spaceship.fuel,spaceship.provisions,spaceship.hull))
 			space_comment = "SP"
 			As = np.random.randint(1,100)
 			for i in range(As):
