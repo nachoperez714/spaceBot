@@ -87,13 +87,13 @@ class Spaceship:
 		self.isHome = True
 
 	def modify_fuel(self,amount):
-		self.fuel += amount
+		self.fuel = min(150,self.fuel+amount)
 
 	def modify_hull(self,amount):
-		self.hull += amount
+		self.hull = min(150,self.hull+amount)
 
 	def modify_provisions(self,amount):
-		self.provisions += amount
+		self.provisions = min(150,self.provisions+amount)
 
 	def is_dead(self):
 		return self.fuel<=0 or self.hull<=0 or self.provisions<=0
@@ -224,7 +224,7 @@ def gen_initial_image(spaceship,goal):
 	img = add_numbers(img,spaceship)
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),"Start",font=get_font(get_fontsize("Start",draw)))
-	draw.text((0,200),"Your journey begins!, travel space to find {}. Use reactions to move the ship".format(goal),font=get_font(40))
+	draw.text((0,200),'Your journey begins!,\ntravel space to find {}.\nUse reactions to move the ship'.format(goal),font=get_font(40))
 	img = add_crosses(img,spaceship)
 	del draw
 	img.save("Post_image.png")
@@ -238,7 +238,10 @@ def update_image(spaceship,event):
 	if event.type!="Goal":
 		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
 		previous.save("Reference_image.png")
-	img_path = get_image_from_url(event.url)
+	try:
+		img_path = get_image_from_url(event.url)
+	except:
+		img_path = "Resources/failsafe.png"
 	img = Image.open(img_path)
 	lenx = img.size[0]
 	leny = img.size[1]
@@ -300,10 +303,21 @@ def add_spaceship(img,ship):
 
 def add_numbers(img,ship):
 	draw = ImageDraw.Draw(img)
-	draw.text((200,400),str(ship.fuel),font=get_font(140))
-	draw.text((200,600),str(ship.provisions),font=get_font(140))
-	draw.text((200,800),str(ship.hull),font=get_font(140))
+	draw.text((200,400),str(ship.fuel),font=get_font(140),fill=get_fill(ship.fuel))
+	draw.text((200,600),str(ship.provisions),font=get_font(140),fill=get_fill(ship.provisions))
+	draw.text((200,800),str(ship.hull),font=get_font(140),fill=get_fill(ship.hull))
 	return img
+
+def get_fill(resource):
+	if resource==150:
+		return "green"
+	if resource==20:
+		return "orange"
+	if resource==10:
+		return "red"
+	if resource<40:
+		return "yellow"
+		return
 
 def add_crosses(img,ship,is_portal=False):
 	draw = ImageDraw.Draw(img)
@@ -342,6 +356,9 @@ def get_image_from_url(url):
 
 def main(isFirst=False,direction=""):
 
+	if direction:
+		gr = 0
+		p_id = 0
 
 	if isFirst:
 		#generar el tablero

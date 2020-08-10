@@ -76,7 +76,7 @@ class Goal(Event):
 class Planet(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
-		self.bad_chance = 0.4
+		self.bad_chance = 0.5
 		self.type = "Planet"
 		self.icon = "Resources/Planet_icon.png"
 		self.pretext = "You've reached planet {}".format(self.name)
@@ -157,7 +157,7 @@ class Planet(Event):
 				"url"  : "https://gineipaedia.com/w/images/thumb/d/db/Phezzan.jpg/300px-Phezzan.jpg"
 				},
 			"Mars Colony":{
-				"good" : "You restore Mars' atmosphere and make up with a hot chick. You get 10 provisions",
+				"good" : "You restore Mars' atmosphere and make out with a hot chick. You get 10 provisions",
 				"bad"  : "You may or may not be a secret double/triple agent whose memory was wiped intentionally or unintentionally once or twice. In the confusion you lose 10 provisions",
 				"url"  : "https://3.bp.blogspot.com/-ulLqOBJWHWI/VgGE5XVBP2I/AAAAAAAABOk/HKJiC9PewJs/s2048/01%2BAstronauts%2Bon%2BMars%2BTotal%2BRecall%2B1990%2Bmovie%2Bimage.jpg"
 				},
@@ -416,7 +416,7 @@ class Ship(Event):
 				"url"  : "https://live.staticflickr.com/5053/5568240946_07817746e1_n.jpg"
 				},
 			"Von Braun":{
-				"good" : "You embark on the first manned mission to jupiter. You get 20 fuel",
+				"good" : "You embark on the first manned mission to Jupiter. You get 20 fuel",
 				"bad"  : "You are boarded by space terrorists trying to make you feel bad about space exploration. Your hull is damaged by 10",
 				"url"  : "https://66.media.tumblr.com/43856f6f427c3597a5e002a27f79627f/tumblr_inline_pq5qwycAbn1s3ca0o_540.png"
 				},
@@ -511,7 +511,7 @@ class Spaceport(Event):
 		if fuel<=food and fuel<=hull:
 			spaceship.modify_fuel(50)
 		elif food<=hull:
-			spacehip.modify_provisions(50)
+			spaceship.modify_provisions(50)
 		else:
 			spaceship.modify_hull(50)
 		return spaceship
@@ -522,7 +522,7 @@ class Being(Event):
 		self.bad_chance = 0.5
 		self.type = "Being"
 		self.icon = "Resources/Being_icon.png"
-		self.pretext = "You find a cosmic entity: {}.".format(self.name)
+		self.pretext = "You find a cosmic entity: {}".format(self.name)
 		self.properties = {
 			"Your Mom" : {
 				"good" : "Your mom is ver kind and loving. All resources maxed up.",
@@ -595,7 +595,7 @@ class BlackHole(Event):
 		self.bad_chance = 1
 		self.type = "Black Hole"
 		self.icon = "Resources/BlackHole_icon.png"
-		self.pretext = "Oh no! It's the black hole {}.".format(self.name)
+		self.pretext = "Oh no! It's the black hole {}".format(self.name)
 		self.urls = {
 			"Sagittarius A*":"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Sagittarius_A%2A.jpg/250px-Sagittarius_A%2A.jpg",
 			"Messier 87" : "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Black_hole_-_Messier_87.jpg/330px-Black_hole_-_Messier_87.jpg",
