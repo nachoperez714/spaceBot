@@ -142,7 +142,7 @@ class Planet(Event):
 				"url"  : "https://mcucosmic.com/wp-content/uploads/2018/07/0408_titan_ext_titan_50s0z.jpg"
 				},
 			"Krypton":{
-				"good" : "Marlon Brando teaches you good morals. You get you 10 provisions",
+				"good" : "Marlon Brando teaches you good morals. You get 10 provisions",
 				"bad"  : "Just as you are arriving you see a baby fly by and the planet explodes. You lose 10 provisions",
 				"url"  : "https://upload.wikimedia.org/wikipedia/en/0/0a/Krypton_%28DC_Comics_planet_-_circa_2018%29.jpg"
 				},
