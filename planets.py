@@ -142,7 +142,7 @@ class Planet(Event):
 				"url"  : "https://mcucosmic.com/wp-content/uploads/2018/07/0408_titan_ext_titan_50s0z.jpg"
 				},
 			"Krypton":{
-				"good" : "Marlon Brando teaches you good morals. You get you 10 provisions",
+				"good" : "Marlon Brando teaches you good morals. You get 10 provisions",
 				"bad"  : "Just as you are arriving you see a baby fly by and the planet explodes. You lose 10 provisions",
 				"url"  : "https://upload.wikimedia.org/wikipedia/en/0/0a/Krypton_%28DC_Comics_planet_-_circa_2018%29.jpg"
 				},
@@ -221,11 +221,27 @@ class Planet(Event):
 				"bad"  : "You were sued for copyright by Disney. You lose 10 provisions",
 				"url"  : "https://cdn.mos.cms.futurecdn.net/jGqBq44gCE3CogJTXAnwjT-1200-80.jpg"
 				},
-	#		"Macragge":{
-	#			"good" : "This isnt a planet but you get 10 provisions",
-	#			"bad"  : "You were sued for copyright by Disney. You lose 10 provisions",
-	#			"url"  : "https://vignette.wikia.nocookie.net/warhammer40k/images/e/e3/Macragge2.png/revision/latest/scale-to-width-down/310?cb=20170802085537"
-	#			},
+			"Macragge":{
+				"good" : "The chapter master pays you for your services with 10 provisions",
+				"bad"  : "Just as you arrive the Tyranid Hive Fleet Behemoth invade. You lose 10 provisions",
+				"url"  : "https://vignette.wikia.nocookie.net/warhammer40k/images/e/e3/Macragge2.png/revision/latest/scale-to-width-down/310?cb=20170802085537"
+				},
+			"Coruscant":{
+				"good" : "You got some death sticks. You got 10 provisions",
+				"bad"  : "You witness the collapse of democracy. You lose 10 provisions",
+				"url"  : "https://star-name-registry.com/blog/user/pages/01.item/top-15-fictional-planets-in-science-fiction/name_a_star-planets-5.jpg"
+				},
+			"Mustafar":{
+				"good" : "You have the high ground. You got 10 provisions",
+				"bad"  : "You dont have the high ground. You lose 10 provisions",
+				"url"  : "https://vignette.wikia.nocookie.net/es.starwars/images/a/af/Mustafar_DB.png/revision/latest?cb=20160725161845"
+				},
+			"Ego":{
+				"good" : "Your Planet-Dad gives you 10 provisions",
+				"bad"  : "Your Planet-Dad steals 10 provisions from you and gives your mom cancer",
+				"url"  : "https://vignette.wikia.nocookie.net/es.starwars/images/a/af/Mustafar_DB.png/revision/latest?cb=20160725161845"
+				},
+
 			#Reach, Todos los demas de Star Wars, Vulcan, el resto de los IRL
 			}	
 		if name:
@@ -420,6 +436,31 @@ class Ship(Event):
 				"bad"  : "Sanguinus is dead. You lose 10 hull",
 				"url"  : "https://vignette.wikia.nocookie.net/warhammer40k/images/a/a0/The_Vengeful_Spirit.jpg/revision/latest?cb=20150209004009"
 				},
+			"Remote-controlled solid gold death star":{
+				"good" : "You get a code to travel through time. You steal 20 fuel from your past self",
+				"bad"  : "Nudist scammers damage your hull by 10",
+				"url"  : "https://theinfosphere.org/images/thumb/b/b6/Remote-controlled_solid_gold_Death_Star.png/225px-Remote-controlled_solid_gold_Death_Star.png"
+				},
+			"Fortress of doom":{
+				"good" : "You manage to run doom on a facebook bot. You get 20 fuel",
+				"bad"  : "The Doom Slayer stares at your ship and damages it by 10 hull",
+				"url"  : "https://vignette.wikia.nocookie.net/doom/images/1/1f/Anotasi_2020-02-04_083440.png/revision/latest/scale-to-width-down/340?cb=20200204013550"
+				},
+			"ARSAT":{
+				"good" : "You manage to get from Cordoba to Japan in only 2 hours. You get 20 fuel",
+				"bad"  : "A general strike by the CGT damages your ship by 10",
+				"url"  : "https://vignette.wikia.nocookie.net/doom/images/1/1f/Anotasi_2020-02-04_083440.png/revision/latest/scale-to-width-down/340?cb=20200204013550"
+				},
+			"Duck Dodgers' ship":{
+				"good" : "Duck saves you from martians and gives you 20 fuel",
+				"bad"  : "ACME explosives go off and you lose 10 hull",
+				"url"  : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTbfB0GalNqKD_47iYuyWvdSwdIFho6SrZ5UQ&usqp=CAU"
+				},
+			"Jumba's ship":{
+				"good" : "You spend a vacation in hawaii and get 20 fuel",
+				"bad"  : "One of his experiments does damage to your ship by 10 hull",
+				"url"  : "https://lh3.googleusercontent.com/proxy/Vs4fjWBp_pwypuX5iC5eIlOIat2POrelOddqV-LAgEINNiAyG2ri3ll3Y7sXNcSThVeTAOVc6JhfuWzXjNBugd9Ce4VFjlilsTr5q0vUKd8A4ZU2tUd1bzdzwRXVcuZVLQNFqeCzPe6R5Q"
+				},
 			}		
 		if name:	
 			self.get_properties()
@@ -442,6 +483,7 @@ class Asteroid(Event):
 		self.urls = {
 			"Solar system asteroid belt" : "https://i.ytimg.com/vi/cT3K1INjQJ0/maxresdefault.jpg",
 			"Fox's Satelite" : "https://i.ytimg.com/vi/jGhirX5kH_k/hqdefault.jpg",
+			"ARSAT" : "https://lh3.googleusercontent.com/proxy/rv7ond6z5f9osuF01NhbMcmxeJ8h37S4pz-PQjrgg-pXQe8ep8cOVzEb0iT9kThFL1whiPlHJa8LhLThWquZHjEekGvAMjEA96VreMAnr7cMiwv_oFcKeIjo",
 			"Kuiper belt" : "https://image.pbs.org/poster_images/assets/npls12_vid_kuiperbelt_thumb.jpg",
 			"Asteroid belt outside Hoth" : "https://vignette.wikia.nocookie.net/starwars/images/1/1b/Hoth_Asteroid_Belt_TESB.png/revision/latest?cb=20161010024439",
 			"Asteroid belt from Asteroids" : "https://www.researchgate.net/profile/Kc_Collins/publication/262309733/figure/fig2/AS:694796872081408@1542663891658/Original-vector-based-Asteroids-game-Atari-1979-showing-ship-in-centre-and-floating.ppm",
