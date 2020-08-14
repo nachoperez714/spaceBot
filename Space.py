@@ -17,17 +17,29 @@ class Board:
 		self.lenx = planets.boardlenx
 		self.leny = planets.boardleny
 		self.goalLoc = 0
+		self.startLoc = 0
 		self.events = []
 		self.eventlist = []
 		self.area = self.lenx*self.leny-2
 		self.goal = ""
+		self.start = ""
+		self.set_start()
 		self.set_goal()
 		self.generate_events()
 		self.img_path = 'background.png'
+
+	def set_start(self):
+		xs = np.random.randint(0,self.lenx)
+		ys = np.random.randint(0,self.leny)
+		self.startLoc = [xs,ys]
+		#TODO player ship here
+		#self.goal = np.random.choice([*planets.Goal().urls])
 	
 	def set_goal(self):
-		xgoal = np.random.randint(3,self.lenx)
-		ygoal = np.random.randint(3,self.leny)
+		while -3 <= xgoal-self.startLoc[0] <= 3
+			xgoal = np.random.randint(0,self.lenx)
+		while -3 <= ygoal-self.startLoc[1] <= 3
+			ygoal = np.random.randint(0,self.leny)
 		self.goalLoc = [xgoal,ygoal]
 		self.goal = np.random.choice([*planets.Goal().urls])
 
@@ -35,11 +47,12 @@ class Board:
 		number = self.lenx*self.leny-2
 		self.eventlist+=random.sample([*planets.Planet().properties],20)
 		self.eventlist+=random.sample([*planets.Ship().properties],20)
-		self.eventlist+=random.sample([*planets.Being().properties],3)
-		self.eventlist+=random.sample([*planets.Spaceport().urls],11)
+		self.eventlist+=random.sample([*planets.Asteroid().urls],10)
+		self.eventlist+=random.sample([*planets.Spaceport().urls],6)
 		self.eventlist+=random.sample([*planets.Portal().urls],6)
-		self.eventlist+=random.sample([*planets.Asteroid().urls],6)
-		self.eventlist+=random.sample([*planets.BlackHole().urls],2)
+		self.eventlist+=random.sample([*planets.BlackHole().urls],4)
+		self.eventlist+=random.sample([*planets.Being().properties],2)
+		
 
 	def generate_events(self):
 		#TODO: cambiar probabilidad de cada tipo de evento
@@ -53,7 +66,7 @@ class Board:
 			self.events.append([])
 			for j in range(self.leny):
 				self.events[i].append([])
-				if i==0 and j ==0:
+				if i==self.startLoc[0] and j ==self.startLoc[1]:
 					self.events[i][j] = "Start"
 				elif i==self.goalLoc[0] and j==self.goalLoc[1]:
 					self.events[i][j] = self.goal
