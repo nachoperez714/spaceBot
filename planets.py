@@ -137,7 +137,7 @@ class Planet(Event):
 				"url"  : "https://uncyclopedia.ca/w/images/3/3c/Naboo.png"
 				},
 			"Thanos farm":{
-				"good" : "Thanos farm. You get you 10 provisions",
+				"good" : "Thanos farm. You get 10 provisions",
 				"bad"  : "Thanos farm. You lose 10 provisions",
 				"url"  : "https://mcucosmic.com/wp-content/uploads/2018/07/0408_titan_ext_titan_50s0z.jpg"
 				},
@@ -148,7 +148,7 @@ class Planet(Event):
 				},
 			"Arrakis":{
 				"good" : "You become a Messiah-like figure and lead the sand people on a Jihad. You get 10 Spice",
-				"bad"  : "JYou barely escape the jaws of a sandworm. You lose 10 provisions",
+				"bad"  : "You barely escape the jaws of a sandworm. You lose 10 provisions",
 				"url"  : "https://vignette.wikia.nocookie.net/dune/images/a/af/Arrakis_planet.jpg/revision/latest/scale-to-width-down/340?cb=20190804030356"
 				},
 			"Fezzan":{
@@ -188,7 +188,7 @@ class Planet(Event):
 				},
 			"Cybertron":{
 				"good" : "Optimus Prime gives you an inspirational speech and 10 provisions",
-				"bad"  : "Starcream betrays you. You lose 10 provisions",
+				"bad"  : "Starscream betrays you. You lose 10 provisions",
 				"url"  : "https://vignette.wikia.nocookie.net/bumblebee/images/9/97/Cybertron.jpg/revision/latest?cb=20190405051850&path-prefix=es"
 				},
 			"Unicron":{

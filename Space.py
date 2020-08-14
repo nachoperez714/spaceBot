@@ -36,9 +36,9 @@ class Board:
 		#self.goal = np.random.choice([*planets.Goal().urls])
 	
 	def set_goal(self):
-		while -3 <= xgoal-self.startLoc[0] <= 3
+		while not (-3 <= xgoal-self.startLoc[0] <= 3)
 			xgoal = np.random.randint(0,self.lenx)
-		while -3 <= ygoal-self.startLoc[1] <= 3
+		while not (-3 <= ygoal-self.startLoc[1] <= 3)
 			ygoal = np.random.randint(0,self.leny)
 		self.goalLoc = [xgoal,ygoal]
 		self.goal = np.random.choice([*planets.Goal().urls])
