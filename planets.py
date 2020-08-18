@@ -53,6 +53,9 @@ class Start(Event):
 		if name:
 			self.set_url()
 
+	def good_action(self,spaceship):
+		return spaceship
+
 class Goal(Event):
 	def __init__(self,name=""):
 		super().__init__(name)

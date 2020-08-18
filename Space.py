@@ -36,9 +36,11 @@ class Board:
 		#self.goal = np.random.choice([*planets.Goal().urls])
 	
 	def set_goal(self):
-		while not (-3 <= xgoal-self.startLoc[0] <= 3)
+		xgoal = 0
+		ygoal = 0
+		while not (-3 <= xgoal-self.startLoc[0] <= 3):
 			xgoal = np.random.randint(0,self.lenx)
-		while not (-3 <= ygoal-self.startLoc[1] <= 3)
+		while not (-3 <= ygoal-self.startLoc[1] <= 3):
 			ygoal = np.random.randint(0,self.leny)
 		self.goalLoc = [xgoal,ygoal]
 		self.goal = np.random.choice([*planets.Goal().urls])
@@ -193,7 +195,7 @@ def get_event_from_name(name):
 		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
 			return cla(name)
 
-def gen_initial_image(spaceship):
+def gen_initial_image(spaceship,board):
 	img = Image.new("RGB",(1800,1800))
 	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((200,200))#transparent
 	img.paste(fuel,(0,400),fuel)
@@ -227,6 +229,8 @@ def gen_initial_image(spaceship):
 	img.paste(sad,(1200+225,1000+500),sad)
 	del arrow_up, arrow_right, arrow_left, arrow_down
 	del wow, like, angery, sad
+	spaceship.x = board.startLoc[0]
+	spaceship.y = board.startLoc[1]
 	img = add_icon(img,"Resources/Start_icon.png",spaceship.x,spaceship.y)
 	img.save("Reference_image.png")
 
@@ -360,10 +364,12 @@ def main(isFirst=False):
 		#generar el tablero
 		board  =Board()
 		spaceship = Spaceship()#get_random_ship())
-		postImage = gen_initial_image(spaceship)
-		gr, p_id = upload(initial_message,getAccessToken(),postImage)
+		postImage = gen_initial_image(spaceship,board)
 		was_portal = False
+		#FACEBOOK
+		gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
+		#np.save('data',[spaceship,board,was_portal])
 		return True
 	else:
 		data = np.load("data.npy",allow_pickle=True)
@@ -372,12 +378,14 @@ def main(isFirst=False):
 		previous_id = data[2]
 		board = data[3]
 		was_portal = data[4]
+
 		if was_portal:
 			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
 			reacts = get_reactions(previous_gr,previous_id)
 			movement = get_input_from_reactions(reacts,spaceship)
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
+			#spaceship.move(spaceship.x+1,spaceship.y+0)
 			spaceship.modify_fuel(-10)
 
 		event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
@@ -387,18 +395,23 @@ def main(isFirst=False):
 			message += '\nCongrats...'
 			victory_path = update_image(spaceship,event)
 			gen_goal_image()
+			#FACEBOOK
 			gr, p_id = upload(message,getAccessToken(),victory_path)
 			return False
 		if spaceship.is_dead():
 			message += '\nYou died...'
 			game_over_path = update_image(spaceship,event)
 			gen_gameover_image()
+			#FACEBOOK
 			gr, p_id = upload(message,getAccessToken(),game_over_path)
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
 			return False
 
 		img_path = update_image(spaceship,event)
+		print(message)
+		print(board.events)
+		#FACEBOOK
 		gr, p_id = upload(message,getAccessToken(),img_path)
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
-		#TODO: Comments w/current state & SPAAAAAAAAAAAAAACE
+		#np.save('data',[spaceship,board,event.get_type()=="Portal"])
 		return True
