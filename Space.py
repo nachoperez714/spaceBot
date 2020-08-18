@@ -387,6 +387,7 @@ def main(isFirst=False):
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 			#spaceship.move(spaceship.x+1,spaceship.y+0)
 			spaceship.modify_fuel(-10)
+			spaceship.modify_provisions(-5)
 
 		event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
 		spaceship,message = event.action(spaceship)
