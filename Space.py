@@ -17,17 +17,31 @@ class Board:
 		self.lenx = planets.boardlenx
 		self.leny = planets.boardleny
 		self.goalLoc = 0
+		self.startLoc = 0
 		self.events = []
 		self.eventlist = []
 		self.area = self.lenx*self.leny-2
 		self.goal = ""
+		self.start = ""
+		self.set_start()
 		self.set_goal()
 		self.generate_events()
 		self.img_path = 'background.png'
+
+	def set_start(self):
+		xs = np.random.randint(0,self.lenx)
+		ys = np.random.randint(0,self.leny)
+		self.startLoc = [xs,ys]
+		#TODO player ship here
+		#self.goal = np.random.choice([*planets.Goal().urls])
 	
 	def set_goal(self):
-		xgoal = np.random.randint(3,self.lenx)
-		ygoal = np.random.randint(3,self.leny)
+		xgoal = 0
+		ygoal = 0
+		while not (-3 <= xgoal-self.startLoc[0] <= 3):
+			xgoal = np.random.randint(0,self.lenx)
+		while not (-3 <= ygoal-self.startLoc[1] <= 3):
+			ygoal = np.random.randint(0,self.leny)
 		self.goalLoc = [xgoal,ygoal]
 		self.goal = np.random.choice([*planets.Goal().urls])
 
@@ -35,11 +49,12 @@ class Board:
 		number = self.lenx*self.leny-2
 		self.eventlist+=random.sample([*planets.Planet().properties],20)
 		self.eventlist+=random.sample([*planets.Ship().properties],20)
-		self.eventlist+=random.sample([*planets.Being().properties],3)
-		self.eventlist+=random.sample([*planets.Spaceport().urls],11)
+		self.eventlist+=random.sample([*planets.Asteroid().urls],10)
+		self.eventlist+=random.sample([*planets.Spaceport().urls],6)
 		self.eventlist+=random.sample([*planets.Portal().urls],6)
-		self.eventlist+=random.sample([*planets.Asteroid().urls],6)
-		self.eventlist+=random.sample([*planets.BlackHole().urls],2)
+		self.eventlist+=random.sample([*planets.BlackHole().urls],4)
+		self.eventlist+=random.sample([*planets.Being().properties],2)
+		
 
 	def generate_events(self):
 		#TODO: cambiar probabilidad de cada tipo de evento
@@ -53,7 +68,7 @@ class Board:
 			self.events.append([])
 			for j in range(self.leny):
 				self.events[i].append([])
-				if i==0 and j ==0:
+				if i==self.startLoc[0] and j ==self.startLoc[1]:
 					self.events[i][j] = "Start"
 				elif i==self.goalLoc[0] and j==self.goalLoc[1]:
 					self.events[i][j] = self.goal
@@ -180,7 +195,8 @@ def get_event_from_name(name):
 		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
 			return cla(name)
 
-def gen_initial_image(spaceship,goal):
+
+def gen_initial_image(spaceship,board):
 	img = Image.new("RGB",(1800,1800))
 	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((200,200))#transparent
 	img.paste(fuel,(0,400),fuel)
@@ -214,6 +230,8 @@ def gen_initial_image(spaceship,goal):
 	img.paste(sad,(1200+225,1000+500),sad)
 	del arrow_up, arrow_right, arrow_left, arrow_down
 	del wow, like, angery, sad
+	spaceship.x = board.startLoc[0]
+	spaceship.y = board.startLoc[1]
 	img = add_icon(img,"Resources/Start_icon.png",spaceship.x,spaceship.y)
 	img.save("Reference_image.png")
 
@@ -224,7 +242,7 @@ def gen_initial_image(spaceship,goal):
 	img = add_numbers(img,spaceship)
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),"Start",font=get_font(get_fontsize("Start",draw)))
-	draw.text((0,200),'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(goal),font=get_font(40))
+	draw.text((0,200),'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(board.goal),font=get_font(40))
 	img = add_crosses(img,spaceship)
 	del draw
 	img.save("Post_image.png")
@@ -365,14 +383,17 @@ def main(isFirst=False,direction=""):
 		board  =Board()
 		initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
 		spaceship = Spaceship()#get_random_ship())
-		postImage = gen_initial_image(spaceship,board.goal)
+		postImage = gen_initial_image(spaceship,board)
 		if direction:
 			gr = 0
 			p_id = 0
 		else:
 			gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
+		#FACEBOOK
+		gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
+		#np.save('data',[spaceship,board,was_portal])
 		return True
 	else:
 		data = np.load("data.npy",allow_pickle=True)
@@ -381,6 +402,7 @@ def main(isFirst=False,direction=""):
 		previous_id = data[2]
 		board = data[3]
 		was_portal = data[4]
+
 		if was_portal:
 			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
@@ -396,7 +418,9 @@ def main(isFirst=False,direction=""):
 				reacts = get_reactions(previous_gr,previous_id)
 				movement = get_input_from_reactions(reacts,spaceship)
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
+			#spaceship.move(spaceship.x+1,spaceship.y+0)
 			spaceship.modify_fuel(-10)
+			spaceship.modify_provisions(-5)
 
 		event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
 		spaceship,message = event.action(spaceship)
@@ -408,6 +432,7 @@ def main(isFirst=False,direction=""):
 			if direction:
 				print (message)
 			else:
+				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Victory_image.png")
 			return False
 		if spaceship.is_dead():
@@ -417,6 +442,7 @@ def main(isFirst=False,direction=""):
 			if direction:
 				print(message)
 			else:
+				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Death_image.png")
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
 			return False
@@ -426,6 +452,7 @@ def main(isFirst=False,direction=""):
 		if direction:
 			print(message)
 		else:
+			#FACEBOOK
 			gr, p_id = upload(message,getAccessToken(),img_path)
 			upload_comment(gr,p_id,"Beep boop: I'm a Space Bot. Right now the ship has {} fuel, {} provisions and {} hull integrity. For further details on how everything works check the post pinned at the top of the page.".format(spaceship.fuel,spaceship.provisions,spaceship.hull))
 			space_comment = "SP"
@@ -437,3 +464,4 @@ def main(isFirst=False,direction=""):
 			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 		return True
+
