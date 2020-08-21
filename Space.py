@@ -38,11 +38,13 @@ class Board:
 	def set_goal(self):
 		xgoal = 0
 		ygoal = 0
-		while not (-3 <= xgoal-self.startLoc[0] <= 3):
+		while abs(xgoal-self.startLoc[0])<3 :
 			xgoal = np.random.randint(0,self.lenx)
-		while not (-3 <= ygoal-self.startLoc[1] <= 3):
+		while abs(ygoal-self.startLoc[1])<3:
 			ygoal = np.random.randint(0,self.leny)
 		self.goalLoc = [xgoal,ygoal]
+		print("startLoc:",self.startLoc[0],",",self.startLoc[1])
+		print("goalLoc:",xgoal,",",ygoal)
 		self.goal = np.random.choice([*planets.Goal().urls])
 
 	def generate_eventlist(self):
@@ -284,8 +286,9 @@ def gen_goal_image():
 	image.save("Victory_image.png")
 	return "Death_image.png"
 
-def gen_gameover_image():
+def gen_gameover_image(board):
 	image = Image.open("Post_image.png")
+	image = add_icon(image,"Resources/Goal_icon.png",board.goalLoc[0],board.goalLoc[1])
 	draw = ImageDraw.Draw(image)
 	draw.text((200,800),"YOU DIED",font=get_font(300),fill="red")
 	image.save("Death_image.png")
@@ -390,10 +393,7 @@ def main(isFirst=False,direction=""):
 		else:
 			gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
-		#FACEBOOK
-		gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
-		#np.save('data',[spaceship,board,was_portal])
 		return True
 	else:
 		data = np.load("data.npy",allow_pickle=True)
@@ -419,7 +419,7 @@ def main(isFirst=False,direction=""):
 				movement = get_input_from_reactions(reacts,spaceship)
 			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 			#spaceship.move(spaceship.x+1,spaceship.y+0)
-			spaceship.modify_fuel(-10)
+			spaceship.modify_fuel(-5)
 			spaceship.modify_provisions(-5)
 
 		event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
@@ -438,7 +438,7 @@ def main(isFirst=False,direction=""):
 		if spaceship.is_dead():
 			message += '\nYou died before reaching your destination, better luck on the next voyage.'
 			game_over_path = update_image(spaceship,event)
-			gen_gameover_image()
+			gen_gameover_image(board)
 			if direction:
 				print(message)
 			else:
