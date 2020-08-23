@@ -338,7 +338,7 @@ class Portal(Event):
 			"Warp Station" : "https://vignette.wikia.nocookie.net/pulsar-game/images/2/24/Long_range_warp_station.png/revision/latest/scale-to-width-down/340?cb=20190626124313",
 			"Portal" : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT-HfXb1DmwshWvAErqfe4mxV7GAZtPQ0wpZw&usqp=CAU",
 			"Bifrost" : "https://i.ytimg.com/vi/hzqWcXA_Xrk/maxresdefault.jpg",
-			"Portal Gun" : "https://cdn.custom-cursor.com/cursors/rick_and_morty_portal_gun_1262.png",
+			"Portal (R&M)" : "https://i.pinimg.com/originals/98/29/21/9829215db6f9210c0ae4e318e854cb1f.png",
 			"Time hole" : "https://vignette.wikia.nocookie.net/reddwarf/images/c/c3/Time_Hole_%282%29.jpg/revision/latest/scale-to-width-down/340?cb=20150502013436",
 			"Time vortex" : "https://thumbs.gfycat.com/DigitalGreenCoral-mobile.jpg",
 			"Stargate" : "https://www.stargatecommand.co/sites/default/files/2019-10/CGI%20Stargate.jpg",
@@ -522,7 +522,7 @@ class Ship(Event):
 				"bad"  : "The Doom Slayer stares at your ship and damages it by 10 hull",
 				"url"  : "https://vignette.wikia.nocookie.net/doom/images/1/1f/Anotasi_2020-02-04_083440.png/revision/latest/scale-to-width-down/340?cb=20200204013550"
 				},
-			"ARSAT":{
+			" ARSAT":{
 				"good" : "You manage to get from Cordoba to Japan in only 2 hours. You get 20 fuel",
 				"bad"  : "A general strike by the CGT damages your ship by 10",
 				"url"  : "https://lh3.googleusercontent.com/proxy/WLbMChVdaJvznG4GHMuKMY93ONqo_tyU-Iiei2Rk7oxskE9BRfZuedo2bHEiIcB-yEH1Jd68eTbl6lZF15IwsbLslqHCeKJqrpGyDTP82S9LDaVDrGD8dh0w"
@@ -584,9 +584,10 @@ class Asteroid(Event):
 		self.urls = {
 			"Solar system asteroid belt" : "https://i.ytimg.com/vi/cT3K1INjQJ0/maxresdefault.jpg",
 			"Fox's Satelite" : "https://i.ytimg.com/vi/jGhirX5kH_k/hqdefault.jpg",
-			"ARSAT" : "https://lh3.googleusercontent.com/proxy/rv7ond6z5f9osuF01NhbMcmxeJ8h37S4pz-PQjrgg-pXQe8ep8cOVzEb0iT9kThFL1whiPlHJa8LhLThWquZHjEekGvAMjEA96VreMAnr7cMiwv_oFcKeIjo",
+	#FIX		"ARSAT" : "https://lh3.googleusercontent.com/proxy/rv7ond6z5f9osuF01NhbMcmxeJ8h37S4pz-PQjrgg-pXQe8ep8cOVzEb0iT9kThFL1whiPlHJa8LhLThWquZHjEekGvAMjEA96VreMAnr7cMiwv_oFcKeIjo",
 			"Bender" : "https://vignette.wikia.nocookie.net/en.futurama/images/f/f7/GodBender.jpg/revision/latest?cb=20090716180913",
 			"Hoshimachi Suisei" : "https://i.imgur.com/hQnx1ex.jpg",
+			"Attack ball" : "https://vignette.wikia.nocookie.net/dragonball/images/f/f6/SaiyanSpacePod01.png/revision/latest/top-crop/width/360/height/450?cb=20091202134307",
 			"A Baoa Qu" : "https://vignette.wikia.nocookie.net/gundam/images/8/89/ABaoaQu.jpg/revision/latest?cb=20100318202253",
 			"Mansion room" : "https://vignette.wikia.nocookie.net/twinpeaks/images/2/20/3.03_Spaceship.jpg/revision/latest?cb=20170820181946",
 			"Kuiper belt" : "https://image.pbs.org/poster_images/assets/npls12_vid_kuiperbelt_thumb.jpg",
@@ -806,6 +807,62 @@ class BlackHole(Event):
 	def bad_action(self,spaceship):
 		spaceship.modify_fuel(-10)
 		return spaceship
+
+class Player:
+	def __init__(self,name=""):
+		self.name = name
+		self.url = ""
+		self.fuel = 100
+		self.provisions = 100
+		self.hull = 100
+		self.properties = {
+			"Planet Express" : {
+				"url"  : "https://lh3.googleusercontent.com/proxy/m5vq4MIV3uZ7TQsD9OgwUZPJsRzmLSZega4ZuP6Iv6ALhnUpAuROAARbjWGS5nGAwYne4L4JfgFl9J1O2Pixh7sOHpsHDjTA",
+				"fuel" : 100,
+				"provisions"  : 100,
+				"hull"  : 100,
+				},
+			"Rick's ship" : {
+				"url"  : "https://i.pinimg.com/originals/7f/57/b5/7f57b556e5841793707379270f195106.png",
+				"fuel" : 110,
+				"provisions"  : 110,
+				"hull"  : 80,
+				},
+			"X-Wing" : {
+				"url"  : "http://www.pngmart.com/files/12/X-Wing-Starfighter-PNG-File.png",
+				"fuel" : 130,
+				"provisions"  : 100,
+				"hull"  : 70,
+				},
+			"Gradius" : {
+				"url"  : "https://pbs.twimg.com/profile_images/1531717667/gradius_1_vic_viper_sprite_by_tuleyiscool-d2ybpkw.png",
+				"fuel" : 100,
+				"provisions"  : 90,
+				"hull"  : 110,
+				},
+			"Great Fox" : {
+				"url"  : "https://vignette.wikia.nocookie.net/starfox/images/6/63/Sector_Z_Smash.jpg/revision/latest?cb=20100615065009",
+				"fuel" : 60,
+				"provisions"  : 120,
+				"hull"  : 120,
+				},
+			"Samus' Ship" : {
+				"url"  : "https://i.imgur.com/dUoLcIs.png",
+				"fuel" : 90,
+				"provisions"  : 140,
+				"hull"  : 70,
+				},
+		}
+		if name:
+			self.get_properties()
+
+	def get_properties(self):
+		self.url = self.properties[self.name]["url"]
+		self.fuel = self.properties[self.name]["fuel"]
+		self.provisions = self.properties[self.name]["provisions"]
+		self.hull = self.properties[self.name]["hull"]
+
+
 
 #Planets = ["Mars","Solaris","Tatooine","Trantor","Pandora","Magrathea","Gallifrey",
 #	"Roboworld","Hoth","Terminus"]

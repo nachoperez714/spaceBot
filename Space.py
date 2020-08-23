@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import facebook
+#import facebook
 from pathlib import Path
 import os
 import urllib.request
@@ -89,11 +89,21 @@ class Spaceship:
 		self.x = 0
 		self.y = 0
 		self.image = img_path
+		self.player = ""
 		self.fuel = 100
 		self.provisions = 100
 		self.hull = 100
 		self.hasWeapons = False
 		self.isHome = False
+		self.initialize()
+
+	def initialize(self):
+		aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
+		print(aux)
+		self.player = get_image_from_url_player(aux.url)
+		self.fuel = aux.fuel
+		self.provisions = aux.provisions
+		self.hull = aux.hull
 
 	def move(self,x,y):
 		self.x = x
@@ -191,7 +201,8 @@ def get_event_from_name(name):
 		planets.Asteroid,
 		planets.Portal,
 		planets.Start,
-		planets.Goal
+		planets.Goal,
+		planets.Player
 		]
 	for ic, cla in enumerate(clas):
 		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
@@ -318,7 +329,9 @@ def add_event_image(canvas,image):
 	return canvas
 
 def add_spaceship(img,ship):
-	spaceshipng = Image.open("Resources/Spaceship.png").resize((120,114))
+	print(ship.player)
+	print(ship.image)
+	spaceshipng = Image.open(ship.player).resize((120,114))
 	img.paste(spaceshipng,(120*ship.x,1000+int(800/7*ship.y)))
 	return img
 
@@ -374,6 +387,10 @@ def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 def get_image_from_url(url):
 	urllib.request.urlretrieve(url,'event_image')
 	return 'event_image'
+
+def get_image_from_url_player(url):
+	urllib.request.urlretrieve(url,'player_image')
+	return 'player_image'
 
 def main(isFirst=False,direction=""):
 
