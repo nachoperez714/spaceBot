@@ -482,3 +482,34 @@ def main(isFirst=False,direction=""):
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 		return True
 
+def testUrls():
+	arrayProperties = []
+	arrayUrls = []
+	brokenUrls = []
+	arrayProperties+=[*planets.Planet().properties]
+	arrayProperties+=[*planets.Ship().properties]
+	arrayProperties+=[*planets.Being().properties] 
+	arrayUrls+=[*planets.Asteroid().urls]
+	arrayUrls+=[*planets.Portal().urls]
+	arrayUrls+=[*planets.BlackHole().urls]
+	arrayUrls+=[*planets.Goal().urls]
+	arrayUrls+=[*planets.Spaceport().urls]
+	print(arrayProperties)
+	print(arrayUrls)
+	for name in arrayProperties:
+		try:
+			aux = get_event_from_name(name)
+			print(name)
+			urllib.request.urlretrieve(aux.url,'event_image')
+		except:
+			print(">arreglar esta ^")
+			brokenUrls+=name
+	for name in arrayUrls:
+		try:
+			aux = get_event_from_name(name)
+			print(name)
+			urllib.request.urlretrieve(aux.url,'event_image')
+		except:
+			print(">arreglar esta ^")
+			brokenUrls+=name
+	print(brokenUrls)
