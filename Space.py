@@ -11,6 +11,7 @@ import random
 #import skimage.measure as skm
 #import matplotlib.pyplot as plt
 import planets
+import canvas as cv
 
 class Board:
 	def __init__(self):
@@ -210,37 +211,37 @@ def get_event_from_name(name):
 
 
 def gen_initial_image(spaceship,board):
-	img = Image.new("RGB",(1800,1800))
-	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((200,200))#transparent
-	img.paste(fuel,(0,400),fuel)
+	img = Image.new("RGB",cv.canvas_size)
+	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
+	img.paste(fuel,cv.fuel_position,fuel)
 	del fuel
-	provisions = Image.open("Resources/sanguche.png").convert("RGBA").resize((200,200))#transparent
-	img.paste(provisions,(0,600),provisions)
+	provisions = Image.open("Resources/sanguche.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
+	img.paste(provisions,cv.provisions_position,provisions)
 	del provisions
-	hull = Image.open("Resources/hull.png").convert("RGBA").resize((200,200))#transparent
-	img.paste(hull,(0,800),hull)
+	hull = Image.open("Resources/hull.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
+	img.paste(hull,cv.hull_position,hull)
 	del hull
-	background = Image.open("Resources/Background.jpg")
-	img.paste(background,(0,1000))
+	background = Image.open("Resources/Background.jpg").convert("RGBA").resize(cv.grid_size)
+	img.paste(background,cv.grid_position)
 	del background
-	arrow_right = Image.open("Resources/arrow_bien.png").convert("RGBA").resize((150,150))
+	arrow_right = Image.open("Resources/arrow_bien.png").convert("RGBA").resize(cv.arrow_size)
 	arrow_up = arrow_right.rotate(90)
 	arrow_left = arrow_up.rotate(90)
 	arrow_down = arrow_left.rotate(90)
 	reacs = Image.open("Resources/reactions.png").convert("RGBA")
-	wow = reacs.crop((1011,503,1446,937)).resize((150,150))
-	like = reacs.crop((1011,0,1446,440)).resize((150,150))
-	angery = reacs.crop((504,0,939,440)).resize((150,150))
-	sad = reacs.crop((504,503,939,937)).resize((150,150))
+	wow = reacs.crop((1011,503,1446,937)).resize(cv.reaction_size)
+	like = reacs.crop((1011,0,1446,440)).resize(cv.reaction_size)
+	angery = reacs.crop((504,0,939,440)).resize(cv.reaction_size)
+	sad = reacs.crop((504,503,939,937)).resize(cv.reaction_size)
 	del reacs
-	img.paste(arrow_right,(1200+450,1000+325),arrow_right)
-	img.paste(arrow_up,(1200+225,1000+0),arrow_up)
-	img.paste(arrow_left,(1200+0,1000+325),arrow_left)
-	img.paste(arrow_down,(1200+225,1000+650),arrow_down)
-	img.paste(wow,(1200+300,1000+325),wow)
-	img.paste(like,(1200+225,1000+150),like)
-	img.paste(angery,(1200+150,1000+325),angery)
-	img.paste(sad,(1200+225,1000+500),sad)
+	img.paste(arrow_right,(cv.arrow_right_position),arrow_right)
+	img.paste(arrow_up,(cv.arrow_up_position),arrow_up)
+	img.paste(arrow_left,(cv.arrow_left_position),arrow_left)
+	img.paste(arrow_down,(cv.arrow_down_position),arrow_down)
+	img.paste(wow,cv.wow_position,wow)
+	img.paste(like,cv.like_position,like)
+	img.paste(angery,cv.angry_position,angery)
+	img.paste(sad,cv.sad_position,sad)
 	del arrow_up, arrow_right, arrow_left, arrow_down
 	del wow, like, angery, sad
 	spaceship.x = board.startLoc[0]
@@ -248,14 +249,14 @@ def gen_initial_image(spaceship,board):
 	img = add_icon(img,"Resources/Start_icon.png",spaceship.x,spaceship.y)
 	img.save("Reference_image.png")
 
-	start = Image.open("Resources/Start.png").convert("RGBA").resize((1000,1000))
+	start = Image.open("Resources/Start.png").convert("RGBA").resize(cv.image_size)
 	img = add_event_image(img,start)
 	del start
 	img = add_spaceship(img,spaceship)
 	img = add_numbers(img,spaceship)
 	draw = ImageDraw.Draw(img)
-	draw.text((0,0),"Start",font=get_font(get_fontsize("Start",draw)))
-	draw.text((0,200),'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(board.goal),font=get_font(40))
+	draw.text(cv.big_text_position,"Start",font=get_font(get_fontsize("Start",draw)))
+	draw.text(cv.small_text_position,'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(board.goal),font=get_font(40))
 	img = add_crosses(img,spaceship)
 	del draw
 	img.save("Post_image.png")
@@ -277,11 +278,11 @@ def update_image(spaceship,event):
 	lenx = img.size[0]
 	leny = img.size[1]
 	if lenx > leny:
-		img = img.resize((1000,int(1000*leny/lenx)))
+		img = img.resize((1000,1000*leny//lenx))
 	elif leny < lenx:
-		img = img.resize((int(1000*lenx/leny),1000))
+		img = img.resize((1000*lenx//leny),1000)
 	else:
-		img = img.resize((1000,1000))
+		img = img.resize(cv.image_size)
 	previous = add_event_image(previous,img)
 	previous = add_spaceship(previous,spaceship)
 	previous = add_numbers(previous,spaceship)
@@ -293,7 +294,7 @@ def update_image(spaceship,event):
 def gen_goal_image():
 	image = Image.open("Post_image.png")
 	draw = ImageDraw.Draw(image)
-	draw.text((200,800),"YOU WON",font=get_font(300),fill="green")
+	draw.text(cv.end_text_position,"YOU WON",font=get_font(300),fill="green")
 	image.save("Victory_image.png")
 	return "Death_image.png"
 
@@ -301,7 +302,7 @@ def gen_gameover_image(board):
 	image = Image.open("Post_image.png")
 	image = add_icon(image,"Resources/Goal_icon.png",board.goalLoc[0],board.goalLoc[1])
 	draw = ImageDraw.Draw(image)
-	draw.text((200,800),"YOU DIED",font=get_font(300),fill="red")
+	draw.text(cv.end_text_position,"YOU DIED",font=get_font(300),fill="red")
 	image.save("Death_image.png")
 	return "Death_image.png"
 
@@ -320,26 +321,26 @@ def add_text(img,event):
 	return img
 
 def add_icon(image,icon,x,y):
-	ic = Image.open(icon).convert("RGBA").resize((120,114))
-	image.paste(ic,(120*x,1000+int(800/7*y)),ic)
+	ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
+	image.paste(ic,(cv.square_size[0]*x,1000+cv.square_size[1]*y),ic)
 	return image
 
 def add_event_image(canvas,image):
-	canvas.paste(image,(800,0))
+	canvas.paste(image,cv.image_position)
 	return canvas
 
 def add_spaceship(img,ship):
 	print(ship.player)
 	print(ship.image)
-	spaceshipng = Image.open(ship.player).resize((120,114))
-	img.paste(spaceshipng,(120*ship.x,1000+int(800/7*ship.y)))
+	spaceshipng = Image.open(ship.player).resize(cv.square_size)
+	img.paste(spaceshipng,(cv.square_size[0]*ship.x,1000+cv.square_size[1]*ship.y))
 	return img
 
 def add_numbers(img,ship):
 	draw = ImageDraw.Draw(img)
-	draw.text((200,400),str(ship.fuel),font=get_font(140),fill=get_fill(ship.fuel))
-	draw.text((200,600),str(ship.provisions),font=get_font(140),fill=get_fill(ship.provisions))
-	draw.text((200,800),str(ship.hull),font=get_font(140),fill=get_fill(ship.hull))
+	draw.text(cv.fuel_text_position,str(ship.fuel),font=get_font(cv.resource_text_font),fill=get_fill(ship.fuel))
+	draw.text(cv.provisions_text_position,str(ship.provisions),font=get_font(cv.resource_text_font),fill=get_fill(ship.provisions))
+	draw.text(cv.hull_text_position,str(ship.hull),font=get_font(cv.resource_text_font),fill=get_fill(ship.hull))
 	return img
 
 def get_fill(resource):
@@ -356,13 +357,13 @@ def get_fill(resource):
 def add_crosses(img,ship,is_portal=False):
 	draw = ImageDraw.Draw(img)
 	if ship.x==0 or is_portal:
-		draw.text((1230,1315),"X",font=get_font(140),fill="red")
+		draw.text(cv.cross_left_position,"X",font=get_font(140),fill="red")
 	if ship.x==planets.boardlenx-1 or is_portal:
-		draw.text((1680,1315),"X",font=get_font(140),fill="red")
+		draw.text(cv.cross_right_position,"X",font=get_font(140),fill="red")
 	if ship.y==0 or is_portal:
-		draw.text((1455,1000),"X",font=get_font(140),fill="red")
+		draw.text(cv.cross_up_position,"X",font=get_font(140),fill="red")
 	if ship.y==planets.boardleny-1 or is_portal:
-		draw.text((1455,1650),"X",font=get_font(140),fill="red")
+		draw.text(cv.cross_down_position,"X",font=get_font(140),fill="red")
 	return img
 
 def get_font(size):
