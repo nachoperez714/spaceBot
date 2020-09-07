@@ -866,7 +866,7 @@ class Player:
 		self.hull = 100
 		self.properties = {
 			"Planet Express" : {
-				"url"  : "https://lh3.googleusercontent.com/proxy/m5vq4MIV3uZ7TQsD9OgwUZPJsRzmLSZega4ZuP6Iv6ALhnUpAuROAARbjWGS5nGAwYne4L4JfgFl9J1O2Pixh7sOHpsHDjTA",
+				"url"  : "https://lh3.googleusercontent.com/proxy/sebJJdkzCZHq5tAJHXVnL4FJtM2O6nv42EorflQ1vkd_uZFZqKFskmuTxIMFX3wXyAk8C1n158uKDX8MHswP1fc38H8BDkf2XEejibUJ8MKqMcdN5TEEx6_H1UJdWvxs-YpcrvIicvJQcH4o9Y6zzbmrk6D-OT6mWQ",
 				"fuel" : 100,
 				"provisions"  : 100,
 				"hull"  : 100,
