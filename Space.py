@@ -182,16 +182,20 @@ def get_input_from_reactions(reacs,spaceship):
 		elif reac=='ANGRY' and spaceship.x!=0:
 			nangry+=1
 
-	if nlike==0 and nwow==0 and nsad==0 and nangry==0:
+	nreacts = [nlike,nwow,nsad,nangry]
+	nmax = max(nreacts)
+	if nmax==0:
 		return [0,0]
-	elif nlike>=nwow and nlike>=nsad and nlike>= nangry:
-		return [0,-1]
-	elif nwow>=nsad and nwow>=nangry:
-		return [1,0]
-	elif nsad>=nangry:
-		return [0,1]
-	else:
-		return [-1,0]
+	movement = [0,0]
+	if nlike==nmax:
+		movement[1]-=1
+	if nwow==nmax:
+		movement[0]+=1
+	if nsad==nmax
+		movement[1]+=1
+	if nangry==nmax:
+		movement[0]-=1
+	return movement
 
 def get_event_from_name(name):
 	clas = [planets.Planet,
