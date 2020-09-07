@@ -272,7 +272,7 @@ def update_image(spaceship,event):
 	try:
 		img_path = get_image_from_url(event.url)
 	except:
-		img_path = "Resources/failsafe.png"
+		img_path = "Resources/failsafe.jpeg"
 	img = Image.open(img_path)
 	lenx = img.size[0]
 	leny = img.size[1]
@@ -512,4 +512,4 @@ def testUrls():
 		except:
 			print(">arreglar esta ^")
 			brokenUrls+=name
-	print(brokenUrls)
+	print("Broken urls: ",brokenUrls)
