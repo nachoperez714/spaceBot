@@ -100,8 +100,9 @@ class Spaceship:
 
 	def initialize(self):
 		aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
-		print(aux)
+		print(aux.url)
 		self.player = get_image_from_url_player(aux.url)
+		cv.greenscreen(self.player)
 		self.fuel = aux.fuel
 		self.provisions = aux.provisions
 		self.hull = aux.hull
@@ -191,7 +192,7 @@ def get_input_from_reactions(reacs,spaceship):
 		movement[1]-=1
 	if nwow==nmax:
 		movement[0]+=1
-	if nsad==nmax
+	if nsad==nmax:
 		movement[1]+=1
 	if nangry==nmax:
 		movement[0]-=1
@@ -334,8 +335,8 @@ def add_event_image(canvas,image):
 	return canvas
 
 def add_spaceship(img,ship):
-	print(ship.player)
-	print(ship.image)
+	#print(ship.player)
+	#print(ship.image)
 	spaceshipng = Image.open(ship.player).resize(cv.square_size)
 	img.paste(spaceshipng,(cv.square_size[0]*ship.x,1000+cv.square_size[1]*ship.y))
 	return img
@@ -387,7 +388,7 @@ def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 		pw.append(ps[0])
 		ph.append(ps[1])
 	#print (pw, ph)
-	return min(int(10*maxlenx/np.mean(np.diff(pw))),int(10*maxleny/np.mean(np.diff(ph))))
+	return min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph)))
 
 def get_image_from_url(url):
 	urllib.request.urlretrieve(url,'event_image')

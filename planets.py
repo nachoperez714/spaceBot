@@ -688,7 +688,7 @@ class Spaceport(Event):
 			"La Vie en Rose": "https://vignette.wikia.nocookie.net/gundam/images/e/e2/Storm_2011-02-27_16-53-49-95.jpg/revision/latest?cb=20110301060509",
 			"Hydroponics Station": "https://images.adsttc.com/media/images/514a/18bf/b3fc/4bb2/3d00/0018/large_jpg/mode-lina_hydroponic_pumping_station_sfw_3.jpg?1363810492",
 			}
-		self.good_text = "Your get 50 of your lowest resource."
+		self.good_text = "You get 50 of your lowest resource."
 		if name:
 			self.set_url()
 

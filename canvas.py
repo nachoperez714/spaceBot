@@ -1,3 +1,5 @@
+from PIL import Image
+
 #All positions refer to upper left corner
 canvas_size = (1800,1800)
 resource_icon_size = (200,200)
@@ -32,3 +34,10 @@ cross_right_position = (1680,1315)
 big_text_position = (0,0)
 small_text_position = (0,200)
 end_text_position = (200,800)
+
+def greensquare(img_path):
+	img = Image.open(img_path)
+	size = img.size()
+	back = Image.open("greenscreen.png").convert("RGBA").resize((int(18/16*size[0]),int(18/16*size[1])))
+	back.paste(img,(int(1/16*size[0]),int(1/16*size[1])))
+	back.save(img_path)
