@@ -102,7 +102,7 @@ class Spaceship:
 		aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
 		print(aux.url)
 		self.player = get_image_from_url_player(aux.url)
-		cv.greenscreen(self.player)
+		self.player = cv.greensquare(self.player)
 		self.fuel = aux.fuel
 		self.provisions = aux.provisions
 		self.hull = aux.hull
@@ -388,7 +388,7 @@ def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 		pw.append(ps[0])
 		ph.append(ps[1])
 	#print (pw, ph)
-	return min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph)))
+	return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
 
 def get_image_from_url(url):
 	urllib.request.urlretrieve(url,'event_image')

@@ -37,7 +37,8 @@ end_text_position = (200,800)
 
 def greensquare(img_path):
 	img = Image.open(img_path)
-	size = img.size()
-	back = Image.open("greenscreen.png").convert("RGBA").resize((int(18/16*size[0]),int(18/16*size[1])))
+	size = img.size
+	back = Image.open("Resources/greenscreen.png").convert("RGBA").resize((int(18/16*size[0]),int(18/16*size[1])))
 	back.paste(img,(int(1/16*size[0]),int(1/16*size[1])))
-	back.save(img_path)
+	back.save(img_path+'.png')
+	return img_path+'.png'
