@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import facebook
+#import facebook
 from pathlib import Path
 import os
 import urllib.request
