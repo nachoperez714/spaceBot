@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import facebook
+#import facebook
 from pathlib import Path
 import os
 import urllib.request
@@ -191,7 +191,7 @@ def get_input_from_reactions(reacs,spaceship):
 		movement[1]-=1
 	if nwow==nmax:
 		movement[0]+=1
-	if nsad==nmax
+	if nsad==nmax:
 		movement[1]+=1
 	if nangry==nmax:
 		movement[0]-=1
