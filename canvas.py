@@ -1,5 +1,8 @@
-
 from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+import planets
+import random
 
 #All positions refer to upper left corner
 canvas_size = (1800,1800)

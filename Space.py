@@ -8,6 +8,7 @@ import os
 import urllib.request
 import textwrap
 import random
+#import time
 #import skimage.measure as skm
 #import matplotlib.pyplot as plt
 import planets
@@ -86,20 +87,23 @@ class Board:
 
 					
 class Spaceship:
-	def __init__(self,img_path="default"):
+	def __init__(self,player=""):
 		self.x = 0
 		self.y = 0
-		self.image = img_path
+		self.image = ""
 		self.player = ""
 		self.fuel = 100
 		self.provisions = 100
 		self.hull = 100
 		self.hasWeapons = False
 		self.isHome = False
-		self.initialize()
+		self.initialize(player)
 
-	def initialize(self):
-		aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
+	def initialize(self,player):
+		if player:
+			aux = get_event_from_name(player)
+		else:
+			aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
 		print(aux.url)
 		self.player = get_image_from_url_player(aux.url)
 		self.player = cv.greensquare(self.player)
@@ -197,6 +201,13 @@ def get_input_from_reactions(reacs,spaceship):
 	if nangry==nmax:
 		movement[0]-=1
 	return movement
+
+def get_vote_from_reactions(reacs,ship_list):
+	nreacs = [0,0,0,0,0,0]
+	dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3}
+	for reac in reacs:
+		nreacs[dic[reac]]+=1
+	return ship_list[int(min(np.argmax(nreacs),len(ship_list)))]
 
 def get_event_from_name(name):
 	clas = [planets.Planet,
@@ -327,7 +338,7 @@ def add_text(img,event):
 
 def add_icon(image,icon,x,y):
 	ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
-	image.paste(ic,(cv.square_size[0]*x,1000+cv.square_size[1]*y),ic)
+	image.paste(ic,(cv.grid_position[0]+cv.square_size[0]*x,cv.grid_position[1]+cv.square_size[1]*y),ic)
 	return image
 
 def add_event_image(canvas,image):
@@ -338,7 +349,7 @@ def add_spaceship(img,ship):
 	print(ship.player)
 	print(ship.image)
 	spaceshipng = Image.open(ship.player).resize(cv.square_size)
-	img.paste(spaceshipng,(cv.square_size[0]*ship.x,1000+cv.square_size[1]*ship.y))
+	img.paste(spaceshipng,(cv.grid_position[0]+cv.square_size[0]*ship.x,cv.grid_position[1]+cv.square_size[1]*ship.y))
 	return img
 
 def add_numbers(img,ship):
@@ -398,17 +409,86 @@ def get_image_from_url_player(url):
 	urllib.request.urlretrieve(url,'player_image')
 	return 'player_image'
 
-def main(isFirst=False,direction=""):
+def vote_ship(direction=""):
+	img_path, ship_list = make_vote_image()#TODO
+	message = "The next voyage will start soon, pick your ship!"
+	if not direction:
+		gr, p_id = upload(message,getAccessToken(),img_path)
+		return gr, p_id, ship_list
+	else:
+		return 0,0,ship_list
+
+def choose_ship(gr,p_id,ship_list,direction=""):
+	if not direction:
+		reacts = get_reactions(gr,p_id)
+		return get_vote_from_reactions(reacts,ship_list)
+	else:
+		dic = {"like":0,"wow":1,"sad":2,"angry":3}
+		return ship_list[dic[direction]]
+
+def make_vote_image():
+	img = Image.new("RGB",(1000,1000))
+	ships = random.sample([*planets.Player().properties],4)
+	reacs = Image.open("Resources/reactions.png").convert("RGBA")
+	wow = reacs.crop((1011,503,1446,937)).resize((150,150))
+	like = reacs.crop((1011,0,1446,440)).resize((150,150))
+	angery = reacs.crop((504,0,939,440)).resize((150,150))
+	sad = reacs.crop((504,503,939,937)).resize((150,150))
+	reacs = [like,wow,sad,angery]
+	xs = [0,1,0,1]
+	ys = [0,0,1,1]
+	for i, ship in enumerate(ships):
+		shipimg = Image.new("RGB",(495,495))
+		myship = get_event_from_name(ship)
+		shipicon = Image.open(get_image_from_url_player(myship.url)).convert("RGBA").resize((300,300))
+		shipimg.paste(shipicon,(0,190))
+		fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((100,100))
+		resources = Image.open("Resources/sanguche.png").convert("RGBA").resize((100,100))
+		hull = Image.open("Resources/hull.png").convert("RGBA").resize((100,100))
+		shipimg.paste(fuel,(300,190))
+		shipimg.paste(resources,(300,290))
+		shipimg.paste(hull,(300,390))
+		shipimg.paste(reacs[i],(0,0))
+		draw = ImageDraw.Draw(shipimg)
+		draw.text((400,190),str(myship.fuel),font=get_font(50))
+		draw.text((400,290),str(myship.provisions),font=get_font(50))
+		draw.text((400,390),str(myship.hull),font=get_font(50))
+		font1 = get_fontsize(ship,draw,345,190)
+		font2 = get_fontsize(textwrap.fill(ship,len(ship)//2+1),draw,345,190)
+		if font1>=font2:
+			draw.text((150,0),ship,font=get_font(font1))
+		else:
+			draw.text((150,0),textwrap.fill(ship,len(ship)//2+1),font=get_font(font2))
+		img.paste(shipimg,(xs[i]*505,ys[i]*505))
+	draw = ImageDraw.Draw(img)
+	draw.line([(500,0),(500,1000)],"white",10)
+	draw.line([(0,500),(1000,500)],"white",10)
+	img.save("vote_image.png")
+	return "vote_image.png", ships
+
+def main(isFirst=False,direction="",vote=True):
 
 	if direction:
 		gr = 0
 		p_id = 0
 
 	if isFirst:
+		if isFirst!=2 and vote:
+			gr, p_id, ship_list = vote_ship(direction)
+			np.save('data',[gr,p_id,ship_list])
+			return 2
 		#generar el tablero
 		board  =Board()
 		initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
-		spaceship = Spaceship()#get_random_ship())
+		if vote:
+			data = np.load('data.npy',allow_pickle=True)
+			gr = data[0]
+			p_id = data[1]
+			ship_list = data[2]
+			ship = choose_ship(gr,p_id,ship_list,direction)
+			spaceship = Spaceship(ship)
+		else:
+			spaceship = Spaceship()#get_random_ship())
 		postImage = gen_initial_image(spaceship,board)
 		if direction:
 			gr = 0
