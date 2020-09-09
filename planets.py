@@ -424,7 +424,7 @@ class Portal(Event):
 			"Warp Station" : "https://vignette.wikia.nocookie.net/pulsar-game/images/2/24/Long_range_warp_station.png/revision/latest/scale-to-width-down/340?cb=20190626124313",
 			"Portal" : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT-HfXb1DmwshWvAErqfe4mxV7GAZtPQ0wpZw&usqp=CAU",
 			"Bifrost" : "https://i.ytimg.com/vi/hzqWcXA_Xrk/maxresdefault.jpg",
-			"Florpus Hole" : "https://lh3.googleusercontent.com/proxy/F9kr7Fpp6LByxtKhMSZnSVfA6A-abWzwPEDEd4ZpGF9E9FgfbxAVXuMdxJmZcWuiQKMgcUddMnOnUpUVeiuLoasDMz6Vq0Bd9Hk6XnpnTky1lDjLg-KXM3gAjPFQeQ",
+			"Florpus Hole" : "https://vignette.wikia.nocookie.net/zimwiki/images/4/45/Florpus_1.png/revision/latest?cb=20190820031519",
 			"Portal (R&M)" : "https://i.pinimg.com/originals/98/29/21/9829215db6f9210c0ae4e318e854cb1f.png",
 			"Time hole" : "https://vignette.wikia.nocookie.net/reddwarf/images/c/c3/Time_Hole_%282%29.jpg/revision/latest/scale-to-width-down/340?cb=20150502013436",
 			"Time vortex" : "https://thumbs.gfycat.com/DigitalGreenCoral-mobile.jpg",
@@ -1113,9 +1113,9 @@ class Player:
 				"fuel" : 80,
 				"provisions"  : 110,
 				"hull"  : 110,
-				},
+				},	
 			"NASA Space Shuttle" : {
-				"url"  : "https://imgur.com/Octr956",
+				"url"  : "https://i.imgur.com/Octr956.png",
 				"fuel" : 70,
 				"provisions"  : 110,
 				"hull"  : 120,
@@ -1125,6 +1125,12 @@ class Player:
 				"fuel" : 120,
 				"provisions"  : 110,
 				"hull"  : 70,
+				},
+			"Astro Slug" : {
+				"url"  : "https://i.imgur.com/K6IZ2Gr.png",
+				"fuel" : 120,
+				"provisions"  : 90,
+				"hull"  : 90,
 				},
 		}
 		if name:
