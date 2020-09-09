@@ -1,3 +1,4 @@
+
 from PIL import Image
 
 #All positions refer to upper left corner
