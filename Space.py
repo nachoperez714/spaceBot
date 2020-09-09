@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-#import facebook
+import facebook
 from pathlib import Path
 import os
 import urllib.request
@@ -100,8 +100,9 @@ class Spaceship:
 
 	def initialize(self):
 		aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
-		print(aux)
+		print(aux.url)
 		self.player = get_image_from_url_player(aux.url)
+		self.player = cv.greensquare(self.player)
 		self.fuel = aux.fuel
 		self.provisions = aux.provisions
 		self.hull = aux.hull
@@ -387,7 +388,7 @@ def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 		pw.append(ps[0])
 		ph.append(ps[1])
 	#print (pw, ph)
-	return min(int(10*maxlenx/np.mean(np.diff(pw))),int(10*maxleny/np.mean(np.diff(ph))))
+	return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
 
 def get_image_from_url(url):
 	urllib.request.urlretrieve(url,'event_image')
@@ -491,7 +492,18 @@ def testUrls():
 	arrayProperties = []
 	arrayUrls = []
 	brokenUrls = []
+	print("Planets: ",len([*planets.Planet().properties]))
+	print("Ships: ",len([*planets.Ship().properties]))
+	print("Beings: ",len([*planets.Being().properties]))
+	print("Asteroids: ",len([*planets.Asteroid().urls]))
+	print("Portals: ",len([*planets.Portal().urls]))
+	print("BlackHoles: ",len([*planets.BlackHole().urls]))
+	print("Spaceports: ",len([*planets.Spaceport().urls]))
+	print("Goals: ",len([*planets.Goal().urls]))
+	print("Players: ",len([*planets.Player().properties]))
+
 	arrayProperties+=[*planets.Planet().properties]
+	arrayProperties+=[*planets.Player().properties]
 	arrayProperties+=[*planets.Ship().properties]
 	arrayProperties+=[*planets.Being().properties] 
 	arrayUrls+=[*planets.Asteroid().urls]
@@ -499,8 +511,6 @@ def testUrls():
 	arrayUrls+=[*planets.BlackHole().urls]
 	arrayUrls+=[*planets.Goal().urls]
 	arrayUrls+=[*planets.Spaceport().urls]
-	print(arrayProperties)
-	print(arrayUrls)
 	for name in arrayProperties:
 		try:
 			aux = get_event_from_name(name)
