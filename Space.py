@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-#import facebook
+import facebook
 from pathlib import Path
 import os
 import urllib.request
@@ -492,7 +492,18 @@ def testUrls():
 	arrayProperties = []
 	arrayUrls = []
 	brokenUrls = []
+	print("Planets: ",len([*planets.Planet().properties]))
+	print("Ships: ",len([*planets.Ship().properties]))
+	print("Beings: ",len([*planets.Being().properties]))
+	print("Asteroids: ",len([*planets.Asteroid().urls]))
+	print("Portals: ",len([*planets.Portal().urls]))
+	print("BlackHoles: ",len([*planets.BlackHole().urls]))
+	print("Spaceports: ",len([*planets.Spaceport().urls]))
+	print("Goals: ",len([*planets.Goal().urls]))
+	print("Players: ",len([*planets.Player().properties]))
+
 	arrayProperties+=[*planets.Planet().properties]
+	arrayProperties+=[*planets.Player().properties]
 	arrayProperties+=[*planets.Ship().properties]
 	arrayProperties+=[*planets.Being().properties] 
 	arrayUrls+=[*planets.Asteroid().urls]
@@ -500,8 +511,6 @@ def testUrls():
 	arrayUrls+=[*planets.BlackHole().urls]
 	arrayUrls+=[*planets.Goal().urls]
 	arrayUrls+=[*planets.Spaceport().urls]
-	print(arrayProperties)
-	print(arrayUrls)
 	for name in arrayProperties:
 		try:
 			aux = get_event_from_name(name)
