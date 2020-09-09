@@ -519,3 +519,22 @@ def testUrls():
 			print(">arreglar esta ^")
 			brokenUrls+=name
 	print("Broken urls: ",brokenUrls)
+
+def localtest():
+	br = False
+	while not br:
+		b = input("Press n for a new one; wasd to move or q to quit")
+		if b=="n":
+			main(True,"hola")
+		elif b=="w":
+			main(False,"up")
+		elif b=="a":
+			main(False,"left")
+		elif b=="s":
+			main(False,"down")
+		elif b=="d":
+			main(False,"right")
+		elif b=="q":
+			br = True
+		else:
+			print("That's not a valid command, try again")
