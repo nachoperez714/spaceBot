@@ -148,7 +148,7 @@ class Planet(Event):
 			"Naboo":{
 				"good" : "You land in Naboo and befriend the locals. They gift you 10 provisions",
 				"bad"  : "You fall in love with the princess but cant have sex with her. In impotence you lose 10 provisions",
-				"url"  : "https://uncyclopedia.ca/w/images/3/3c/Naboo.png"
+				"url"  : "https://vignette.wikia.nocookie.net/esstarwars/images/5/50/Naboo.jpg/revision/latest/top-crop/width/360/height/450?cb=20060318190228"
 				},
 			"Thanos farm":{
 				"good" : "Thanos farm. You get 10 provisions",
@@ -185,8 +185,8 @@ class Planet(Event):
 				"bad"  : "You arrive just as a midget and a monkey destroy the planet. You lose 10 provisions",
 				"url"  : "https://vignette.wikia.nocookie.net/dragonball/images/7/71/Namek_U7.png/revision/latest/top-crop/width/360/height/450?cb=20171203031332&path-prefix=es"
 				},
-			"Kaisoma's Planet":{
-				"good" : "Kaisoma trains you to get stronger. You get 10 provisions",
+			"Kaiosama's Planet":{
+				"good" : "Kaiosama trains you to get stronger. You get 10 provisions",
 				"bad"  : "You arrive just as Goku teleports with an exploding Cell. Pretty dick move. You lose 10 provisions",
 				"url"  : "https://vignette.wikia.nocookie.net/dragonball/images/e/ee/King_Kai%27s_Planet_-_Battle_of_Gods_-_001.png/revision/latest?cb=20170827070415"
 				},
@@ -702,7 +702,7 @@ class Ship(Event):
 			"Starman Jr":{
 				"good" : "Buzz Buzz protects you and you defeat the Starman. It drops 20 fuel",
 				"bad"  : "The Starman uses PSI Fire against you. Your hull is damaged by 10",
-				"url"  : "https://www.uokpl.rs/fpng/d/248-2485089_starman-earthbound-sprite.png"
+				"url"  : "https://vignette.wikia.nocookie.net/earthbound/images/b/b6/Starman_Clay_Model.png/revision/latest?cb=20090521212858"
 				},
 			"Major Tom":{
 				"good" : "Everybody likes David Bowie, you get 20 fuel",
