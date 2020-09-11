@@ -26,4 +26,4 @@ while True:
 				seguir = Space.main(2)
 		time.sleep(10)
 
-	os.remove("sigo")
+	os.remove("sigo.txt")
