@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import facebook
+#import facebook
 from pathlib import Path
 import os
 import urllib.request
@@ -465,29 +465,33 @@ def make_vote_image():
 	draw.line([(0,500),(1000,500)],"white",10)
 	img.save("vote_image.png")
 	return "vote_image.png", ships
-
-def main(isFirst=False,direction="",vote=True):
+#
+#TURN
+#
+#[0:vote ship,1:first,2:normal turn]
+def main(turn="0",direction=""):
 
 	if direction:
 		gr = 0
 		p_id = 0
 
-	if isFirst:
-		if isFirst!=2 and vote:
-			gr, p_id, ship_list = vote_ship(direction)
-			np.save('data',[gr,p_id,ship_list])
-			return 2
+	if turn=="0":
+		gr, p_id, ship_list = vote_ship(direction)
+		np.save('data',[gr,p_id,ship_list])
+		return "1"
+
+	if turn=="1":
 		#generar el tablero
 		board  =Board()
 		initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
-		if vote:
+		try:
 			data = np.load('data.npy',allow_pickle=True)
 			gr = data[0]
 			p_id = data[1]
 			ship_list = data[2]
 			ship = choose_ship(gr,p_id,ship_list,direction)
 			spaceship = Spaceship(ship)
-		else:
+		except:
 			spaceship = Spaceship()#get_random_ship())
 		postImage = gen_initial_image(spaceship,board)
 		if direction:
@@ -497,7 +501,7 @@ def main(isFirst=False,direction="",vote=True):
 			gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
-		return True
+		return "2"
 	else:
 		data = np.load("data.npy",allow_pickle=True)
 		spaceship = data[0]
@@ -537,7 +541,7 @@ def main(isFirst=False,direction="",vote=True):
 			else:
 				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Victory_image.png")
-			return False
+			return "0"
 		if spaceship.is_dead():
 			message += '\nYou died before reaching your destination, better luck on the next voyage.'
 			game_over_path = update_image(spaceship,event)
@@ -548,7 +552,7 @@ def main(isFirst=False,direction="",vote=True):
 				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Death_image.png")
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
-			return False
+			return "0"
 		if not event.get_type()=="Portal":
 			message+="\n Use the reactions to move the ship."
 		img_path = update_image(spaceship,event)
@@ -566,7 +570,7 @@ def main(isFirst=False,direction="",vote=True):
 			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
 			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
-		return True
+		return "2"
 
 def testUrls():
 	arrayProperties = []
