@@ -49,14 +49,26 @@ class Board:
 		self.goal = np.random.choice([*planets.Goal().urls])
 
 	def generate_eventlist(self):
-		number = self.lenx*self.leny-2
-		self.eventlist+=random.sample([*planets.Planet().properties],20)
-		self.eventlist+=random.sample([*planets.Ship().properties],20)
-		self.eventlist+=random.sample([*planets.Asteroid().urls],10)
-		self.eventlist+=random.sample([*planets.Spaceport().urls],6)
-		self.eventlist+=random.sample([*planets.Portal().urls],6)
-		self.eventlist+=random.sample([*planets.BlackHole().urls],4)
-		self.eventlist+=random.sample([*planets.Being().properties],2)
+		size = self.lenx*self.leny-2
+		beingNum = np.random.poisson(size/30)+1
+		size-=beingNum
+		holeNum = np.random.poisson(size/25)+1
+		size-=holeNum
+		stationNum = np.random.poisson(size/12)+1
+		size-=stationNum
+		portalNum = np.random.poisson(size/11)+1
+		size-=portalNum
+		rockNum = np.random.poisson(size/8)+1
+		size-=rockNum
+		planNum = size//2
+		shipNum = size-planNum
+		self.eventlist+=random.sample([*planets.Planet().properties],planNum)
+		self.eventlist+=random.sample([*planets.Ship().properties],shipNum)
+		self.eventlist+=random.sample([*planets.Asteroid().urls],rockNum)
+		self.eventlist+=random.sample([*planets.Spaceport().urls],stationNum)
+		self.eventlist+=random.sample([*planets.Portal().urls],portalNum)
+		self.eventlist+=random.sample([*planets.BlackHole().urls],holeNum)
+		self.eventlist+=random.sample([*planets.Being().properties],beingNum)
 		
 
 	def generate_events(self):
