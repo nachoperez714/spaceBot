@@ -90,7 +90,7 @@ class Goal(Event):
 class Planet(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
-		self.bad_chance = 0.5
+		self.bad_chance = 0.4
 		self.type = "Planet"
 		self.icon = "Resources/Planet_icon.png"
 		self.pretext = "You've reached planet {}".format(self.name)

@@ -38,11 +38,10 @@ class Board:
 		#self.goal = np.random.choice([*planets.Goal().urls])
 	
 	def set_goal(self):
-		xgoal = 0
-		ygoal = 0
-		while abs(xgoal-self.startLoc[0])<3 :
+		xgoal = self.startLoc[0]
+		ygoal = self.startLoc[1]
+		while abs(xgoal-self.startLoc[0])+abs(ygoal-self.startLoc[1])<3 :
 			xgoal = np.random.randint(0,self.lenx)
-		while abs(ygoal-self.startLoc[1])<3:
 			ygoal = np.random.randint(0,self.leny)
 		self.goalLoc = [xgoal,ygoal]
 		print("startLoc:",self.startLoc[0],",",self.startLoc[1])
@@ -410,7 +409,7 @@ def get_image_from_url_player(url):
 	return 'player_image'
 
 def vote_ship(direction=""):
-	img_path, ship_list = make_vote_image()#TODO
+	img_path, ship_list = make_vote_image()
 	message = "The next voyage will start soon, pick your ship!"
 	if not direction:
 		gr, p_id = upload(message,getAccessToken(),img_path)
@@ -469,29 +468,29 @@ def make_vote_image():
 #TURN
 #
 #[0:vote ship,1:first,2:normal turn]
-def main(turn="0",direction=""):
+def main(turn=0,direction="",vote=True):
 
 	if direction:
 		gr = 0
 		p_id = 0
 
-	if turn=="0":
+	if turn==0:
 		gr, p_id, ship_list = vote_ship(direction)
 		np.save('data',[gr,p_id,ship_list])
-		return "1"
+		return True
 
-	if turn=="1":
+	if turn==1:
 		#generar el tablero
 		board  =Board()
 		initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
-		try:
+		if vote:
 			data = np.load('data.npy',allow_pickle=True)
 			gr = data[0]
 			p_id = data[1]
 			ship_list = data[2]
 			ship = choose_ship(gr,p_id,ship_list,direction)
 			spaceship = Spaceship(ship)
-		except:
+		else:
 			spaceship = Spaceship()#get_random_ship())
 		postImage = gen_initial_image(spaceship,board)
 		if direction:
@@ -501,7 +500,7 @@ def main(turn="0",direction=""):
 			gr, p_id = upload(initial_message,getAccessToken(),postImage)
 		was_portal = False
 		np.save('data',[spaceship,gr,p_id,board,was_portal])
-		return "2"
+		return True
 	else:
 		data = np.load("data.npy",allow_pickle=True)
 		spaceship = data[0]
@@ -541,7 +540,7 @@ def main(turn="0",direction=""):
 			else:
 				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Victory_image.png")
-			return "0"
+			return False
 		if spaceship.is_dead():
 			message += '\nYou died before reaching your destination, better luck on the next voyage.'
 			game_over_path = update_image(spaceship,event)
@@ -552,7 +551,7 @@ def main(turn="0",direction=""):
 				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Death_image.png")
 			np.save('data',[spaceship,board,event.get_type()=="Portal"])
-			return "0"
+			return False
 		if not event.get_type()=="Portal":
 			message+="\n Use the reactions to move the ship."
 		img_path = update_image(spaceship,event)
@@ -570,7 +569,7 @@ def main(turn="0",direction=""):
 			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
 			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
-		return "2"
+		return True
 
 def testUrls():
 	arrayProperties = []
