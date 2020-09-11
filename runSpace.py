@@ -23,7 +23,9 @@ while True:
 				f.write(seguir)
 			else:
 				reload(Space)#In case there were changes
-				seguir = Space.main(2)
-		time.sleep(10)
+				seguir = Space.main("2")
+		if seguir == "0":
+			os.remove("sigo.txt")
+		time.sleep(60*60)
 
-	os.remove("sigo.txt")
+	
