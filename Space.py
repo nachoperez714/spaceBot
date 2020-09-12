@@ -109,6 +109,14 @@ class Spaceship:
 		self.hasWeapons = False
 		self.isHome = False
 		self.initialize(player)
+		self.item = ""
+		self.tool = ""
+
+	def has_item(self):
+		return bool(self.item)
+
+	#def get_item(self):
+	#	return self.item
 
 	def initialize(self,player):
 		if player:
@@ -260,6 +268,7 @@ def gen_initial_image(spaceship,board):
 	like = reacs.crop((1011,0,1446,440)).resize(cv.reaction_size)
 	angery = reacs.crop((504,0,939,440)).resize(cv.reaction_size)
 	sad = reacs.crop((504,503,939,937)).resize(cv.reaction_size)
+	love = reacs.crop((0,503,434,937)).resize(cv.reaction_size)
 	del reacs
 	img.paste(arrow_right,(cv.arrow_right_position),arrow_right)
 	img.paste(arrow_up,(cv.arrow_up_position),arrow_up)
@@ -269,8 +278,9 @@ def gen_initial_image(spaceship,board):
 	img.paste(like,cv.like_position,like)
 	img.paste(angery,cv.angry_position,angery)
 	img.paste(sad,cv.sad_position,sad)
+	img.paste(love,cv.love_position,love)
 	del arrow_up, arrow_right, arrow_left, arrow_down
-	del wow, like, angery, sad
+	del wow, like, angery, sad, love
 	spaceship.x = board.startLoc[0]
 	spaceship.y = board.startLoc[1]
 	img = add_icon(img,"Resources/Start_icon.png",spaceship.x,spaceship.y)
@@ -283,7 +293,13 @@ def gen_initial_image(spaceship,board):
 	img = add_numbers(img,spaceship)
 	draw = ImageDraw.Draw(img)
 	draw.text(cv.big_text_position,"Start",font=get_font(get_fontsize("Start",draw)))
+	#draw.text(cv.use_item_position,"Use\nitem",font=get_font(50))
+	#draw.text(cv.tool_text_position,"Tool: {}".format(spaceship.tool.name),font=get_font(cv.item_big_text_size))
+	#draw.text(cv.tool_desc_position,"{}".format(spaceship.tool.description),font=get_font(cv.item_small_text_size))
+	#draw.text(cv.item_text_position,"Item: {}".format(spaceship.item.name),font=get_font(cv.item_big_text_size))
+	#draw.text(cv.item_desc_position,"{}".format(spaceship.item.description),font=get_font(cv.item_small_text_size))
 	draw.text(cv.small_text_position,'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(board.goal),font=get_font(40))
+	add_item_text(img,spaceship)
 	img = add_crosses(img,spaceship)
 	del draw
 	img.save("Post_image.png")
@@ -315,6 +331,7 @@ def update_image(spaceship,event):
 	previous = add_numbers(previous,spaceship)
 	previous = add_crosses(previous,spaceship,event.type=="Portal")
 	previous = add_text(previous,event)
+	previous = add_item_text(previous,spaceship)
 	previous.save("Post_image.png")
 	return "Post_image.png"
 
@@ -336,15 +353,49 @@ def gen_gameover_image(board):
 def add_text(img,event):
 	draw = ImageDraw.Draw(img)
 	draw.text((0,0),event.name,font=get_font(get_fontsize(event.name,draw)))
-	font1 = get_fontsize(event.text,draw)
-	font2 = get_fontsize(textwrap.fill(event.text,len(event.text)//2+1),draw)
-	font3 = get_fontsize(textwrap.fill(event.text,len(event.text)//3+2),draw)
+	size,lines = find_font(event.text,draw)
+	#font1 = get_fontsize(event.text,draw)
+	#font2 = get_fontsize(textwrap.fill(event.text,len(event.text)//2+1),draw)
+	#font3 = get_fontsize(textwrap.fill(event.text,len(event.text)//3+2),draw)
+	#if font1>=font2 and font1>=font3:
+	#	draw.text((0,200),event.text,font=get_font(font1))
+	#elif font2>=font3:
+	#	draw.text((0,200),textwrap.fill(event.text,len(event.text)//2+1),font=get_font(font2))
+	#else:
+	#	draw.text((0,200),textwrap.fill(event.text,len(event.text)//3+2),font=get_font(font3))
+	draw.text((0,200),textwrap.fill(event.text,len(event.text)//lines+lines-1),font=get_font(size))
+	return img
+
+def find_font(text,draw,x=800,y=200):
+	font1 = get_fontsize(text,draw,x,y)
+	font2 = get_fontsize(textwrap.fill(text,len(text)//2+1),draw,x,y)
+	font3 = get_fontsize(textwrap.fill(text,len(text)//3+2),draw,x,y)
 	if font1>=font2 and font1>=font3:
-		draw.text((0,200),event.text,font=get_font(font1))
+		return font1, 1
 	elif font2>=font3:
-		draw.text((0,200),textwrap.fill(event.text,len(event.text)//2+1),font=get_font(font2))
+		return font2, 2
 	else:
-		draw.text((0,200),textwrap.fill(event.text,len(event.text)//3+2),font=get_font(font3))
+		return font3, 3
+
+def add_item_text(img,ship):
+	img.paste(Image.open(ship.tool.icon).convert("RGBA").resize(cv.item_icon_size),cv.tool_icon_position)
+	img.paste(Image.open(ship.item.icon).convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+	toolname = "Tool: "+ship.tool.name
+	tooldesc = ship.tool.description
+	itemname = "Item: "+ship.item.name
+	itemdesc = ship.item.description
+	draw = ImageDraw.Draw(img)
+	tnFont, tnLines = find_font(toolname,draw,650,150)
+	tdFont, tdLines = find_font(tooldesc,draw,650,125)
+	inFont, inLines = find_font(itemname,draw,650,150)
+	idFont, idLines = find_font(itemdesc,draw,650,125)
+	namefont = min(tnFont,inFont)
+	descfont = min(idFont,tdFont)
+	draw.text(cv.use_item_position,"Use\nitem",font=get_font(80))
+	draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(namefont))
+	draw.text(cv.tool_desc_position,textwrap.fill(tooldesc,len(tooldesc)//tdLines+tdLines-1),font=get_font(descfont))
+	draw.text(cv.item_text_position,textwrap.fill(itemname,len(itemname)//inLines+inLines-1),font=get_font(namefont))
+	draw.text(cv.item_desc_position,textwrap.fill(itemdesc,len(itemdesc)//idLines+idLines-1),font=get_font(descfont))
 	return img
 
 def add_icon(image,icon,x,y):
@@ -391,6 +442,8 @@ def add_crosses(img,ship,is_portal=False):
 		draw.text(cv.cross_up_position,"X",font=get_font(140),fill="red")
 	if ship.y==planets.boardleny-1 or is_portal:
 		draw.text(cv.cross_down_position,"X",font=get_font(140),fill="red")
+	if not ship.has_item() or is_portal:
+		draw.text(cv.cross_item_position,"X",font=get_font(140),fill="red")
 	return img
 
 def get_font(size):
