@@ -94,7 +94,8 @@ class Spaceship:
 		self.fuel = 100
 		self.provisions = 100
 		self.hull = 100
-		self.hasWeapons = False
+		self.item = ""
+		self.tool = ""
 		self.isHome = False
 		self.initialize(player)
 
