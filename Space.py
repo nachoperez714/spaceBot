@@ -50,15 +50,15 @@ class Board:
 
 	def generate_eventlist(self):
 		size = self.lenx*self.leny-2
-		beingNum = np.random.poisson(size/30)+1
+		beingNum = min(len([*planets.Being().properties]),np.random.poisson(size/30)+1)
 		size-=beingNum
-		holeNum = np.random.poisson(size/25)+1
+		holeNum = min(len([*planets.BlackHole().urls]),np.random.poisson(size/25)+1)
 		size-=holeNum
-		stationNum = np.random.poisson(size/12)+1
+		stationNum = min(len([*planets.Spaceport().urls]),np.random.poisson(size/12)+1)
 		size-=stationNum
-		portalNum = np.random.poisson(size/11)+1
+		portalNum = min(len([*planets.Portal().urls]),np.random.poisson(size/11)+1)
 		size-=portalNum
-		rockNum = np.random.poisson(size/8)+1
+		rockNum = min(len([*planets.Asteroid().urls]),np.random.poisson(size/8)+1)
 		size-=rockNum
 		planNum = size//2
 		shipNum = size-planNum
