@@ -91,6 +91,7 @@ class Planet(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.4
+		self.drop_rate=1
 		self.type = "Planet"
 		self.icon = "Resources/Planet_icon.png"
 		self.pretext = "You've reached planet {}".format(self.name)
@@ -401,6 +402,11 @@ class Planet(Event):
 			self.get_properties()
 
 	def good_action(self,spaceship):
+		if np.random.rand()<self.drop_rate:
+			if not(spaceship.item):
+				#TODO get_random_item
+				spaceship.item=get_random_item()
+				self.text = self.text+". You found an item! You found a {}".format(spaceship.item.text)
 		spaceship.modify_provisions(+10)
 		return spaceship
 
@@ -1144,15 +1150,73 @@ class Player:
 
 
 
-#Planets = ["Mars","Solaris","Tatooine","Trantor","Pandora","Magrathea","Gallifrey",
-#	"Roboworld","Hoth","Terminus"]
-#Portals = ["Wormhole"]
-#Ships = ["TIE fighter","Elon Musk Car"]
-#Asteroids = ["Solar system asteroid belt","Kuiper belt","Asteroid belt outside Hoth",
-#	"Asteroid belt from Asteroids"]
-#Spaceports = ["Knowhere","Death Star","International Space Station","Babylon 5",
-#	"The Citadel","The Bunker","Death Egg","The Halo arrays","Space colony ARK",
-#	"ISPV 7"]
-#Beings = ["Your Mom","Cthulhu","Reaper","Marker","Galactus","That dragon from Kill the Moon"]
-#BlackHoles = ["Sagittarius A","M87","Gargantua"]
-#types = [Planets,Portals,Ships,Asteroids,Spaceports,Beings,BlackHoles]
+class Item
+	def __init__(self,name=""):
+		self.name = name
+		self.text = ""
+		self.url = ""
+		self.type = ""
+		self.urls = {}
+		self.properties = {}
+		self.pretext = ""
+
+	def action(self,spaceship):
+	return spaceship
+
+	def get_type(self):
+		return self.type
+
+	def get_url(self):
+		return self.url
+
+	def set_url(self):
+		self.url = self.urls[self.name]
+
+
+class Consumable(Item)
+	def __init__(self,name=""):
+		super().__init__(name)
+		self.type = "Consumable"
+		self.pretext = "You used the item {}".format(self.name)
+		self.properties = {
+			"Self Destruct Button": {
+				"url": "https://t1.rbxcdn.com/9f5dc5b3eb9c8b9be20eabdde350f429",
+				"use": self.destruct
+			}
+		}
+		if name:
+			self.set_url()
+
+		def use(self,spaceship):
+			self.properties["use"](spaceship)
+			spaceship.item=""
+			return spaceship
+
+		def get_properties(self):
+			self.good_text = self.properties[self.name]["good"]
+			self.bad_text = self.properties[self.name]["bad"]
+			self.url = self.properties[self.name]["url"]
+
+		def destruct(self,spaceship):
+			spaceship.modify_fuel(-spaceship.fuel)
+			spaceship.modify_provisions(-spaceship.provisions)
+			spaceship.modify_hull(-spaceship.hull)
+			return spaceship
+
+#class SelfDestructButton(Consumable)
+#	def __init__(self,name=""):
+#			super().__init__(name)
+#			self.text = "Your ship Self Destructs."
+#			self.urls = {
+#			"Self Destruct Button": "https://t1.rbxcdn.com/9f5dc5b3eb9c8b9be20eabdde350f429"
+#			}
+
+#	def use(self,spaceship):
+#		spaceship.modify_fuel(-spaceship.fuel)
+#		spaceship.modify_provisions(-spaceship.provisions)
+#		spaceship.modify_hull(-spaceship.hull)
+#		spaceship.item=""
+#		return spaceship
+
+
+class Equipement(Item)
