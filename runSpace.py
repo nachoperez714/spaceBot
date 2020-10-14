@@ -19,5 +19,5 @@ while True:
 			f = open("sigo.txt","w+")
 			f.write(str(turno+1))
 			f.close()
-		time.sleep(15)
+		time.sleep(60*60)
 	os.remove("sigo.txt")	
