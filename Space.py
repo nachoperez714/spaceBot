@@ -568,7 +568,7 @@ def main(turn=0,direction="",vote=True):
                         space_comment+="CE"
                         upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
                         upload_comment(gr,p_id,"You can add events in this form: https://docs.google.com/forms/d/e/1FAIpQLSfttY8c1XM-nrJpOw7mYZ0-0ulr9kCDfo-CGD63r6TxYzdoZw/viewform")
-                        if np.random.rand()<0.01:
+                        if np.random.rand()<0.05:
                             upload_comment(gr,p_id,"If you are feeling generous you can help to maintain this bot at paypal.me/DelRioFer")
                         upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
                 np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
