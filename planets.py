@@ -79,6 +79,7 @@ class Goal(Event):
 			"Venom" : "https://vignette.wikia.nocookie.net/starfox/images/2/2d/VenomDeserted.png/revision/latest?cb=20130407161739",
 			"What its based on" : "https://pbs.twimg.com/profile_images/1248509273/39198_1571854573776_1157872547_31663366_5779158_n.jpg",
 			"A plant" : "data:image/jpeg;base64,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",
+			"SPB5000" : "https://pbs.twimg.com/profile_images/765508475531173888/pfwCg-uu_400x400.jpg",
 		}
 		if name:
 			self.set_url()
@@ -290,10 +291,10 @@ class Planet(Event):
 				"bad"  : "Zorak attacks you. You lose 10 provisions",
 				"url"  : "https://hbomax-images.warnermediacdn.com/images/GXnPCXw10BaFYqQEAAAKk/tile.jpeg?size=1280x720&format=jpeg&partner=hbomaxcom&productCode=hbomax&host=artist.api.cdn.hbo.com&w=480"
 				},
-			"Space Colony Neo Mexico":{
+			"Space Colony Neo-Mexico":{
 				"good" : "Orale wey, you buy a Taco. You get 10 provisions",
 				"bad"  : "You get shot crossing the border. You lose 10 provisions",
-				"url"  : "https://i.redd.it/rlr07vn0awd31.jpg"
+				"url"  : "https://i.imgur.com/c3EJpTC.jpeg"
 				},
 			"Yugopotamia":{
 				"good" : "Yugopotamians try to poison you with chocolate. You get 10 provisions",
@@ -394,6 +395,46 @@ class Planet(Event):
 				"good" : "You save Cortana. You get 10 provisions",
 				"bad"  : "You hold out in a last stand of a suicide mission. You lose 10 provisions",
 				"url"  : "data:image/jpeg;base64,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"
+				},
+			"Sezius-RFF8 Refinery Colony ":{
+				"good" : "It's abandoned... after cutting through the overgrowth you find a warehouse with 10 provisions",
+				"bad" : "it's abandoned... automated defenses kick online and you drop 10 provisions",
+				"url" : "https://cdn.mos.cms.futurecdn.net/bYjbEohJjHzBzEx3tiX9K3.jpg"
+				},
+			"Petrichor V":{
+				"good" : "You and three friends have a great time killing all the wildlife on the planet. Win 10 provisions",
+				"bad" : "You and three friends have a terrible time killing only half of the wildlife on the planet. In the end you lose 10 provisions",
+				"url" : "https://pbs.twimg.com/media/Eb7xIcRU8AAJbVM.jpg:large"
+				},
+			"Aiur" :{
+				"good" : "Raynor's Raiders and his protoss allies will help you. You get 10 provisions",
+				"bad" : "Oh oh, there are a lot of renegade zergs around the planet. You lose 10 provisions",
+				"url" : "https://vignette.wikia.nocookie.net/starcraft2/images/9/98/Aiur_SC2_Art1.jpg/revision/latest/scale-to-width-down/340?cb=20131209212433&path-prefix=es"
+				},
+			"Peronia" : {
+				"good" : "Your ship run into a Del Caño strike. They are cooking choris. You get 10 provisions",
+				"bad" : "Your money has been devalued and now you can’t eat. You lose 10 provisions",
+				"url" : "https://peroniaespiritualart.files.wordpress.com/2020/01/captura-de-pantalla-2020-01-31-a-las-13.19.50.png"
+				},
+			"Prospero" : {
+				"good" : "Amidst the ashes, you hear wolves howling in the distance. You find 10 provisions",
+				"bad" : "Amidst the ashes, you hear wolves howling in the distance. You lose 10 provisions",
+				"url" : "https://vignette.wikia.nocookie.net/warhammer40k/images/b/bb/Prospero-0.png/revision/latest/top-crop/width/360/height/450?cb=20170304155120"
+				},
+			"Moon Kingdom" : {
+				"good" : "You've landed on the Moon and discover the ruins of the Moon Kingdom. A hologram of a white-haired woman shows you what it used to look like and gives you good advice. Gain 10 provisions",
+				"bad" : "You've landed on the Moon and discover the ruins of the Moon Kingdom. A hologram of a white-haired woman tells you the story of what happened to this place. You drop 10 provisions while she was telling you the story",
+				"url" : "https://static.wikia.nocookie.net/sailormooncrystal/images/c/c9/Moon_Kingdom.jpg/revision/latest?cb=20150216154158"
+				},
+			"Parum" : {
+				"good" : "You land on Parum and drink some Koltova Juice at the West Café. +10 provisions",
+				"bad" : "You land on Parum and get on a racial argument with a CAST. You escape dropping 10 provisions",
+				"url" : "https://cdn.hipwallpaper.com/i/86/21/tv0Dlo.png"
+				},
+			"Ersion" : {
+				"good" : "The plants and fruits in the planet are edible. You get 10 provisions",
+				"bad" : "Somehow this reminds you the early version of No Man's Sky. Lose 10 provisions",
+				"url" : "https://i.imgur.com/lxOiYyc.jpg"
 				},
 			#Todos los demas de Star Wars, el resto de los IRL
 			}	
@@ -526,7 +567,7 @@ class Ship(Event):
 				},
 			"The USCSS Prometheus":{
 				"good" : "You board a ship only to discover an Alien. After defeating it you get a newfound love for motherhood. You got 20 fuel",
-				"bad"  : "You board a ship only to discover an Alien. You manage to espace but only after an alien popping out of your cook and discovering your best friend is a robot made of milk. Your hull is damaged by 10",
+				"bad"  : "You board a ship only to discover an Alien. You manage to escape but only after an alien popping out of your cook and discovering your best friend is a robot made of milk. Your hull is damaged by 10",
 				"url"  : "https://i.pinimg.com/originals/8a/95/1e/8a951e67505f5d041628181a09cf3a53.jpg"
 				},
 			"The Park":{
@@ -750,10 +791,65 @@ class Ship(Event):
 				"url"  : "https://spacetodaypt.files.wordpress.com/2018/02/131660377_41n.jpg"
 				},
 			"Freeza's ship":{
-				"good" : "You watch Bardock be obliterated in a final stand, he drops 10 provisions",
+				"good" : "You watch Bardock be obliterated in a final stand, he drops 20 fuel",
 				"bad"  : "An alien midget that isnt even in it's final form shoots you. Your hull is damaged by 10",
 				"url"  : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUSEhMVFRUWFRgWFxUVFRYWFxUYFRcYFhgWFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGzAlHyUtLS01Mi0tLS0tLTUtLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLf/AABEIAKgBLAMBIgACEQEDEQH/xAAcAAAABwEBAAAAAAAAAAAAAAAAAQIDBAUGBwj/xABFEAACAQIEAwYDAwoEBgEFAAABAhEAAwQSITEFQVEGImFxgZEHEzJCobEUI1JicoKSwdHhM7Lw8RVDU6Kjs8IlY2RzdP/EABsBAAIDAQEBAAAAAAAAAAAAAAIDAAEEBQYH/8QALxEAAgIBBAAFAgYCAwEAAAAAAAECAxEEEiExBRMiQVEUoTJhgZGx4XHwUlPBQv/aAAwDAQACEQMRAD8A4yaKjNFWpFAoUKKrRA6I0KFMRQYo6KhTEyB0dFQpiZQdKVZpNWvAMTaRybv05GjQt3spKiBtJgTymmRZTKsiip3FXAzEjQE01VSZEChQoUGSwUKFCKpogKFChVYwQFHV92b7NHEo965dFixbIBuFS5ZyAQiJIkwQZmNR1pHGeDWbXetYn5iggMrJ8u4s7NlBYFZkTpEjTnQb+MpcEys4KUVY8I4DicUSMPZe7l3KjujnBYkAHwmmOGYUXbqWgJNx1trMwC7BQTBGgma9LcE4RbweHSxaHdQb82bm7RuSdaRPUNJtDIxyeeuKdksbh1z3sNcVBuwyuo8WKE5R4mqUqd4MdYMa+Nepg3+utcQ+KfAlwuJU2gFs3kzqo2VlOV1A5ASpA5ZorJp/EvMe0OdWFkz3Z7s5fxrFbAEKO/cuHJbSZgFtSSY2Anw50OOdnrmFALPZuLMFrLlwp6MCoInrEaVX28ddRSqXbiqdSquyqdIkgGCYAHpTTYhyILsR0LMR7ExW1Xv37+wlpiZpdq2WIVQWY7KoJJ8gNTTddl+FqW1w6XURFe6W+YyiDKuyhQeSgAabSSedK1OvdENzWRldW94OSYnBvbMXEdCdg6MhPkGAmmCtepcdgrWItG1fRbiHkwn1B3BHUa1w7tXwDDYPEHD3FvAQGS8jq3zEaYJtOsSCMphx9M6TTqNZGaWfsDOvBi4oRW3wXZ3hzWlBxd25eKgsbIHy0JH05GTMY2MkHyrL8X4ebF02ywbQMrDQOjCVaDqNNwdjNboTT9hWVnGSBFCKVFFFNIFFE1KpL0E/wljZoqM0VctBgoqOhRIoFKW2SCQCQoliB9IJCyegllHqKTRqBzMaGNJ15DfTzoiAdp5AaAQJ5CJ1J1MT5mgBz/1r/saKhRZIHQoUVFuIHRzRUKJTIHQoqFTeQOhNChUyQFP4XDPcdbdtWd2MKqiSx8BU5uzuLFr57Ye6LWnfKEAAmAxB1C677V0/4McHQWr2KjvM3ylJgkBBLkQO7JYCNfp3NKtvUYtrkuMcvBir3w7xttQ9xFC/aCOr3APBJAY+AaqC1jBZYhLYzAkZ7iy412g6IR4AHxr0LxrYef8AKuF9v7IXHXYESEb1NtZPvNcbT6+d03GZpsoUYbkVb8XvHMDcZgzZirEspYhRmytIJhFEmdBUN7hO59Nh7DSk0c10OzNgteyzxjcKf/ybP/sWvSJu6EV5dw+INt1uDdGVx5oQw/CvR+HxgfvD7Rkeuo+6uV4nNxSaNWnjuyWBeuefGW0DhrD81vFQfB7ZYj/xj2rfE1hfi8w/Irf/APSv/qvVzNJJ+dEbNelnHCaI0DQmvTxZhCrp3wivNkuj7K3VI8My6/5RXMTXSPhkpWw7bBruniFULPvI9Kx65ZqaNGlWbEddttpWB+NWFU4fD3o7y3Wtz+q6F497f3mtph7wZRB86xXxhvRhLCzqb5b0S2wP+cVyfD5uNyiOujwzkAJBkGCNZqytX3FtvmMbi75Xh9hlBUtqpiPpI2FVmajN4xl5V6uMoRTb/wBZzZJvo6NwH4X/AJRYS9+WKC6hgFslgAwBAJLid+VUHbDsXf4eVzlblt9FuKCBI1ykH6WjX/aul/DO8fyKxPJSvorso/CtH2m4auKwl6yw3RmXwdAWQj1H31zqPE7Fa4SfTwa5UxwsHmsrSWFW/FOFtaCPIa3cEq6zEwCVIOzCRp0MiqxxXom045MaZGpNKNFXLGBUKFCrRA6EaePT+9ChRlBUKOiqiBxpPLaioUdQgbRpAjTXWZPXbTyoqFCrICjoqVlq0QICpfCmUX7RZc6i4hZB9oKwJHlArc/DnsKuJX8rxQmzqLduSDcKmCzRskgiJ1jpu18VMDYsNYSxYt2pDklEClpyiCRuBr71inrYeZ5S7GqpuO4pePdojiAzM7Pcc6KJCovU9TyCDujckmAOp/BlweHZea3roPrDfgwrhKmuofBPiwV7+FY/WBeQdWQZbg88uQ/umjtm5Lc+QK1h4OkcXtd3yri/xQwuXEpc5PaHuhIP3FPeu2Yi9IM9PurDdr+ErisM42e2GuI3QqCSp8CBHt0rzemtULs+x0tjlU4nGqFWnDOE/NkyTAmAPeacwtvnbs5hyLH7/wC016yrTTkk/k5ErUm0VSWS2gBNdn7LYothbDHfIqt+1b7h28VrI8IRWUFlUkEqZEiVYjSeWlX2Ax9vDAqViyzZgyjSyxADBlGyEiZ5EtOhkI8T8Nk6d8OWuRui1kVbtlxk2gxlc++KuKLW7Fv9K49yPBFCD/2H2rV/laBTcLqEAkuWAUDrm2rm/HuIflWLYpJRV+Xb5d1TLMQdpJJ8orh+GaR2ahccI6GssjXW/kzn5GIJltASdOm9NtYUfpD0FaPHWglsgKPobMY/UJ/ECmltgW9hGWdvCva/RQ6wujg/UPspWwGgbXKYg6cwT/Suo9lkX8kw+QCPlKT+0RL/APdmrEJb/MqpOyr9wFWPZjj64WbNwN8uSVZdSk7gruRMnTWSdK5fiugbrUql+hu8P1UVY1NnRLTtECdawnxb4kLmISwNfkJDEfpv3nHoBbHmpq8ftnaVGNgMzxpcdcqpOkqp7zvqIBAHWdqxWNw6kNdJJbKxMnNJEkkk6k7z5msXhvhVsm7JrHxnv/OB+t1tedseTMxRLvV5dwhUKLtphnICsAdSdAPA605wHgBvYtbRHdXv3Ad8qEd394kD1NbdTT5UN2eEZap+ZLau2dV7EWTbw9hSIItgkdC5Lke7EelbEXgtt2OyqzHyUEn8KzuGuFdai9u+NjD4Bx/zL4NpB4MPzjeQWfVhXmKsz1Kl8s610VGP+Dkt/ic4VcMynOLouZjqCoQoFHj3tf2RVS9aPgGETFYi1YuSBcBBZIzDIpYEEggbRt1p7tN2IxGGvm3bR79sgMlxFGqkkQwnRhBn3517FX11t1SfPDOTGEpR3YMYRRVuMV8MMeolBauiJ7l0A+1wLVHjuyWNs/4mEvgdRbLj+JJFYo2RfTGuEl7FFQpx0gwdD0OhHpRZaNA4EUKVFFRlBUKOjU+E+Gv8qogmhR0KNLJQKXctFYn7QzDUGRJHLbUHQ0mKEUewgVGdifCjirbsxYDYm2z2zctW2D3RBKhBpLxsskTQWLaskR6B4NhRawti0my2LYHj3Br61zn4w4AlLV2PpJU+Abn7qB61vOxOMGIwGHcGStsWm/atdw/5Z9aZ7W8PW9ZZGEqRB8J5jxBg15a5Sp1W59G+rE47fk87mpnB8Xds3rd2z/iI2ZdJ20II6EEg+BNSOKcBvWLgtuv1SUf7LhdyD4aSOU1d8HwuSbdtWZo79xFVjPTv6BQd56ECd69Bp6/OWV0YLZeW8e50dONfOA0KPlBe2dxmH1KftoeTDyMGRVfxjEEYe6B9T22RRpMspzNqQIVczHypi1cGItW5WYMaGGtMAVbKwgiCCpgjSareNcIuuW+XcAVhlKs1wmO6cudixyyswI351nfgeJrY/T9x8fE0oYkuSk7LHIhduqj+NiBPuKLBJlD2v+m5UDw+yfaD61bYDAfJU2zDTuY0NQcZw68cQGtZIYd/O4Re6Nyx8NNP0RXpYry0n8HFb3ya+RPDmIa6IOUFWnpnBGvmUanmxDajluDO22kfxa03irCYYGb9kFxldELMIDZl77RmII5LoCdaqMRxi1BCl25Soj1739KONsEsyeCOuTfCH8VwtbhBACkGdAIPjHXxqywmBVNRueZ3qjHaAictrcz3n/kB/OkN2iv8hbH7pP4mgVtUXmK+wXlWtYZe8TwjNacICzFSAqgkktpAA86reJkhWTKwaMsFHEEiNZAjn7VXnjuJ5OB5In8xTN3iN9t7k/uqPwFU78t8PrHX9hRoa7x/v6F6ugqJfsB2mPM7eQqr/L736QPov9KP/idyIIU+hB/Giepg+HF/sUqJrlNFtbWNOROg8Y/tU/AYMnLKwpc9NQvfYnwJgH9sVT4Li6CBcVl8R3h/WtZw/H2bgULdiAQMiq0ZiCcyHK24H2hsOlG7YNen+wJRknyhPFXzG3b5s4c+C2zmn+LKPWpHYhPmYvEazc+UpC8youHNHkDbMdDUfhvDbmdrt1gzMYHIKs7fh7CjHZ0fOzrfa2w7wyaMJ5gg6bb+FZdZR9RS4dZGaa1U2KXwb65ltgPdOUH6R9pyNYRd2PlXGu1naN8ZfNwjKijLbSZyKDz/AFjuT/SugXbWVGysSSnyi7d92L90EuxzGBnaJ5GuY4vAszhUUly5tlBvnB2A6fhXEh4Z9Mt7eWv2OlLWu54xwaX4WYQ3MZ8w7W1j1fQD2D12XGNBEfoj8TWQ7F8KGEtpbMFyc1wjbMREDwAgek861PEbyqVDMqnLMExpJ1rDC12ahtfBrlXsgkyBb4wsDfYbeVOLxaPpePPT8KxtvFrpoRoNj/WaVbcT3XgfrbUt1tHf+ihg2F/GJdEXrVq8vPMiP9xFU+J7K8Kv74cWj1tO1v8A7Zy/dVQ151MSD7EGnhxHTvAjxH9DRxcl02Kn4bCRD4j8JbbCcLiv3L6z/wCRNv4ayHGewOPw0s2HZ0H27P51fZe8PUCuk4HFMdbbExvHL0NaDhXFZOUt7iD7TrWmF9i75Off4c48o83lPu+6iivTfF+zuDxgm/YRjt8wd1/41hveuf8AHvg+dWwd6f8A7d7T0FxR+I9a0xvi+zmODRySjFWvGuAYjCNlxFl7fQkSrfsuO6fQ1XtbIMEQehrbXyLY2BRxSooVpUUAEBXW/hxwoWsAb2hfEFiT+opKKnloxj9auTiu39gnFzhdiPsh7Z81dh+EH1rjeObo0px6zyadLjfyYXsN2tPD8Q9m7/gM+RwB/hsn5sXABvooDDnAPLXrXEcQrJmUhlYDKwIKsDrII3FcS+IHCTYxTMB3LvfB/W+0POdf3qc7JcdxFtGtpcIQEZUYB0LMwnut9OkxlK6nWawy0/1kI7HyG7FTN7ujZ9sMLnwzMphrJ+ap/Z0ceqyI5wKouFcQyvmYALiDmkiIuADMp85zep6GpPGjjWQKflspymLSESQZhiztoDB0jbXpRWuGE2PlXvqYyY+yeRB6iuz4VpLaYNT+eDFr767ZJxJ1tvl3ZEBLp1kwFuHQeQeAP2v2qm4q6AhaVAAJljlXwzHlVCmO/IkV77/MuqStkRA6C4QZzOATqdF5STWS4hjbuIYFzAGyg6D0/nvXSy8tJGNRyuS7x/aq3/ykLnq3dUe2p+7zrP4zil+79TlR+indHvv7mkjCxRNYNFsm16mFHZHoiC1SltRUg243MUybi/pCq2wj3wM3N9BZaGWjDA8xTgt1aw+iN4Gsoo/linxZozaotgO8jlBSIqaMPQ+THKr2E8xEIUYtazsRsRoRU1kHSjtAbH3qnUn2TzPgu+B9prtuFvL862PtAfnFH/z/AB860wxa3AHtumRo78E6c+6NS32QOR36VikVQNDVhwCFvBDrbvSrLyDZTB9YjxkdKvY4rhmd4k+i5YsjFdXuy2S2x+jXV7sfSevT6R4l2MwZe/dvMJ+X+bQxEvc/OXHjqcw9GjlV9hLCL8yEYsx77GWdywiWdjrp1MjpqKyOKwV1b1xMLczXAUi2hjOSSWNySBkQJqdQC4Xcmufr476Gt2DXpJbLU8ZOkJeSywzkG4fosgj5j+Mbqo5sdB91M4zgK4hvm4lUa4w5zCqNAiA/ZH3mTzqu7FdmVwoe9fZTcYZrt0wFRRrlB6Dcnnp4VjO1/alsTiS9m61u0oCWxqCVWTnIg6kknyivP6Sh2Sah0vfrJ2LrcLMuy3s4RmAiDpyI/ClXMHcUSVaOsSPeqxLugg1PwfGblsyGPkdaN1zXR61qePSFmIp9Hkakf68acfjSu4LKF6kAAH22qZb4raBh0Dr1gSfHMBPvNA5ST5QuU5f8SLaV0IZPdTH4VOxPFWgC6izycaMfPkaVZt2H1ssFP6LmR6MBKnzFPYjDsO7ctsvnqD4g1HL8hMrIuS3L/wAZI4Rx0fSzHQaMNf4l3rQWuJsokjMp+0hn7qxF7hanUd08iNv9e1PcP4hcswDlPXSGH4T99MjJMz3aWuzmH7G+GIt3VIOW4h0KsAR5FTWP478McHiJbDk4d+g71s/uE9390jyqytYn5wlQA42YbHzgAg+Ypy1j3RstxSDyP8wedF5k6nmL4OVPR+y7+Dj3aPsVi8HLXLea2P8Am2+8n73NP3gKzhWvTljHSOorMdovh5hMXL2Yw906yg7jH9a3t6rHrW6jxGL4mc+yiUThQFbP4e9qRgbr2b5H5PdaHYHMLbjui4CN1MQSOQB5VU9o+ymJwRi9b7pMC4vett+9yPgYNUcVusjC+vHaELMWd07R8Is4i3leHQwQykc9mRhzrmfaPs22BQMjG7aZwSSoDKYgI4mDPJtNQRA0nSfD/EJdwvyrbtavWZDoCGW6h+m78t5giYJXKSRJ3prjeNv27N5MaltkbKtp7Y/NuzEgs4kurKCGUAbqdTGvmdLGzT6jy4v39/g6FuyyndJD+HLKma0xvWTtBBuJ5Fvqjoe8I50r8pRbbPcuEhAWIYFWAOwhu9PQf7UrB8Mt3FS5YvFHAGd7RBDxuHRhB9RIqJ26szaTMw7zomggZUDEKdepZp01r1m9ro4eF7mHxGIe/c+bc0J+kclXkv8AfnS7a1aY20dFG0VGGH0rTXXtQt2ZIl1Z2MaVExVwqN6sjaHWoWOcfQFBJ38BVXcRbzyFW8vBAxQgxlJIAkvrJ3JAGgGum+mvOmlDHYH0FWDW3bVnLHTViWOkACTrsAPIVMtELoESOYLXTP8ACy1z/prHzz9jT5sUUJU86fGcaSenl1FWdvBHQTAmRpHjvE6cpNShhRrrJnUxzPOm16SWct4AnqIlLlufpH3NGLbzMn3qzuACRuR4bU2bTHlT/p18v9wPNIyvdXUEHzFL/wCI/pL6rt7Gn72EfKTqfSqu20TojSCIaTlnmACO8PGaXdZKr8OQoRjPssReU8x70QcGq1LBOxnwUE/gKssJgnkMwgdNyT5Darq1E5v8JU4Rj7j1q2auuzmHD4i0q6w4dv1Rb75J8NAP3hUa3hgB3pHvudh4nwFXK/8A0/DtdcW1v3soW2TFwWwZIACnvEwTIyjuzOWC66e2OBMPUy9xXEsyO2cW7SkguwKKANJZzBadYRIJ0lhNN8Jw3yEu4l8qI7Zhcugi41sAfLX5akAREC2I5TBmMJju0Vy732WHDA22zuflEayOrf8AaOSzrVZisVcuHNcuPcI2LuzRPSTp6VzdTo7dSlHOI/f9jfp5qr1e5c8f7UX8SAjORaEH5YAVSwH1EDU67AkxpWec0c0m4ddNK3qiFVe2CwipTcnlmx2ijDVJTFkADMQI2Ike21KW4j6MEH6wlfcDQ1wJZR9BTaRGBp21eIEbinvyEbfMAPj9P8Q/pSGwThcxiPPfypctslyFvi+xVt9QVMHzj76vcB2luL3LhzKOR1jyPKs8lljqRAiZOgPrTqgaZ1IBG6iPUcjSJQx0BZCE+Gsm9s46zdHdIHg39aF/CoRDICB+kIIHgelZPDcOuZc9si4nPKQHHmh19qXhuJOn0PIH2W/CD/KkuLXKMP0v/XIvbOFW02a2xB6EyI86vcE64hCjjvDmD+FZH5ougMvdY8tp/Z61I4diiDzzDmNx6UyNr6Yq6iU45z6kac4P5emY/vbe/KpCXI37p68jUbB8YDjK/e/H2p8WVM/LOn6J19pqmovpHOkpdTJhbMpS6oZWEEEBlYHqDoRWA7V/C1Hm5gSEbf5LHuH9hj9J8Dp5VucNjPst5eVS1bmNvup9Nsq3wzHZVz0eaLtm/hL0EXLN62fFWX+oPqDWl4f2vbEFcPjTYW0/de81pmjoWRXAGv2hEbxXZOO8Aw+Nt5MRbDR9LjR08Vfl5beFcY7Zdgb+Cm4v52x/1FGq/wD7F+z57eW1bJRq1HM1z8iE5Q/CXfDeD3MIBmcX7ClijImchGkzKfnANZlGbyinbzJiLTBcTYcSrW4ugsGEhlJcKYKmNZIJma5gl5lEKSB0nTX9XapGF4xfta27zpIg5ToREQRsdOtaKI2wWJNP7CLIwl0sG2XDQ7A6x3WDAggjXYwQdf6SKgYmw2Yw0LGggb+X96Zs9skKIl/Dq+VQouWXa3cUDYS+bP5Ex4Up+0WH3Bdh+hct5X9GQsjH+CuhHUr/AO+DDPTyXMRh8KeYPnET41XYzBFSWjunnvl05+HjVuONYd/puFD0cED32++juGSCL1vKY2I5+M07fXNcMWt8HyjPW0Mco5c/5UoabmtFb7PfM7ygGeatln2Iml4nsJecD5dxOUh3A6zrr4UEp7F/Y2L3szxbLzinUuOYImPWKurvw8bc4vDp4PdViPXu/gKPCdj8LbabvFMMFAk5HXOfDRzp99IWsecNfcY6Vj+iCiOd1WPEfzp5bqfZ7zTqLea4Z8lmKvWTglvfEm4R+hZuXPYspH308va/hdoQlnFXfMIg/wAwj2p31UX1/DYr6eXv/v8AJRjCYh/oTIOZuDfyVTPvFO2ezzA5irOx+1B9gOVT7/xKtr/gYC2v61y5J/hVR/mqFd+JOKPJV8LYVB65g7R5MKrzJvna3/kLyMcZ/YL/AIPdALFTHpA8xy8zTQv20AYAtr9SkC2ORm6xCT4Ak1S8S7RX731tOs6ln9jdZivpFVd26zGWJY9WJJ9zTM2Ney+5Sojnl5NFe7Sm202QvzBIF4jMyTp+bDDLb56wza6NWexOIa4xdyWZt2YliT4k6mm6BUwDyMwfLf8AEVUalF57f5j1hLCHsJaLuqDdiAPMmBVh2g4UcNcNpiCV0MHY8wehmqq20Gl3bpYkkyetORMBOhBgiD0pt6WoonFVYvSWmau3dOx1EUcg7e1MAaaGjU9dK4Dime8hJpIkJdIqSuNMQdunKobMQNRPjSVbp/ekyra6Hqxe5b4e+SIU+gMH+9W+C4lbYZLqKPGAv9p9Kyoenfmk761knBFzqjNGyw2Gw/1WruUc0YSNPCdR5GaLiHABeHzLAg7tlaVnwB7w8jWSw2Ka2wZdI9q0HD+LBzqInkNNaXOLj6kZJ02Qe6LJGAb5bZLyZTtmglD+0h223HtV1iODT+dsGeoB1Hl4eFQfng91y36p3HkQatOGtlgqwA5gH7o3HntQRs3cNGa6Ul6l39mIt4PMsnRuo/GncRjGVBKyy/aGsjxq5t2w28HoRuPA9aruLcPLSVOVh4d1vPp50cVKPBijdGcsSGLHEEcbyRy+0PI9Kk4fFGe53uZXY+1ZbE4NvrXeYzKYg9D0NOYXiWoFw5WGz7e9GpOPfJremTWY8m5tYgRMx5j8elSQ0jUSDoR/rcVnLHESPrh1bdhH8qnLcZRmttmXpMx09abuXcejmW6bDMd2z+GSXQb2BhH3Nk6I3XIfsN4beVcgxmEe07W7ilHUwysIIPiK9I4TGsTMa8xyNQ+0/ZfDcQT84MtwCEurGZfA/pL4H0im06znDMdtDiecTQq+7Udlr+BuZLy90/RcXVHHgeR/VOv41QkV04SUllGdrAVGFHSjIoRToxTAYAg6D2FGEHQe1HRxT4wj8AsGQdB7U4G0jXf0jy603R01JAlrwLBi7cCExJ51adq+DW8OQqtJ8CD99ZuxfKmQYq0xGEvPaS8zoVuOUGa4oIK6EuCe6uu5qPtcgY5Kc0KI0YFEGA0KAoVZQVLuhe7lzfSM2YD6pM5Y3WI313pBoqhYKUKTRioiDgonoCkualn4Sl2aBXpa3KjB6UGriuJ7Ku7jBLU9P7UtddRuKhinbV3qdaFxNUbE+yTM0YprP6fhS0YdaTKv5NMJL5FzRpcK60As0TLGlIlVjoYXnDscWESDGwJ19DU6xxCDrKkcv51lrbFTI/3q5tYj5yqhMNPd2E8omsNkMMzzr+ejf4Hii3bebNDAanrHMjmKfw3HbZ7r6MNNNfv6Vz0Yi9hmysI8DsQf9cqFvic/XoeTDl4GmqxrtGF+Hxll9r2wdGv4RZz2wCG+pdII6xVLxHg6uO77cxUfgvGDbhbh7jbP+j41b4q6c3INpDDZgetA/Ut0X+hlUbKZ4yZVfm4YiVJtzrzgGr/D3csEGVPLpTwi53TCv0Ox8qhcR4a9sErtz6f2o4Pcs+492RseJcP+S1wWLWYPXyny8aukysNDIrntjiLKcrirzhvExtm7rHU9OnlV1wTZn1Gil3EuOI4ZLiNZvoLlttw33EHkR1G1cd7b9gnwk3rBN3D7zu9rweN1/W967CuKIb5dzWdj1/vQDlDB1U+GhB02/lRQvlRL8jnToyvz/k80RrrPj1pNdV7dfDsFWxOBXTd7A1jq1rw/V9ulctuLFdyi+NkcowSg0wWgCQCcoJALRMCdTA3jeKVcYbLMdSd45xGgPTWOtNUK1qQtoVQoqFHuKwHNOZzGUmAJ96Zmjmr3FYDmjVo2pE0dXkmA6OaTQq8kwHNFNCiqmyB0oUkUoGiiRiqJqE0l6q1+kpFzRUqKKuWj1G0CXIqQlwHeoxoR0qmshwslEmr4UqPSoiXSKkW7/Lccx/MdKBxZshbFoeVuR96UTSAOmooo6UmSwzXGTwPpd60/bjzqCDSiaXOtSQW/KNCcTcu2wjnOBqrH6gNomq/5TTG9RcFjyDBqz+ejLIkOok/18qyeS8g1tJcAwWLyAq0kHlyHjHWrXhXGIHynDMhPdfYqegn8KqbFsXNMwnxgA/vcqdxfCL1sTlJXcxy8x08aHymnlEshB8PtmlN8nQ6EbH/W1WWC4gbn5tyJIgE7N+q39d6yHBeMi2Qt5cyfpRJXzHMVqblu0yC7amOeUyPODRRXuYL4KL2yX6lbxK0oYqylfvynwPSqwXWtHwPPka1jWRiLcyGIEBxuPB1NZDEq1tiCJWdVPLxFVscHldDtPLPHwafCcRL2TKh1QTmB1UdY3Mc6LBcbmQTKnmeR8+U1ksNjTbaUJFTLjZ2+ZbIGY6poIPMRtBqrOVkqejjl5XDNtgscV1GonUVle3vYZcUGxWDUfN+p7Y0F3qV6XPDn57q4VioOU909DWjwWOZdB5x1HUUim6VEsro5Wr0fweeLiEGCII0IOhBHIikV2bt32NXGqcVhVi+NblsafNgbgf8AU/zedccuIQSCII0g6EEciOVej0+ojbHcji2VuLwxFFQoq0bhWA6E0M23ht4c/wCZoUW4gKOioUSZQqhNFQo8lAo6KhUyQOjmkg0dTcQWqkyQCYEmBsJAk9BJA9RSWo1ciQCQCIMHcSDB6iQD6Ck3B4g6DbxEx5jahsl6SIvKFChWFHp49AIpJFHQq0E0AGjUdKFCqkSJIS5H9Kd32oUKU1lZN9UvYAbrS6FClMeuQmE0osRsf7eRoqFCXtHLN+K0vAeKlTA0ndSZHmAdqFCkv0yWPci9cWpE7G4KzcuAg5M2p7vdPXbb2NW3DsMloZc65DpBYc+hH9KFCqlhSxgx3JtKOeBeHvm1mUKpKyRJgsus6j/aoGNsC/NxO9O4H1L5ihQq08PHsBCWxOxd8FDfwmX6lMdRUM90+HI0dCgtgoywjqReSxt3laDJDD7o5g8x4VafPcZWmQOn4ihQrnWemXBjuSTLPCY0gyDqfvrO9u+yIxatisMsX1E3bYH+MB9tR/1BzHPz3OhRUWyrtTj7nJ1lUXHJyN1ik0VCvTRZwWHQoUKagQUKFCjRQdChQoygUJoqFVJkDoUKFCmQMUGoUKk36SH/2Q=="
 				},
+			"Don John Roland":{
+				"good" : "The Don John Roland is a party ship and gives you 20 fuel",
+				"bad" : "This is actually the ship's twin, the meat eating ship, the John Ron Donald, which eats 10 of hull",
+				"url" : "https://i.imgur.com/t6czrr4.png"
+				},
+			"Space Amish":{
+				"good" : "The Amish gift you 20 fuel because they're nice",
+				"bad" : "Amish believe your ship is heretical and attack you with a horse, -10 hull",
+				"url" : "https://i.imgur.com/H8D3ktO.png"
+				},
+			"UES Contact Light":{
+				"good" : "You have a delivery! You get 20 fuel",
+				"bad" : "You get attacked by a very angry guy with a sword who damages your hull by 10",
+				"url" : "https://steamuserimages-a.akamaihd.net/ugc/3318335570676212655/05E2C9EEF629E0AFA14CF250A3D7D8AFAEBB42C3/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+				},
+			"USS Ishimura":{
+				"good" : "You manage to board the ship and stomp some crates. You get 20 fuel",
+				"bad" : "You fight hordes of necromorphs as you realize your girlfriend is dead. Lose 10 hull",
+				"url" : "https://vignette.wikia.nocookie.net/deadspace/images/e/ef/Salvage_-_Poster04.jpg/revision/latest?cb=20101122222808"
+				},
+			"Joji's Ship":{
+				"good" : "The captain sings a song. you get 20 fuel",
+				"bad" : "The crewmate of the captain betrays then you get hit from the fight. you lose 10 hull",
+				"url" : "https://sluttyravercostumes.com/wp-content/uploads/2019/06/Jojis-Video-Sanctuary-Depicts-Retro-Futurism-840x525.jpg"
+				},
+			"Grancypher" : {
+				"good" : "You get 20 fuel for not questioning what's an airship doing in space",
+				"bad" : "Rackam accidentally hits you and you lose 10 hull",
+				"url" : "https://granbluefantasyanimeusa.com/assets/img/roading/grancypher.png"
+				},
+			"Grox Ship" : {
+				"good" : "You run into a Grox ship. You somehow convince them to not blow up your ship and get 20 fuel from them",
+				"bad" : "You run into a Grox ship. They see you as a threat and damage your hull by 10",
+				"url" : "https://steamuserimages-a.akamaihd.net/ugc/856100123318907928/3476E50E5F7D4626F74202C612621C9BCB2E9262/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+				},
+			"Federal Security Forces" : {
+				"good" : "They let you pass through the resource extraction site. You gain 20 fuel",
+				"bad" : "They see smuggled items in your hold. They attempt an arrest but you supercruise out. Hull damaged by 10",
+				"url" : "https://i.pinimg.com/originals/e1/32/f9/e132f947ea22d1778118ff38a2673165.jpg"
+				},
+			"Grineer Galleon" : {
+				"good" : "You sabotage the ship and gain 20 fuel",
+				"bad" : "You get targeted by a Grineer Navar cannon and lose 10 hull",
+				"url" : "https://i.ytimg.com/vi/H9zqOea9vTg/maxresdefault.jpg"
+				},
+			"Derelict Alien Spaceship" : {
+				"good" : "You managed to scavenge for resources and found 20 fuel through the wreckage",
+				"bad" : "Your ship's presence activated old security drones that attacked you, causing 10 damage in your hull",
+				"url" : "https://images.app.goo.gl/7q8XgByaAZqgEQ547"
+				},
+			"Musai Class Cruiser" : {
+				"good" : "The crew provides 20 fuel for your journey",
+				"bad" : "The crew believe you're part of the V Project and attack, you lose 10 hull",
+				"url" : "https://vignette.wikia.nocookie.net/gundam/images/a/a0/Musai-igloo.png/revision/latest?cb=20190401082258"
+				}
 			}		
 		if name:	
 			self.get_properties()
@@ -798,13 +894,18 @@ class Asteroid(Event):
 			"Deoxys" : "https://vignette.wikia.nocookie.net/espokemon/images/d/d5/Deoxys.png/revision/latest/scale-to-width-down/340?cb=20150621184218",
 			"Space Anomaly" : "https://i.imgur.com/ggQeeAE.jpg",
 			"Sputnik" : "https://upload.wikimedia.org/wikipedia/commons/b/be/Sputnik_asm.jpg",
-			"Higuain's penalty" : "https://www.rosarioplus.com/__export/1436281358095/sites/rosarioplus/img/noticias/2015/07/07/penal_higuain.jpg",
+			"Higuain's penalty" : "https://s3.amazonaws.com/latetera/app/public/system/photos/4985/original/Cometa.jpg?1436081689",
 			"Poochy on his way to his home planet" : "https://i.ytimg.com/vi/4tvAjX5ACPo/hqdefault.jpg",
 			"Garbage Ball" : "https://4.bp.blogspot.com/-SKBp_a6R_fw/TpsHfmij3CI/AAAAAAAAABU/1wqvwf-K9qM/s1600/GarbageBall.jpg",
 			"Phantom Zone" : "https://libreriaactioncomics.files.wordpress.com/2014/05/phantom-zone.jpg?w=650",
 			"Asteroid from Armageddon" : "https://cdn.mos.cms.futurecdn.net/r4FcQBz64VQo5D8f9FUf6C-1200-80.jpg",
 			"Wall-e and EVE" : "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d125df43-37f9-4450-a601-50d3aa7fa501/ddqffyb-567f58f2-115e-4bc0-8fc5-b4cdfb0c0dde.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZDEyNWRmNDMtMzdmOS00NDUwLWE2MDEtNTBkM2FhN2ZhNTAxXC9kZHFmZnliLTU2N2Y1OGYyLTExNWUtNGJjMC04ZmM1LWI0Y2RmYjBjMGRkZS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.C2IuVN8FS3FjVTg7ShqFaPTeqM2CSBoPtam8JkpkYvY",
 			"Meateroid" : "https://vignette.wikia.nocookie.net/cloudywithachanceofmeatballs/images/4/4d/Meateroid.png/revision/latest/scale-to-width-down/340?cb=20130406212617",
+			"Space Hulk" : "https://static.wikia.nocookie.net/warhammer40k/images/6/6f/Space_Hulk_by_Zen_Master.jpg/revision/latest/scale-to-width-down/985?cb=20120914182757",
+			"Space Mafalda" : "https://imgur.com/gallery/bUIGWXt",
+			"The Little Prince's planet" : "https://i.pinimg.com/originals/bf/df/52/bfdf5247fc9bb9d1f86063ef8167c4bc.jpg",
+			"Juice" : "https://vignette.wikia.nocookie.net/17776-an-american-football-story/images/0/09/Juice_yellow.png/revision/latest/scale-to-width-down/310?cb=20201015204907",
+			"Monument of B-R5RB" : "https://4.bp.blogspot.com/-8RUKPwqD4s8/VLYdpEPYEGI/AAAAAAAAADs/VU6GaJb_cY4/s1600/b-r5rb-ships.jpg",
 			}
 		self.bad_text = "You crash into an object and lose 10 hull."
 		self.good_text = "You set up a mining station and gain 10 hull."
@@ -842,12 +943,19 @@ class Spaceport(Event):
 			"Space Tree Station": "https://vignette.wikia.nocookie.net/theregularshow/images/7/71/S8E03.013_Space_Tree_Station.png/revision/latest?cb=20161003224144",
 			"Terra Venture": "https://i.ytimg.com/vi/HjtfksemvEM/hqdefault.jpg",
 			"Dr Willy's Space Station": "https://i.ytimg.com/vi/mMSstBBytuI/hqdefault.jpg",
-			"Space Colony Neo Mexico": "https://i.redd.it/rlr07vn0awd31.jpg",
+			"Space Colony Neo Mexico": "https://i.imgur.com/c3EJpTC.jpeg",
 			"Jameson Memorial": "https://vignette.wikia.nocookie.net/elite-dangerous/images/7/79/Jameson_Memorial_Station.jpg/revision/latest?cb=20151125134020",
 			"Axis": "https://pm1.narvii.com/5831/76e284f0b4a8fa754d55f35d519444e04564f61f_hq.jpg",
 			"Star Forge": "https://i.redd.it/1krrb9r0f3941.jpg",
 			"La Vie en Rose": "https://vignette.wikia.nocookie.net/gundam/images/e/e2/Storm_2011-02-27_16-53-49-95.jpg/revision/latest?cb=20110301060509",
 			"Hydroponics Station": "https://images.adsttc.com/media/images/514a/18bf/b3fc/4bb2/3d00/0018/large_jpg/mode-lina_hydroponic_pumping_station_sfw_3.jpg?1363810492",
+			"GUARDIANS Colony" : "https://static.wikia.nocookie.net/phantasystar/images/d/d1/Guardians_colony.png/revision/latest?cb=20141003005752",
+			"The Beyond" : "https://www.blogemup.se/wp-content/images/beyond_coast.jpg",
+			"Salyut 6" : "https://media.sciencephoto.com/image/c0138983/800wm",
+			"United Nations in Exile" : "http://imgur.com/a/b7JLmoS",
+			"Solar Station" : "https://static.wikia.nocookie.net/outerwilds_gamepedia/images/0/02/Sun_station.png/revision/latest/scale-to-width-down/600?cb=20190718231841",
+			"Everus Harbor" : "data:image/jpeg;base64,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",
+			"KND Moonbase" : "https://pm1.narvii.com/6330/46d76ed01a420f135b0e17d35cd9fe26643ab641_hq.jpg",
 			}
 		self.good_text = "You get 50 of your lowest resource."
 		if name:
@@ -993,6 +1101,16 @@ class Being(Event):
 				"bad"  : "You sacrifice yourself to stop Anti-Pops from destroying the universe.",
 				"url"  : "https://vignette.wikia.nocookie.net/villains/images/5/5a/Anti_Pops.png/revision/latest?cb=20200331020153"
 				},
+			"Stock Photo Alien" : {
+				"good" : "No royalties necessary. Resources maxed up.",
+				"bad" : "Dreamtime is furious, and kills you immediately, not before your photobucket account.",
+				"url" : "https://thumbs.dreamstime.com/z/alien-abduction-young-woman-victim-35529719.jpg"
+				},
+			"Lavos" : {
+				"good" : "Lavos is still in hibernation, you collect a lot of resources and leave.",
+				"bad" : "You get there as Lavos wakes up, killing you.",
+				"url" : "https://vignette.wikia.nocookie.net/square/images/7/73/Lavos.jpg/revision/latest?cb=20071224221942"
+				},
 			}
 		if name:
 			self.get_properties()
@@ -1049,7 +1167,7 @@ class Player:
 		self.hull = 100
 		self.properties = {
 			"Planet Express" : {
-				"url"  : "https://www.uokpl.rs/fpng/f/11-119481_planet-express-ship.png",
+				"url"  : "https://i.imgur.com/DgXhab4.png",
 				"fuel" : 100,
 				"provisions"  : 100,
 				"hull"  : 100,
@@ -1104,9 +1222,9 @@ class Player:
 				},
 			"No Man's Sky LEGO" : {
 				"url"  : "http://www.pngmart.com/files/7/No-Mans-Sky-PNG-Image.png",
-				"fuel" : 160,
+				"fuel" : 150,
 				"provisions"  : 60,
-				"hull"  : 80,
+				"hull"  : 90,
 				},
 			"Galaga" : {
 				"url"  : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSSQJoEMZt3e_MofpMbzZ8Dv2vVI9afavewyA&usqp=CAU",
@@ -1131,6 +1249,18 @@ class Player:
 				"fuel" : 120,
 				"provisions"  : 90,
 				"hull"  : 90,
+				},
+			"Bentenmaru" : {
+				"url" : "https://vignette.wikia.nocookie.net/mouretsupirates/images/5/5f/Bentenmaru.jpg/revision/latest/scale-to-width-down/619?cb=20130825161149",
+				"fuel" : 80,
+				"provisions" : 80,
+				"hull" : 140,
+				},
+			"Wallace & Gromit Rocket" : {
+				"url" : "https://i.redd.it/3sh55gcls1321.jpg",
+				"fuel" : 130,
+				"provisions" : 100,
+				"hull" : 70
 				},
 		}
 		if name:
