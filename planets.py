@@ -982,32 +982,32 @@ class Being(Event):
 		self.pretext = "You find a cosmic entity: {}".format(self.name)
 		self.properties = {
 			"Your Mom" : {
-				"good" : "Your mom is very kind and loving. All resources maxed up.",
+				"good" : "Your mom is very kind and loving. All resources +100.",
 				"bad"  : "The weight of your mom destroys the ship.",
 				"url"  : "https://vignette.wikia.nocookie.net/bindingofisaac/images/f/f8/250x250-400px-Mom.png/revision/latest?cb=20120610141058"
 				},
 			"Cthulhu" : {
-				"good" : "Your tininess amuses the cosmic entity. All resources maxed up.",
+				"good" : "Your tininess amuses the cosmic entity. All resources +100.",
 				"bad"  : "Why is Cthulhu in space? Who cares, he killed you.",
 				"url"  : "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e33f34df-2b2a-403e-b893-ac217b0fa237/d91af1p-1b820e44-a25b-49c1-b28a-ea131d0d5f4d.png/v1/fill/w_1024,h_866,q_80,strp/cthulhu_in_space_by_flowerewolf_d91af1p-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD04NjYiLCJwYXRoIjoiXC9mXC9lMzNmMzRkZi0yYjJhLTQwM2UtYjg5My1hYzIxN2IwZmEyMzdcL2Q5MWFmMXAtMWI4MjBlNDQtYTI1Yi00OWMxLWIyOGEtZWExMzFkMGQ1ZjRkLnBuZyIsIndpZHRoIjoiPD0xMDI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.15kmQPwBzug039BR-EphdWaN-vNhn3jAH-XwFw3WIto"
 				},
 			"Reaper" : {
-				"good" : "You get the green ending. All resources maxed up.",#Mass Effect
+				"good" : "You get the green ending. All resources +100.",#Mass Effect
 				"bad"  : "You get the red ending (that means you died).",
 				"url"  : "https://wallpapercave.com/wp/XrofXx1.jpg"
 				},
 			"Marker" : {
-				"good" : "You are tasked with taking monolites to planets. All resources maxed up.",#Dead Space
+				"good" : "You are tasked with taking monolites to planets. All resources +100.",#Dead Space
 				"bad"  : "What do you and Nicole Brennan have in common? That's right.",
 				"url"  : "https://i.pinimg.com/originals/d7/6b/49/d76b494cad72f351a2c3b2c8f035d3db.jpg"
 				},
 			"Galactus" : {
-				"good" : "You are the new herald of Galactus. All resources maxed up.",
+				"good" : "You are the new herald of Galactus. All resources +100.",
 				"bad"  : "Galactus accidentally swallows your ship whole. Permanently.",
 				"url"  : "https://www.cinemascomics.com/wp-content/uploads/2019/05/galactus-heraldo-vengador.jpg"
 				},
 			"Space baby" : {
-				"good" : "Benevolent Space baby wants to help you evolve. All resources maxed up.",
+				"good" : "Benevolent Space baby wants to help you evolve. All resources +100.",
 				"bad"  : "The Space baby is in stage of evolution you cant comprehend. You lose the game",
 				"url"  : "data:image/jpeg;base64,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"
 				},
@@ -1017,57 +1017,57 @@ class Being(Event):
 				"url"  : "https://vignette.wikia.nocookie.net/tardis/images/3/33/The_Moon_Hatches_-_Kill_The_Moon_-_Doctor_Who_-_BBC/revision/latest/scale-to-width-down/360?cb=20150920095900"
 				},
 			"God" : {
-				"good" : "God did things right, you arent sure if he did anything at all. Your resources max out.",
+				"good" : "God did things right, you arent sure if he did anything at all. Your resources rise by 100.",
 				"bad"  : "God does nothing. You died in space",
 				"url"  : "https://i.pinimg.com/originals/f8/e7/57/f8e757a0771ba38cd416acbbf92d870d.png"
 				},
 			"AntiSpiral" : {
-				"good" : "You pierce the heavens with your spirit. Your resources max out.",
+				"good" : "You pierce the heavens with your spirit. Your resources rise by 100.",
 				"bad"  : "Your spiral power wasnt enough. You were destroyed to stave off the spiral nemesis.",
 				"url"  : "https://vignette.wikia.nocookie.net/especiesaliens/images/8/81/Maxresdefault_%281%29.jpg/revision/latest/scale-to-width-down/340?cb=20170312043829&path-prefix=es"
 				},
 			"Zucc" : {
-				"good" : "You encounter a strange android entity calling itself The Zucc. You sacrifice an asian woman to please him. Your resources max out.",
+				"good" : "You encounter a strange android entity calling itself The Zucc. You sacrifice an asian woman to please him. Your resources increase by 100.",
 				"bad"  : "u have been zucced goodbye",
 				"url"  : "https://thumbor.forbes.com/thumbor/fit-in/416x416/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F5c76b7d331358e35dd2773a9%2F0x0.jpg%3Fbackground%3D000000%26cropX1%3D0%26cropX2%3D4401%26cropY1%3D0%26cropY2%3D4401"
 				},
 			"Page Admin" : {
-				"good" : "You run into the admin of this page. Because he is a kind and benevolent admin, he fully resupplies you.",
+				"good" : "You run into the admin of this page. Because he is a kind and benevolent admin, he gives you 100 of each resource.",
 				"bad"  : "You run into the admin of this page. Unfortunately, you haven't been reacting enough to their posts and so they decide to permaban you... with extreme prejudice.",
 				"url"  : "https://stuartreviewsstuff.files.wordpress.com/2015/10/become-internet-forum-moderator.jpeg"
 				},
 			"Monolith" : {
-				"good" : "You encounter an alien monolith. As a reward for making it out here, the aliens grant you supreme knowledge to transcend your physical humanity, and even give you a full resupply as a bonus.",
+				"good" : "You encounter an alien monolith. As a reward for making it out here, the aliens grant you supreme knowledge to transcend your physical humanity, and even give you 100 of each resource as a bonus.",
 				"bad"  : "You encounter an alien monolith. Unfortunately, the aliens take one look at your primitive ship and de-evolve the crew back into apes. Game over.",
 				"url"  : "https://cinemalogue.com/wp-content/uploads/2018/04/2010_screenshot08.jpg"
 				},
 			"Flying Spaghetti Monster" : {
-				"good" : "You run into the Flying Spaghetti Monster. Seeing that your crew are dedicated believers, it gives you a full resupply.",
+				"good" : "You run into the Flying Spaghetti Monster. Seeing that your crew are dedicated believers, it gives you 100 of all resources.",
 				"bad"  : "You run into the Flying Spaghetti Monster. Unfortunately, nobody on your crew is a believer, and so as a divine punishment, it sends you to the infinite spaghetti dimension, where you are doomed to roam for all eternity. At least you'll never run out of food.",
 				"url"  : "https://cdn.theatlantic.com/thumbor/mpbEjpIUJJ-DLLUkOxgZH2URkYA=/667x0:2000x1333/500x500/media/img/2016/09/DIS_Gilsinan_BigInEurope/original.jpg"
 				},
 			"Alien X" : {
-				"good" : "Alien X warps reality to max out your resources.",
+				"good" : "Alien X warps reality to get 100 of each resource.",
 				"bad"  : "Alien X obliterates you.",
 				"url"  : "https://i.redd.it/l3tez0lwpii41.jpg"
 				},
 			"Aurelion Sol" : {
-				"good" : "The Star Forger is amused with your puny ship. Your resources are maxed.",
+				"good" : "The Star Forger is amused with your puny ship. +100 to all resources.",
 				"bad"  : "The Star Forger sees your small existence, and promptly sends a beam of light to end you. ",
 				"url"  : "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/AurelionSol_0.jpg"
 				},
 			"Moon Lord" : {
-				"good" : "Moon Lord gifts you some luminite to max out your resources.",
+				"good" : "Moon Lord gifts you some luminite to build 100 of every resource.",
 				"bad"  : "Your ship is struck by Moon Lord's Phantasmal Laser. You die",
 				"url"  : "https://static.wikia.nocookie.net/terraria_gamepedia/images/7/7f/Moon_Lord.png/revision/latest/scale-to-width-down/1200?cb=20200805023431"
 				},
 			"Silver surfer" : {
-				"good" : "Silver surfer maxes out your resources to help you defeat Galactus.",
+				"good" : "Silver surfer gives you 100 of every resource to help you defeat Galactus.",
 				"bad"  : "Galactus was gonna kill you anyway so Silver surfer does it quicker.",
 				"url"  : "https://dam.smashmexico.com.mx/wp-content/uploads/2018/03/personajes-marvel-quien-es-silver-surfer.jpg"
 				},
 			"GOLB" : {
-				"good" : "The entity of chaos watches you fly by and maxes out your resources",
+				"good" : "The entity of chaos watches you fly by and gives you 100 of every resource",
 				"bad"  : "GOLB is a mysterious entity who embodies chaos. You die",
 				"url"  : "data:image/jpeg;base64,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"
 				},
@@ -1077,32 +1077,32 @@ class Being(Event):
 				"url"  : "https://cdn.vox-cdn.com/thumbor/Bi_V7O6hiQjw8l6bUGGjyLDIZI8=/0x0:2040x1360/920x613/filters:focal(913x655:1239x981):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/65852315/IMG_6C0791D334EA_1.0.jpeg"
 				},
 			"The Beast with a Billion Backs" : {
-				"good" : "The Beast repents for its foul actions and leaves you in peace. Your stats are maxed out.",
+				"good" : "The Beast repents for its foul actions and leaves you in peace. +100 to all stats.",
 				"bad"  : "The Beast rapes you with its enormous tentacles. A moment of bliss is followed by your painful death.",
 				"url"  : "https://m.media-amazon.com/images/M/MV5BMjFhODZhYzQtZjgxYS00YjhjLWFkZmEtOTBkYjVkZTY1YWMxXkEyXkFqcGdeQXVyNjY1OTEzMzc@._V1_.jpg"
 				},
 			"02" : {
-				"good" : "You win Kirby. Your stats are maxed out.",
+				"good" : "You win Kirby. +100 to all stats.",
 				"bad"  : "You are not Kirby. It kills you.",
 				"url"  : "https://art.ngfiles.com/images/545000/545059_kaitogfx_02-kirby-64-the-crystal-shards-art-by-kaito.jpg?f1504570808"
 				},
 			"Leviathan" : {
-				"good" : "You have grown fat from strength. Your stats are maxed out.",
+				"good" : "You have grown fat from strength. +100 to all stats.",
 				"bad"  : "Your light fades.",
 				"url"  : "https://vignette.wikia.nocookie.net/destinypedia/images/b/bc/D2-Leviathan-concept.jpg/revision/latest?cb=20170915203207"
 				},	
 			"Hellstar Remina" : {
-				"good" : "Junji Ito is a fine fellow. Your stats are maxed out.",
+				"good" : "Junji Ito is a fine fellow. +100 to all stats.",
 				"bad"  : "The lovecraftian planet licks your ship. It kills you.",
 				"url"  : "https://pbs.twimg.com/media/C2T4vU8W8AEJjk6.jpg"
 				},
 			"Anti-Pops" : {
-				"good" : "Anti-Pops is friendly with you for some reason. Your stats are maxed out.",
+				"good" : "Anti-Pops is friendly with you for some reason. +100 to all stats.",
 				"bad"  : "You sacrifice yourself to stop Anti-Pops from destroying the universe.",
 				"url"  : "https://vignette.wikia.nocookie.net/villains/images/5/5a/Anti_Pops.png/revision/latest?cb=20200331020153"
 				},
 			"Stock Photo Alien" : {
-				"good" : "No royalties necessary. Resources maxed up.",
+				"good" : "No royalties necessary. Resources +100.",
 				"bad" : "Dreamtime is furious, and kills you immediately, not before your photobucket account.",
 				"url" : "https://thumbs.dreamstime.com/z/alien-abduction-young-woman-victim-35529719.jpg"
 				},
