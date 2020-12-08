@@ -66,16 +66,17 @@ class Board:
                 indexes = list(range(self.area))
                 np.random.shuffle(indexes)
                 #print(indexes)
-                offset = 1
+                offset = 0
                 for i in range(self.lenx):
                         self.events.append([])
                         for j in range(self.leny):
                                 self.events[i].append([])
                                 if i==self.startLoc[0] and j ==self.startLoc[1]:
                                         self.events[i][j] = "Start"
+                                        offset+=1
                                 elif i==self.goalLoc[0] and j==self.goalLoc[1]:
                                         self.events[i][j] = self.goal
-                                        offset = 2
+                                        offset+=1
                                 else:
                                         #print(i,j,i*self.leny+j-offset,indexes[i*self.leny+j-offset],self.eventlist[indexes[i*self.leny+j-offset]])
                                         self.events[i][j] = self.eventlist[indexes[i*self.leny+j-offset]]
