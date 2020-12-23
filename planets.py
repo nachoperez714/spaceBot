@@ -843,7 +843,7 @@ class Ship(Event):
 			"Derelict Alien Spaceship" : {
 				"good" : "You managed to scavenge for resources and found 20 fuel through the wreckage",
 				"bad" : "Your ship's presence activated old security drones that attacked you, causing 10 damage in your hull",
-				"url" : "https://images.app.goo.gl/7q8XgByaAZqgEQ547"
+				"url" : "i.pinimg.com/originals/be/86/0f/be860f0c368f68214a2da9aad1ec7323.jpg"
 				},
 			"Musai Class Cruiser" : {
 				"good" : "The crew provides 20 fuel for your journey",
