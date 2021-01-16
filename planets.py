@@ -1182,10 +1182,10 @@ class Consumable(Item):
 		self.pretext = "You used the item {}".format(self.name)
 		self.properties = {
 			"Self Destruct Button": {
-
 				"url": "https://t1.rbxcdn.com/9f5dc5b3eb9c8b9be20eabdde350f429",
 				"use": self.destruct,
-                                "description":'Blow up the ship'
+                "description":'Blow up the ship',
+				"text": "Your ship has been destroyed"
 			}
 		}
 		if name:
@@ -1195,10 +1195,11 @@ class Consumable(Item):
 	def use(self,spaceship):
 	        self.properties[self.name]["use"](spaceship)
 	        #spaceship.item=None
-	        return spaceship,self.description
+	        return spaceship,self.pretext+". "+self.text
 
 	def get_properties(self):
 		self.description = self.properties[self.name]["description"]
+		self.text = self.properties[self.name]["text"]
 		#self.bad_text = self.properties[self.name]["bad"]
 		self.url = self.properties[self.name]["url"]
 

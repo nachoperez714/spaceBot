@@ -330,6 +330,7 @@ def update_image(spaceship,event):
 	previous = add_spaceship(previous,spaceship)
 	previous = add_numbers(previous,spaceship)
 	previous = add_crosses(previous,spaceship,event.type=="Portal")
+	print("event.text",event.text)
 	previous = add_text(previous,event)
 	previous = add_item_text(previous,spaceship)
 	previous.save("Post_image.png")
@@ -578,6 +579,7 @@ def main(turn=0,direction="",vote=True):
 
 		if direction=='item':
 			spaceship,message = spaceship.item.use(spaceship)
+			event = spaceship.item
 			movement = [0,0]
 		else:
 			if was_portal:
@@ -601,7 +603,6 @@ def main(turn=0,direction="",vote=True):
 
 			event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
 			spaceship,message = event.action(spaceship)
-
 		if spaceship.isHome:
 			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
 			victory_path = update_image(spaceship,event)
@@ -614,6 +615,7 @@ def main(turn=0,direction="",vote=True):
 			return False
 		if spaceship.is_dead():
 			message += '\nYou died before reaching your destination, better luck on the next voyage.'
+			print("event.text",event.text)
 			game_over_path = update_image(spaceship,event)
 			gen_gameover_image(board)
 			if direction:
