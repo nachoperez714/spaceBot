@@ -36,7 +36,7 @@ class Board:
 		self.startLoc = [xs,ys]
 		#TODO player ship here
 		#self.goal = np.random.choice([*planets.Goal().urls])
-	
+
 	def set_goal(self):
 		xgoal = self.startLoc[0]
 		ygoal = self.startLoc[1]
@@ -69,7 +69,7 @@ class Board:
 		self.eventlist+=random.sample([*planets.Portal().urls],portalNum)
 		self.eventlist+=random.sample([*planets.BlackHole().urls],holeNum)
 		self.eventlist+=random.sample([*planets.Being().properties],beingNum)
-		
+
 
 	def generate_events(self):
 		#TODO: cambiar probabilidad de cada tipo de evento
@@ -96,7 +96,7 @@ class Board:
 		#print (self)
 		return self.events[x][y]
 
-					
+
 class Spaceship:
 	def __init__(self,player=""):
 		self.x = 0
@@ -149,7 +149,7 @@ class Spaceship:
 
 	def is_dead(self):
 		return self.fuel<=0 or self.hull<=0 or self.provisions<=0
-		
+
 	def overhaul(self,img_path):
 		self.image = img_path
 
@@ -164,10 +164,10 @@ def upload_comment(graph, post_id, message="", img_path=None):
 								connection_name="comments",
 								message=message)
 	return post
-   
+
 def upload_reply(graph, comment_id, message='',img_path=None):
 	upload_comment(graph,comment_id,message,img_path)
- 
+
 def upload(message, access_token, img_path=None):
 	graph = facebook.GraphAPI(access_token)
 	if img_path:
@@ -576,30 +576,31 @@ def main(turn=0,direction="",vote=True):
 		board = data[3]
 		was_portal = data[4]
 
-		if was_portal:
-			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
+		if direction=='item':
+			spaceship,message = spaceship.item.use(spaceship)
+			movement = [0,0]
 		else:
-			if direction=='item':
-				spaceship.item.use(spaceship)
-				movement = [0,0]
-			elif direction:
-				usertest = {
-					"up" : [0,-1],
-					"left" : [-1,0],
-					"right" : [1,0],
-					"down" : [0,1]
-					}
-				movement = usertest[direction]
+			if was_portal:
+				spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 			else:
-				reacts = get_reactions(previous_gr,previous_id)
-				movement = get_input_from_reactions(reacts,spaceship)
-			spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
-			#spaceship.move(spaceship.x+1,spaceship.y+0)
-			spaceship.modify_fuel(-5)
-			spaceship.modify_provisions(-5)
+				if direction:
+					usertest = {
+						"up" : [0,-1],
+						"left" : [-1,0],
+						"right" : [1,0],
+						"down" : [0,1]
+						}
+					movement = usertest[direction]
+				else:
+					reacts = get_reactions(previous_gr,previous_id)
+					movement = get_input_from_reactions(reacts,spaceship)
+				spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
+				#spaceship.move(spaceship.x+1,spaceship.y+0)
+				spaceship.modify_fuel(-5)
+				spaceship.modify_provisions(-5)
 
-		event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
-		spaceship,message = event.action(spaceship)
+			event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
+			spaceship,message = event.action(spaceship)
 
 		if spaceship.isHome:
 			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
@@ -661,7 +662,7 @@ def testUrls():
 	arrayProperties+=[*planets.Planet().properties]
 	arrayProperties+=[*planets.Player().properties]
 	arrayProperties+=[*planets.Ship().properties]
-	arrayProperties+=[*planets.Being().properties] 
+	arrayProperties+=[*planets.Being().properties]
 	arrayUrls+=[*planets.Asteroid().urls]
 	arrayUrls+=[*planets.Portal().urls]
 	arrayUrls+=[*planets.BlackHole().urls]
