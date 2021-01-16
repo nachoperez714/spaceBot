@@ -107,11 +107,9 @@ class Spaceship:
 		self.provisions = 100
 		self.hull = 100
 		self.item = ""
-		self.tool = ""
+		#self.tool = ""
 		self.isHome = False
 		self.initialize(player)
-		self.item = ""
-		self.tool = ""
 
 	def has_item(self):
 		return bool(self.item)
@@ -130,6 +128,7 @@ class Spaceship:
 		self.fuel = aux.fuel
 		self.provisions = aux.provisions
 		self.hull = aux.hull
+		self.item = planets.Consumable("Self Destruct Button")
 
 	def move(self,x,y):
 		self.x = x
@@ -379,22 +378,23 @@ def find_font(text,draw,x=800,y=200):
 		return font3, 3
 
 def add_item_text(img,ship):
-	img.paste(Image.open(ship.tool.icon).convert("RGBA").resize(cv.item_icon_size),cv.tool_icon_position)
+	#img.paste(Image.open(ship.tool.icon).convert("RGBA").resize(cv.item_icon_size),cv.tool_icon_position)
 	img.paste(Image.open(ship.item.icon).convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
-	toolname = "Tool: "+ship.tool.name
-	tooldesc = ship.tool.description
+	#toolname = "Tool: "+ship.tool.name
+	#tooldesc = ship.tool.description
 	itemname = "Item: "+ship.item.name
 	itemdesc = ship.item.description
+	print("itemname ",itemname," itemdesc ",itemdesc)
 	draw = ImageDraw.Draw(img)
-	tnFont, tnLines = find_font(toolname,draw,650,150)
-	tdFont, tdLines = find_font(tooldesc,draw,650,125)
+	#tnFont, tnLines = find_font(toolname,draw,650,150)
+	#tdFont, tdLines = find_font(tooldesc,draw,650,125)
 	inFont, inLines = find_font(itemname,draw,650,150)
 	idFont, idLines = find_font(itemdesc,draw,650,125)
-	namefont = min(tnFont,inFont)
-	descfont = min(idFont,tdFont)
+	namefont = inFont#min(tnFont,inFont)
+	descfont = idFont#min(idFont,tdFont)
 	draw.text(cv.use_item_position,"Use\nitem",font=get_font(80))
-	draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(namefont))
-	draw.text(cv.tool_desc_position,textwrap.fill(tooldesc,len(tooldesc)//tdLines+tdLines-1),font=get_font(descfont))
+	#draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(namefont))
+	#draw.text(cv.tool_desc_position,textwrap.fill(tooldesc,len(tooldesc)//tdLines+tdLines-1),font=get_font(descfont))
 	draw.text(cv.item_text_position,textwrap.fill(itemname,len(itemname)//inLines+inLines-1),font=get_font(namefont))
 	draw.text(cv.item_desc_position,textwrap.fill(itemdesc,len(itemdesc)//idLines+idLines-1),font=get_font(descfont))
 	return img
@@ -464,6 +464,7 @@ def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
 		pw.append(ps[0])
 		ph.append(ps[1])
 	#print (pw, ph)
+	print ("pw ",pw," ph ",ph)
 	return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
 
 def get_image_from_url(url):
@@ -578,7 +579,10 @@ def main(turn=0,direction="",vote=True):
 		if was_portal:
 			spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
 		else:
-			if direction:
+			if direction=='item':
+				spaceship.item.use(spaceship)
+				movement = [0,0]
+			elif direction:
 				usertest = {
 					"up" : [0,-1],
 					"left" : [-1,0],
@@ -633,8 +637,8 @@ def main(turn=0,direction="",vote=True):
 				space_comment+="A"
 			space_comment+="CE"
 			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
-                        upload_comment(gr,p_id,"You can add events in this form: https://docs.google.com/forms/d/e/1FAIpQLSfttY8c1XM-nrJpOw7mYZ0-0ulr9kCDfo-CGD63r6TxYzdoZw/viewform")
-                        if np.random.rand()<0.01:
+			upload_comment(gr,p_id,"You can add events in this form: https://docs.google.com/forms/d/e/1FAIpQLSfttY8c1XM-nrJpOw7mYZ0-0ulr9kCDfo-CGD63r6TxYzdoZw/viewform")
+			if np.random.rand()<0.01:
                             upload_comment(gr,p_id,"If you are feeling generous you can help to maintain this bot at paypal.me/DelRioFer")
 			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
@@ -684,18 +688,20 @@ def testUrls():
 def localtest():
 	br = False
 	while not br:
-		b = input("Press n for a new one; wasd to move or q to quit")
+		b = input("Press n for a new one; wasd to move, x to use item or q to quit")
 		if b=="n":
-			main(True,"hola")
+			main(1,"hola",False)
 		elif b=="w":
-			main(False,"up")
+			main(2,"up")
 		elif b=="a":
-			main(False,"left")
+			main(2,"left")
 		elif b=="s":
-			main(False,"down")
+			main(2,"down")
 		elif b=="d":
-			main(False,"right")
+			main(2,"right")
 		elif b=="q":
 			br = True
+		elif b=='x':
+			main(2,"item")
 		else:
 			print("That's not a valid command, try again")

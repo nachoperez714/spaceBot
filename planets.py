@@ -1150,18 +1150,20 @@ class Player:
 
 
 
-class Item
+class Item:
 	def __init__(self,name=""):
 		self.name = name
 		self.text = ""
 		self.url = ""
 		self.type = ""
-		self.urls = {}
+		#self.urls = {}
 		self.properties = {}
 		self.pretext = ""
+		self.icon = "resources/borger.jpg"
+		self.description = ''
 
 	def action(self,spaceship):
-	return spaceship
+	        return spaceship
 
 	def get_type(self):
 		return self.type
@@ -1170,38 +1172,41 @@ class Item
 		return self.url
 
 	def set_url(self):
-		self.url = self.urls[self.name]
+		self.url = self.properties[self.name]["url"]
 
 
-class Consumable(Item)
+class Consumable(Item):
 	def __init__(self,name=""):
 		super().__init__(name)
 		self.type = "Consumable"
 		self.pretext = "You used the item {}".format(self.name)
 		self.properties = {
 			"Self Destruct Button": {
+                             
 				"url": "https://t1.rbxcdn.com/9f5dc5b3eb9c8b9be20eabdde350f429",
-				"use": self.destruct
+				"use": self.destruct,
+                                "description":'Blow up the ship'
 			}
 		}
 		if name:
 			self.set_url()
+		self.get_properties()
 
-		def use(self,spaceship):
-			self.properties["use"](spaceship)
-			spaceship.item=""
-			return spaceship
+	def use(self,spaceship):
+	        self.properties[self.name]["use"](spaceship)
+	        #spaceship.item=None
+	        return spaceship
 
-		def get_properties(self):
-			self.good_text = self.properties[self.name]["good"]
-			self.bad_text = self.properties[self.name]["bad"]
-			self.url = self.properties[self.name]["url"]
+	def get_properties(self):
+		self.description = self.properties[self.name]["description"]
+		#self.bad_text = self.properties[self.name]["bad"]
+		self.url = self.properties[self.name]["url"]
 
-		def destruct(self,spaceship):
-			spaceship.modify_fuel(-spaceship.fuel)
-			spaceship.modify_provisions(-spaceship.provisions)
-			spaceship.modify_hull(-spaceship.hull)
-			return spaceship
+	def destruct(self,spaceship):
+		spaceship.modify_fuel(-spaceship.fuel)
+		spaceship.modify_provisions(-spaceship.provisions)
+		spaceship.modify_hull(-spaceship.hull)
+		return spaceship
 
 #class SelfDestructButton(Consumable)
 #	def __init__(self,name=""):
@@ -1219,4 +1224,5 @@ class Consumable(Item)
 #		return spaceship
 
 
-class Equipement(Item)
+class Equipment(Item):
+    pass
