@@ -105,7 +105,7 @@ class Spaceship:
                 else:
                         aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
                 print(aux.url)
-                self.player = get_image_from_url_player(aux.url)
+                self.player = get_image_from_url_player(aux)
                 self.player = cv.greensquare(self.player)
                 self.fuel = aux.fuel
                 self.provisions = aux.provisions
@@ -287,7 +287,7 @@ def update_image(spaceship,event):
                 previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
                 previous.save("Reference_image.png")
         try:
-                img_path = get_image_from_url(event.url)
+                img_path = event.get_path()
         except:
                 img_path = "Resources/failsafe.jpeg"
         img = Image.open(img_path)
@@ -405,9 +405,10 @@ def get_image_from_url(url):
         urllib.request.urlretrieve(url,'event_image')
         return 'event_image'
 
-def get_image_from_url_player(url):
-        urllib.request.urlretrieve(url,'player_image')
-        return 'player_image'
+def get_image_from_url_player(player):
+        #urllib.request.urlretrieve(url,'player_image')
+        #return 'player_image'
+        return player.path
 
 def vote_ship(direction=""):
         img_path, ship_list = make_vote_image()
@@ -440,7 +441,7 @@ def make_vote_image():
         for i, ship in enumerate(ships):
                 shipimg = Image.new("RGB",(495,495))
                 myship = get_event_from_name(ship)
-                shipicon = Image.open(get_image_from_url_player(myship.url)).convert("RGBA").resize((300,300))
+                shipicon = Image.open(get_image_from_url_player(myship)).convert("RGBA").resize((300,300))
                 shipimg.paste(shipicon,(0,190))
                 fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((100,100))
                 resources = Image.open("Resources/sanguche.png").convert("RGBA").resize((100,100))
@@ -578,7 +579,7 @@ def main(turn=0,direction="",vote=True):
 def testUrls():
         arrayProperties = []
         arrayUrls = []
-        brokenUrls = []
+        brokenUrls = ""
         print("Planets: ",len([*planets.Planet().properties]))
         print("Ships: ",len([*planets.Ship().properties]))
         print("Beings: ",len([*planets.Being().properties]))
@@ -601,19 +602,21 @@ def testUrls():
         for name in arrayProperties:
                 try:
                         aux = get_event_from_name(name)
-                        print(name)
-                        urllib.request.urlretrieve(aux.url,'event_image')
+                        #print(name)
+                        #urllib.request.urlretrieve(aux.url,'event_image')
+                        img = Image.open(aux.path)
                 except:
                         print(">arreglar esta ^")
-                        brokenUrls+=name
+                        brokenUrls+=name+"\n"
         for name in arrayUrls:
                 try:
                         aux = get_event_from_name(name)
-                        print(name)
-                        urllib.request.urlretrieve(aux.url,'event_image')
+                        #print(name)
+                        #urllib.request.urlretrieve(aux.url,'event_image')
+                        img = Image.open(aux.path)
                 except:
                         print(">arreglar esta ^")
-                        brokenUrls+=name
+                        brokenUrls+=name+"\n"
         print("Broken urls: ",brokenUrls)
 
 def localtest():
@@ -621,15 +624,15 @@ def localtest():
         while not br:
                 b = input("Press n for a new one; wasd to move or q to quit")
                 if b=="n":
-                        main(True,"hola")
+                        main(1,"hola",False)
                 elif b=="w":
-                        main(False,"up")
+                        main(2,"up")
                 elif b=="a":
-                        main(False,"left")
+                        main(2,"left")
                 elif b=="s":
-                        main(False,"down")
+                        main(2,"down")
                 elif b=="d":
-                        main(False,"right")
+                        main(2,"right")
                 elif b=="q":
                         br = True
                 else:
