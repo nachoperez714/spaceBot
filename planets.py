@@ -1155,7 +1155,7 @@ class BlackHole(Event):
 		self.pretext = "Oh no! It's the black hole {}".format(self.name)
 		self.path = "Pictures/BlackHoles/"
 		self.urls = {
-			"Sagittarius A*":"sagittarius_A",
+			"Sagittarius A*":"sagittarius_a",
 			"Messier 87" : "messier_87",
 			"Gargantua" : "gargantua",
 			"Black Hole Sun" : "black_hole_sun",
