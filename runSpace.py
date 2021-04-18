@@ -2,11 +2,19 @@ import Space
 import time
 import os
 from importlib import reload
+from types import ModuleType
+
+def rreload(module):
+    reload(module)
+    for attribute_name in dir(module):
+        attribute = getattr(module,attribute_name)
+        if type(attribute) is ModuleType and attribute_name=="planets":
+            rreload(atribute)
 
 while True:
 	seguir = True
 	while seguir:
-		reload(Space)#In case there were changes
+		rreload(Space)#In case there were changes
 		if not(os.path.exists("sigo.txt")):
 			seguir = Space.main(0,vote=True)
 			f = open("sigo.txt","w+")
