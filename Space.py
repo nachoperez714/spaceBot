@@ -451,9 +451,14 @@ def make_vote_image():
                 shipimg.paste(hull,(300,390))
                 shipimg.paste(reacs[i],(0,0))
                 draw = ImageDraw.Draw(shipimg)
-                draw.text((400,190),str(myship.fuel),font=get_font(50))
-                draw.text((400,290),str(myship.provisions),font=get_font(50))
-                draw.text((400,390),str(myship.hull),font=get_font(50))
+                if ship=="Mystery Ship":
+                    draw.text((400,190),'???',font=get_font(50))
+                    draw.text((400,290),'???',font=get_font(50))
+                    draw.text((400,390),'???',font=get_font(50))
+                else:
+                    draw.text((400,190),str(myship.fuel),font=get_font(50))
+                    draw.text((400,290),str(myship.provisions),font=get_font(50))
+                    draw.text((400,390),str(myship.hull),font=get_font(50))
                 font1 = get_fontsize(ship,draw,345,190)
                 font2 = get_fontsize(textwrap.fill(ship,len(ship)//2+1),draw,345,190)
                 if font1>=font2:
