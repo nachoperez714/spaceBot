@@ -440,6 +440,21 @@ class Planet(Event):
 				"bad" : "Somehow this reminds you the early version of No Man's Sky. Lose 10 provisions",
 				"url" : "ersion"
 				},
+			"Insanus" : {
+				"good" : "You sold a bit of coolant to purchase 10 provisions for your ship",
+				"bad" : "Your ship was attacked by violent robots. Lose 10 provisions",
+				"url" : "insanus"
+				},
+			"Nirn" : {
+				"good" : "The dwemers give you aetherium in exchange of your technology and you sell it for 10 food",
+				"bad" : "You fight off a horde of cliff racers and you drop 10 provisions",
+				"url" : "nirn"
+				},
+			"Auraxis" : {
+				"good" : "You landed near an abandoned base and harvested some Cortium nearby, granting you 10 provisions",
+				"bad" : "You got yourself in the middle of a never ending war between purple spandex cultists, red autoritharian crybabies and blue capitalist pigs, and your ship was hit by some rockets, losing 10 provisions",
+				"url" : "auraxis"
+				},
 			#Todos los demas de Star Wars, el resto de los IRL
 			}	
 		if name:
@@ -474,7 +489,8 @@ class Portal(Event):
 			"Portal (R&M)" : "portal_rm",
 			"Time hole" : "time_hole",
 			"Time vortex" : "time_vortex",
-			"Stargate" : "stargate"
+			"Stargate" : "stargate",
+			"Warp Star" : "warp_star",
 		}
 		#Wormhole, portal, warp station, improbability drive
 		if name:
@@ -855,7 +871,12 @@ class Ship(Event):
 				"good" : "The crew provides 20 fuel for your journey",
 				"bad" : "The crew believe you're part of the V Project and attack, you lose 10 hull",
 				"url" : "musai_class_cruiser"
-				}
+				},
+			"Clan Wolf Dropship" : {
+				"good" : "You win a trial of possession despite not owning any 'Mechs. Gain 20 fuel",
+				"bad" : "They fire their C-ER-PPC's at you, damaging your hull by 10",
+				"url" : "clan_wolf_dropship"
+				},
 			}		
 		if name:	
 			self.get_properties()
@@ -912,7 +933,8 @@ class Asteroid(Event):
 			"Space Mafalda" : "space_mafalda",
 			"The Little Prince's planet" : "the_little_princes_planet",
 			"Juice" : "juice",
-			"Monument of B-R5RB" : "monument_of_b-r5rb"
+			"Monument of B-R5RB" : "monument_of_b-r5rb",
+			"Moon Bears" : "moon_bears",
 			}
 		self.bad_text = "You crash into an object and lose 10 hull."
 		self.good_text = "You set up a mining station and gain 10 hull."
@@ -964,6 +986,7 @@ class Spaceport(Event):
 			"Solar Station" : "solar_station",
 			"Everus Harbor" : "everus_harbor",
 			"KND Moonbase" : "knd_moonbase",
+			"Ghost Station" : "ghost_station",
 			}
 		self.good_text = "You get 50 of your lowest resource."
 		if name:
@@ -1125,6 +1148,11 @@ class Being(Event):
 				"bad" : "You cannot grasp the true form of Giygas's attack!",
 				"url" : "giygas"
 				},
+			"Turn A" : {
+				"good" : "The Gundam didn't have enough power to use Moonlight Butterfly, instead you get +100 to everything",
+				"bad" : "The Moomlight Butterfly turns your ship and all other technology to sand",
+				"url" : "turn_a"
+				},
 
 			}
 		if name:
@@ -1164,7 +1192,8 @@ class BlackHole(Event):
 			"Black Hole (Zathura)" : "black_hole_zathura",
 			"Black Hole (Futurama)" : "black_hole_futurama",
 			"Dark Hole" : "dark_hole",
-			"Your mom's ass" : "your_moms_ass"
+			"Your mom's ass" : "your_moms_ass",
+			"Mario Galaxy Black Hole" : "mario_galaxy_black_hole",
 		}
 		self.bad_text = "To escape the gravitational pull you use 10 extra fuel"
 		if name:
@@ -1279,13 +1308,37 @@ class Player:
 				"provisions" : 100,
 				"hull" : 70
 				},
-		}
+			"Railjack" : {
+				"url" : "railjack",
+				"fuel" : 60,
+				"provisions" : 90,
+				"hull" : 150
+				},
+			"Core Fighter" : {
+				"url" : "core_fighter",
+				"fuel" : 90,
+				"provisions" : 150,
+				"hull" : 60,
+				},
+			"Mystery Ship" : {
+				"url" : "mystery_ship",
+				"fuel" : "random",
+				"provisions" : "random",
+				"hull" : "random"
+				},
+
+			}
 		if name:
 			self.get_properties()
 
 	def get_properties(self):
 		self.path += self.properties[self.name]["url"]+".png"
-		self.fuel = self.properties[self.name]["fuel"]
-		self.provisions = self.properties[self.name]["provisions"]
-		self.hull = self.properties[self.name]["hull"]
+		if self.name=="Mystery Ship":
+			self.fuel = np.random.randint(1,150)
+			self.provisions = np.random.randint(1,150)
+			self.hull = np.random.randint(1,150)
+		else:
+			self.fuel = self.properties[self.name]["fuel"]
+			self.provisions = self.properties[self.name]["provisions"]
+			self.hull = self.properties[self.name]["hull"]
 
