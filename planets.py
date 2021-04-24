@@ -1,4 +1,5 @@
 import numpy as np
+import functools
 
 boardlenx = 10
 boardleny = 7
@@ -17,15 +18,22 @@ class Event:
 		self.urls = {}
 		self.pretext = ""
 		self.path = ""
+		self.isGood = 0
 
 	def action(self,spaceship):
-		if np.random.rand()>self.bad_chance:
+		if np.random.rand()>self.bad_chance-spaceship.luck*0.1:
 			spaceship = self.good_action(spaceship)
 			self.text = self.good_text
+			self.isGood = True
 		else:
 			spaceship = self.bad_action(spaceship)
 			self.text = self.bad_text
+			self.isGood = False
 		return spaceship, self.pretext+". "+self.text
+
+	def unmake(self,spaceship):
+		spaceship = self.unbad_action(spaceship)
+		return spaceship
 
 	def get_type(self):
 		return self.type
@@ -462,16 +470,20 @@ class Planet(Event):
 			self.get_properties()
 
 	def good_action(self,spaceship):
-		if np.random.rand()<self.drop_rate:
+		if np.random.rand() < self.drop_rate and spaceship.provisions > 70:
 			if not(spaceship.item):
-				#TODO get_random_item
-				spaceship.item=get_random_item()
-				self.text = self.text+". You found an item! You found a {}".format(spaceship.item.text)
+				spaceship.acquire_item()
+				self.good_text = " You found an item! You found a {}".format(spaceship.item.name)
+				return spaceship
 		spaceship.modify_provisions(+10)
 		return spaceship
 
 	def bad_action(self,spaceship):
 		spaceship.modify_provisions(-10)
+		return spaceship
+
+	def unbad_action(self,spaceship):
+		spaceship.modify_provisions(10)
 		return spaceship
 
 class Portal(Event):
@@ -518,6 +530,7 @@ class Ship(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.7
+		self.drop_rate = 1
 		self.type = "Ship"
 		self.icon = "Resources/Ship_icon.png"
 		self.pretext = "You've run into the {}".format(self.name)
@@ -888,6 +901,11 @@ class Ship(Event):
 			self.get_properties()
 
 	def good_action(self,spaceship):
+		if spaceship.fuel > 70 and np.random.rand() < self.drop_rate:
+			if not spaceship.has_equipment():
+				spaceship.acquire_equipment()
+				self.good_text = " You found equipment! You got {}".format(spaceship.equipment.name)
+				return spaceship
 		spaceship.modify_fuel(20)
 		return spaceship
 
@@ -895,10 +913,16 @@ class Ship(Event):
 		spaceship.modify_hull(-10)
 		return spaceship
 
+	def unbad_action(self,spaceship):
+		spaceship.modify_hull(10)
+		return spaceship
+
+
 class Asteroid(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.9
+		self.drop_rate = 1
 		self.type = "Asteroid"
 		self.icon = "Resources/Asteroid_icon.png"
 		self.pretext = "You find yourself in the vicinity of {}".format(self.name)
@@ -948,6 +972,10 @@ class Asteroid(Event):
 			self.set_path()
 
 	def good_action(self,spaceship):
+		if spaceship.hull > 70 and np.random.rand()<self.drop_rate:
+			if not spaceship.has_item():
+				spaceship.acquire_item()
+				self.good_text = " You got an item! You got {}".format(spaceship.item.name)
 		spaceship.modify_hull(10)
 		return spaceship
 
@@ -955,11 +983,16 @@ class Asteroid(Event):
 		spaceship.modify_hull(-10)
 		return spaceship
 
+	def unbad_action(self,spaceship):
+		spaceship.modify_hull(10)
+		return spaceship
+
 
 class Spaceport(Event):
 	def __init__(self,name=""):
 		super().__init__(name)
 		self.bad_chance = 0.0
+		self.drop_rate = 0.5
 		self.type = "Spaceport"
 		self.icon = "Resources/Spaceport_icon.png"
 		self.pretext = "You dock your ship at {}".format(self.name)
@@ -1002,6 +1035,16 @@ class Spaceport(Event):
 		fuel = spaceship.fuel
 		food = spaceship.provisions
 		hull = spaceship.hull
+		if food > 90 and fuel > 90 and hull > 90 and np.random.rand()<self.drop_rate:
+			isitem = np.random.rand()<0.5
+			if isitem and not spaceship.has_item():
+				spaceship.acquire_item()
+				self.good_text = " You find an item! You got {}".format(spaceship.item.name)
+				return spaceship
+			elif not spaceship.has_equipment():
+				spaceship.acquire_equipment()
+				self.good_text = " You got equipment! You got {}".format(spaceship.equipment.name)
+				return spaceship
 		if fuel<=food and fuel<=hull:
 			spaceship.modify_fuel(50)
 		elif food<=hull:
@@ -1176,7 +1219,11 @@ class Being(Event):
 		spaceship.modify_provisions(-999)
 		return spaceship
 
-
+	def unbad_action(self,spaceship):
+		spaceship.modify_hull(999)
+		spaceship.modify_fuel(999)
+		spaceship.modify_provisions(999)
+		return spaceship
 	#yourMom
 
 class BlackHole(Event):
@@ -1357,8 +1404,9 @@ class Item:
 		#self.urls = {}
 		self.properties = {}
 		self.pretext = ""
-		self.icon = "resources/borger.jpg"
+		self.icon = "Resources/borger.jpg"
 		self.description = ''
+		self.path = ""
 
 	def action(self,spaceship):
 	        return spaceship
@@ -1371,6 +1419,14 @@ class Item:
 
 	def set_url(self):
 		self.url = self.properties[self.name]["url"]
+	
+	def get_path(self):
+		return self.path
+
+	def set_path(self):
+		self.path += self.properties[self.name]["url"]+".png"
+
+
 
 
 class Consumable(Item):
@@ -1378,28 +1434,54 @@ class Consumable(Item):
 		super().__init__(name)
 		self.type = "Consumable"
 		self.pretext = "You used the item {}".format(self.name)
+		self.path = "Pictures/Consumables/"
 		self.properties = {
 			"Self Destruct Button": {
-				"url": "https://t1.rbxcdn.com/9f5dc5b3eb9c8b9be20eabdde350f429",
+				"url": "self_destruct_button",
 				"use": self.destruct,
-                "description":'Blow up the ship',
+				"description":'Blow up the ship',
 				"text": "Your ship has been destroyed"
-			}
+			},
+			"Cookie" : {
+				"url" : "space_cookie",
+				"use" : functools.partial(self.give_take_resources,settings="provisions10"),
+				"description" : "Gain 10 provisions",
+				"text" : "You ate a delicious cookie"
+			},
+			"Ship parts" : {
+				"url" : "ship_parts",
+				"use" : functools.partial(self.give_take_resources,settings="hull10"),
+				"description" : "Gain 10 hull",
+				"text" : "You patched some of the holes in the hull"
+			},
+			"Oil barrel" : {
+				"url" : "oil_barrel",
+				"use" : functools.partial(self.give_take_resources,settings="fuel10"),
+				"description" : "Gain 10 fuel",
+				"text" : "You filled your fuel tank a little bit"
+			},
+			"Portal Gun" : {
+				"url" : "portal_gun",
+				"use" : self.warp,
+				"description" : "Instantly warp",
+				"text" : "You get transported across the universe",
+				"Type" : "Portal"
+			},
 		}
 		if name:
-			self.set_url()
-		self.get_properties()
+			super().set_path()
+			self.get_properties()
 
 	def use(self,spaceship):
-	        self.properties[self.name]["use"](spaceship)
-	        #spaceship.item=None
-	        return spaceship,self.pretext+". "+self.text
+		self.properties[self.name]["use"](spaceship)
+		spaceship.remove_item()
+		return spaceship,self.pretext+". "+self.text
 
 	def get_properties(self):
 		self.description = self.properties[self.name]["description"]
 		self.text = self.properties[self.name]["text"]
-		#self.bad_text = self.properties[self.name]["bad"]
-		self.url = self.properties[self.name]["url"]
+		if "Type" in self.properties[self.name]:
+			self.type = self.properties[self.name]["Type"]
 
 	def destruct(self,spaceship):
 		spaceship.modify_fuel(-spaceship.fuel)
@@ -1407,21 +1489,131 @@ class Consumable(Item):
 		spaceship.modify_hull(-spaceship.hull)
 		return spaceship
 
-#class SelfDestructButton(Consumable)
-#	def __init__(self,name=""):
-#			super().__init__(name)
-#			self.text = "Your ship Self Destructs."
-#			self.urls = {
-#			"Self Destruct Button": "https://t1.rbxcdn.com/9f5dc5b3eb9c8b9be20eabdde350f429"
-#			}
+	def give_take_resources(self,settings,spaceship):
+		if "provisions" in settings:
+			provdiff = int(settings.split("provisions")[1][0:2])
+			spaceship.modify_provisions(provdiff)
+		if "fuel" in settings:
+			fueldiff = int(settings.split("fuel")[1][0:2])
+			spaceship.modify_fuel(fueldiff)
+		if "hull" in settings:
+			hulldiff = int(settings.split("hull")[1][0:2])
+			spaceship.modify_hull(hulldiff)
+		return spaceship
 
-#	def use(self,spaceship):
-#		spaceship.modify_fuel(-spaceship.fuel)
-#		spaceship.modify_provisions(-spaceship.provisions)
-#		spaceship.modify_hull(-spaceship.hull)
-#		spaceship.item=""
-#		return spaceship
-
+	def warp(self,spaceship):
+		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
+		return spaceship
 
 class Equipment(Item):
-    pass
+	def __init__(self,name=""):
+		super().__init__(name)
+		self.type = "Equipment"
+		#self.pretext = "You used the item {}".format(self.name)
+		self.path = "Pictures/Equipments/"
+		self.on_get = self.Pass
+		self.on_turn = self.Pass
+		self.on_lose = self.Pass
+		self.properties = {
+			"Lucky charm" : {
+				"url" : "lucky_charm",
+				"description" : "Makes you lucky",
+				"on_get" : functools.partial(self.give_luck,amount=1),
+				"on_lose" : functools.partial(self.give_luck,amount=-1)
+			},
+			"Solar Panels" : {
+				"url" : "solar_panels",
+				"description" : "Moving doesn't cost fuel",
+				"on_turn" : functools.partial(self.replenish,settings="fuel05")
+			},
+			"On-board Farm" : {
+				"url" : "on-board_farm",
+				"description" : "Moving doesn't cost food",
+				"on_turn" : functools.partial(self.replenish,settings="provisions05")
+			},
+			"Laser Weapons" : {
+				"url" : "laser_weapons",
+				"description" : "Win all ship battles",
+				"on_turn" : functools.partial(self.no_u,Type="Ship",reuse=True)
+			},
+			"Shield" : {
+				"url" : "shield",
+				"description" : "Avoid hull damage",
+				#"on_get" : "",
+				"on_turn" : functools.partial(self.save,Type="hull",reuse=True),
+				#"on_lose" : ""
+			},
+			"God Killer" : {
+				"url" : "god_killer",
+				"description" : "Next Being won't kill you",
+				"on_turn" : functools.partial(self.no_u,Type="Being",reuse=False)
+			}
+		}
+		if name:
+			super().set_path()
+			self.get_properties()
+
+	def get_properties(self):
+		self.description = self.properties[self.name]["description"]
+		#self.text = self.properties[self.name]["text"]
+		if "on_get" in self.properties[self.name]:
+			self.on_get = self.properties[self.name]["on_get"]
+		if "on_turn" in self.properties[self.name]:
+			self.on_turn = self.properties[self.name]["on_turn"]
+		if "on_lose" in self.properties[self.name]:
+			self.on_lose = self.properties[self.name]["on_lose"]
+
+	def Pass(self,spaceship):
+		pass
+
+	def give_luck(self,spaceship,amount):
+		spaceship.set_luck(spaceship.luck+amount)
+
+	def replenish(self,spaceship,event,was_portal,settings):
+		if not was_portal:
+			if "provisions" in settings:
+				provdiff = int(settings.split("provisions")[1][0:2])
+				spaceship.modify_provisions(provdiff)
+			if "fuel" in settings:
+				fueldiff = int(settings.split("fuel")[1][0:2])
+				spaceship.modify_fuel(fueldiff)
+			if "hull" in settings:
+				hulldiff = int(settings.split("hull")[1][0:2])
+				spaceship.modify_hull(hulldiff)
+		return ""
+
+	def no_u(self,spaceship,event,was_portal,Type,reuse):
+		if Type in event.type and not event.isGood:
+			spaceship = event.unmake(spaceship)
+			spaceship = event.good_action(spaceship)
+			if not reuse:
+				spaceship.remove_equipment()
+			return " But you avoided bad things with your equipment"
+		return ""
+
+	def save(self,spaceship,event,Type,reuse):
+		if event.isGood: return ""
+
+		if Type=="hull":
+			hulldict = {"Ship":10,"Portal":10,"Being":999,"Asteroid":10}
+			if event.type in hulldict:
+				spaceship.modify_hull(hulldict[event.type])
+			if not reuse: spaceship.remove_equipment()
+			return " You avoided hull damage with your equipment"
+
+		if Type=="provisions":
+			provdict = {"Planet":10,"Being":999}
+			if event.type in provdict:
+				spaceship.modify_provisions(provdict[event.type])
+			if not reuse: spaceship.remove_equipment()
+			return " You avoided losing provisions with your equipment"
+
+		if Type=="fuel":
+			fueldict = {"Being":999}
+			if event.type in hulldict:
+				spaceship.modify_fuel(fueldict[event.type])
+			if not reuse: spaceship.remove_equipment()
+			return " You avoided losing fuel with your equipment"
+
+
+

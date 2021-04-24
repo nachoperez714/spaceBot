@@ -4,5 +4,7 @@ qui*
 event_image
 *txt
 *npy
+*png
+.data*
 !Resources/green*
 Pictures/*

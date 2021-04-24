@@ -107,15 +107,33 @@ class Spaceship:
 		self.provisions = 100
 		self.hull = 100
 		self.item = ""
+		self.equipment = ""
 		#self.tool = ""
 		self.isHome = False
+		self.luck = 0
 		self.initialize(player)
 
 	def has_item(self):
 		return bool(self.item)
 
-	#def get_item(self):
-	#	return self.item
+	def has_equipment(self):
+		return bool(self.equipment)
+
+	def acquire_item(self):
+		itemname = random.choice([*planets.Consumable().properties])
+		self.item = planets.Consumable(itemname)
+		
+	def acquire_equipment(self):
+		itemname = random.choice([*planets.Equipment().properties])
+		self.equipment = planets.Equipment(itemname)
+		self.equipment.on_get(self)
+
+	def remove_item(self):
+		self.item = ""
+
+	def remove_equipment(self):
+		self.equipment = ""
+		self.equipment.on_lose(self)
 
 	def initialize(self,player):
 		if player:
@@ -123,12 +141,12 @@ class Spaceship:
 		else:
 			aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
 		print(aux.url)
-		self.player = get_image_from_url_player(aux.url)
+		self.player = get_image_from_url_player(aux)
 		self.player = cv.greensquare(self.player)
 		self.fuel = aux.fuel
 		self.provisions = aux.provisions
 		self.hull = aux.hull
-		self.item = planets.Consumable("Self Destruct Button")
+		self.item = ""
 
 	def move(self,x,y):
 		self.x = x
@@ -153,6 +171,9 @@ class Spaceship:
 	def overhaul(self,img_path):
 		self.image = img_path
 
+	def set_luck(self,luck):
+		self.luck += luck
+
 
 def upload_comment(graph, post_id, message="", img_path=None):
 	if img_path:
@@ -167,8 +188,6 @@ def upload_comment(graph, post_id, message="", img_path=None):
 
 def upload_reply(graph, comment_id, message='',img_path=None):
 	upload_comment(graph,comment_id,message,img_path)
-
-                self.image = img_path
 
 def upload(message, access_token, img_path=None):
         graph = facebook.GraphAPI(access_token)
@@ -316,23 +335,26 @@ def update_image(spaceship,event):
 		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
 		previous.save("Reference_image.png")
 	try:
-		img_path = get_image_from_url(event.url)
+		img_path = event.get_path()
+		img = Image.open(img_path)
 	except:
 		img_path = "Resources/failsafe.jpeg"
-	img = Image.open(img_path)
+		img = Image.open(img_path)
 	lenx = img.size[0]
 	leny = img.size[1]
-	if lenx > leny:
-		img = img.resize((1000,1000*leny//lenx))
-	elif leny < lenx:
-		img = img.resize((1000*lenx//leny),1000)
+	myratio = lenx/leny
+	idealratio = cv.image_ratio
+	if myratio > idealratio:
+		img = img.resize((cv.image_size[0],cv.image_size[0]*leny//lenx))
+	elif idealratio < myratio:
+		img = img.resize((cv.image_size[1]*lenx//leny,cv.image_size[1]))
 	else:
 		img = img.resize(cv.image_size)
 	previous = add_event_image(previous,img)
 	previous = add_spaceship(previous,spaceship)
 	previous = add_numbers(previous,spaceship)
 	previous = add_crosses(previous,spaceship,event.type=="Portal")
-	print("event.text",event.text)
+	#print("event.text",event.text)
 	previous = add_text(previous,event)
 	previous = add_item_text(previous,spaceship)
 	previous.save("Post_image.png")
@@ -381,25 +403,39 @@ def find_font(text,draw,x=800,y=200):
 		return font3, 3
 
 def add_item_text(img,ship):
-	#img.paste(Image.open(ship.tool.icon).convert("RGBA").resize(cv.item_icon_size),cv.tool_icon_position)
-	img.paste(Image.open(ship.item.icon).convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
-	#toolname = "Tool: "+ship.tool.name
-	#tooldesc = ship.tool.description
-	itemname = "Item: "+ship.item.name
-	itemdesc = ship.item.description
-	print("itemname ",itemname," itemdesc ",itemdesc)
 	draw = ImageDraw.Draw(img)
-	#tnFont, tnLines = find_font(toolname,draw,650,150)
-	#tdFont, tdLines = find_font(tooldesc,draw,650,125)
+	if ship.has_item():
+		img.paste(Image.open(ship.item.path).convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+		itemname = "Item: "+ship.item.name
+		itemdesc = ship.item.description
+		idFont, idLines = find_font(itemdesc,draw,650,125)
+		descfont = idFont
+		draw.text(cv.item_desc_position,textwrap.fill(itemdesc,len(itemdesc)//idLines+idLines-1),font=get_font(descfont))
+		draw.text(cv.use_item_position,"Use\nitem",font=get_font(80))
+	else:
+		#img.paste(Image.open("Resources/borger.jpg").convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+		itemname = "Item: N/A"
+		itemdesc = " "
 	inFont, inLines = find_font(itemname,draw,650,150)
-	idFont, idLines = find_font(itemdesc,draw,650,125)
-	namefont = inFont#min(tnFont,inFont)
-	descfont = idFont#min(idFont,tdFont)
-	draw.text(cv.use_item_position,"Use\nitem",font=get_font(80))
-	#draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(namefont))
-	#draw.text(cv.tool_desc_position,textwrap.fill(tooldesc,len(tooldesc)//tdLines+tdLines-1),font=get_font(descfont))
-	draw.text(cv.item_text_position,textwrap.fill(itemname,len(itemname)//inLines+inLines-1),font=get_font(namefont))
-	draw.text(cv.item_desc_position,textwrap.fill(itemdesc,len(itemdesc)//idLines+idLines-1),font=get_font(descfont))
+	if ship.has_equipment():
+		img.paste(Image.open(ship.equipment.path).convert("RGBA").resize(cv.item_icon_size),cv.tool_icon_position)
+		toolname = "Equipment: "+ship.equipment.name
+		tooldesc = ship.equipment.description
+		tdFont, tdLines = find_font(tooldesc,draw,650,125)
+		descfont = tdFont
+		draw.text(cv.tool_desc_position,textwrap.fill(tooldesc,len(tooldesc)//tdLines+tdLines-1),font=get_font(descfont))
+	else:
+		#img.paste(Image.open("Resources/borger.jpg").convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+		toolname = "Equipment: N/A"
+		tooldesc = " "
+	tnFont, tnLines = find_font(toolname,draw,650,150)
+	#print("itemname ",itemname," itemdesc ",itemdesc)	
+	#namefont = inFont#min(tnFont,inFont)
+	#min(idFont,tdFont)
+
+	draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(tnFont))
+	draw.text(cv.item_text_position,textwrap.fill(itemname,len(itemname)//inLines+inLines-1),font=get_font(inFont))
+	
 	return img
 
 def add_icon(image,icon,x,y):
@@ -434,7 +470,7 @@ def get_fill(resource):
                 return "red"
         if resource<=40:
                 return "yellow"
-                return
+        return "white"
 
 def add_crosses(img,ship,is_portal=False):
 	draw = ImageDraw.Draw(img)
@@ -585,8 +621,8 @@ def main(turn=0,direction="",vote=True):
 		was_portal = data[4]
 
 		if direction=='item':
-			spaceship,message = spaceship.item.use(spaceship)
 			event = spaceship.item
+			spaceship,message = spaceship.item.use(spaceship)
 			movement = [0,0]
 		else:
 			if was_portal:
@@ -610,6 +646,8 @@ def main(turn=0,direction="",vote=True):
 
 			event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
 			spaceship,message = event.action(spaceship)
+		if spaceship.has_equipment():
+			message += spaceship.equipment.on_turn(spaceship,event,was_portal)
 		if spaceship.isHome:
 			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
 			victory_path = update_image(spaceship,event)
@@ -634,6 +672,7 @@ def main(turn=0,direction="",vote=True):
 			return False
 		if not event.get_type()=="Portal":
 			message+="\n Use the reactions to move the ship."
+
 		img_path = update_image(spaceship,event)
 		if direction:
 			print(message)
