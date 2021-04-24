@@ -15,140 +15,180 @@ import planets
 import canvas as cv
 
 class Board:
-        def __init__(self):
-                self.lenx = planets.boardlenx
-                self.leny = planets.boardleny
-                self.goalLoc = 0
-                self.startLoc = 0
-                self.events = []
-                self.eventlist = []
-                self.area = self.lenx*self.leny-2
-                self.goal = ""
-                self.start = ""
-                self.set_start()
-                self.set_goal()
-                self.generate_events()
-                self.img_path = 'background.png'
+	def __init__(self):
+		self.lenx = planets.boardlenx
+		self.leny = planets.boardleny
+		self.goalLoc = 0
+		self.startLoc = 0
+		self.events = []
+		self.eventlist = []
+		self.area = self.lenx*self.leny-2
+		self.goal = ""
+		self.start = ""
+		self.set_start()
+		self.set_goal()
+		self.generate_events()
+		self.img_path = 'background.png'
 
-        def set_start(self):
-                xs = np.random.randint(0,self.lenx)
-                ys = np.random.randint(0,self.leny)
-                self.startLoc = [xs,ys]
-                #TODO player ship here
-                #self.goal = np.random.choice([*planets.Goal().urls])
-        
-        def set_goal(self):
-                xgoal = self.startLoc[0]
-                ygoal = self.startLoc[1]
-                while abs(xgoal-self.startLoc[0])+abs(ygoal-self.startLoc[1])<3 :
-                        xgoal = np.random.randint(0,self.lenx)
-                        ygoal = np.random.randint(0,self.leny)
-                self.goalLoc = [xgoal,ygoal]
-                print("startLoc:",self.startLoc[0],",",self.startLoc[1])
-                print("goalLoc:",xgoal,",",ygoal)
-                self.goal = np.random.choice([*planets.Goal().urls])
+	def set_start(self):
+		xs = np.random.randint(0,self.lenx)
+		ys = np.random.randint(0,self.leny)
+		self.startLoc = [xs,ys]
+		#TODO player ship here
+		#self.goal = np.random.choice([*planets.Goal().urls])
 
-        def generate_eventlist(self):
-                number = self.lenx*self.leny-2
-                self.eventlist+=random.sample([*planets.Planet().properties],20)
-                self.eventlist+=random.sample([*planets.Ship().properties],20)
-                self.eventlist+=random.sample([*planets.Asteroid().urls],10)
-                self.eventlist+=random.sample([*planets.Spaceport().urls],6)
-                self.eventlist+=random.sample([*planets.Portal().urls],6)
-                self.eventlist+=random.sample([*planets.BlackHole().urls],4)
-                self.eventlist+=random.sample([*planets.Being().properties],2)
-                
+	def set_goal(self):
+		xgoal = self.startLoc[0]
+		ygoal = self.startLoc[1]
+		while abs(xgoal-self.startLoc[0])+abs(ygoal-self.startLoc[1])<3 :
+			xgoal = np.random.randint(0,self.lenx)
+			ygoal = np.random.randint(0,self.leny)
+		self.goalLoc = [xgoal,ygoal]
+		print("startLoc:",self.startLoc[0],",",self.startLoc[1])
+		print("goalLoc:",xgoal,",",ygoal)
+		self.goal = np.random.choice([*planets.Goal().urls])
 
-        def generate_events(self):
-                #TODO: cambiar probabilidad de cada tipo de evento
-                #Algoritmo de distribucion copado
-                self.generate_eventlist()
-                indexes = list(range(self.area))
-                np.random.shuffle(indexes)
-                #print(indexes)
-                offset = 0
-                for i in range(self.lenx):
-                        self.events.append([])
-                        for j in range(self.leny):
-                                self.events[i].append([])
-                                if i==self.startLoc[0] and j ==self.startLoc[1]:
-                                        self.events[i][j] = "Start"
-                                        offset+=1
-                                elif i==self.goalLoc[0] and j==self.goalLoc[1]:
-                                        self.events[i][j] = self.goal
-                                        offset+=1
-                                else:
-                                        #print(i,j,i*self.leny+j-offset,indexes[i*self.leny+j-offset],self.eventlist[indexes[i*self.leny+j-offset]])
-                                        self.events[i][j] = self.eventlist[indexes[i*self.leny+j-offset]]
+	def generate_eventlist(self):
+		size = self.lenx*self.leny-2
+		beingNum = min(len([*planets.Being().properties]),np.random.poisson(size/30)+1)
+		size-=beingNum
+		holeNum = min(len([*planets.BlackHole().urls]),np.random.poisson(size/25)+1)
+		size-=holeNum
+		stationNum = min(len([*planets.Spaceport().urls]),np.random.poisson(size/12)+1)
+		size-=stationNum
+		portalNum = min(len([*planets.Portal().urls]),np.random.poisson(size/11)+1)
+		size-=portalNum
+		rockNum = min(len([*planets.Asteroid().urls]),np.random.poisson(size/8)+1)
+		size-=rockNum
+		planNum = size//2
+		shipNum = size-planNum
+		self.eventlist+=random.sample([*planets.Planet().properties],planNum)
+		self.eventlist+=random.sample([*planets.Ship().properties],shipNum)
+		self.eventlist+=random.sample([*planets.Asteroid().urls],rockNum)
+		self.eventlist+=random.sample([*planets.Spaceport().urls],stationNum)
+		self.eventlist+=random.sample([*planets.Portal().urls],portalNum)
+		self.eventlist+=random.sample([*planets.BlackHole().urls],holeNum)
+		self.eventlist+=random.sample([*planets.Being().properties],beingNum)
 
-        def get_event_name(self,x,y):
-                #print (self)
-                return self.events[x][y]
 
-                                        
+	def generate_events(self):
+		#TODO: cambiar probabilidad de cada tipo de evento
+		#Algoritmo de distribucion copado
+		self.generate_eventlist()
+		indexes = list(range(self.area))
+		np.random.shuffle(indexes)
+		#print(indexes)
+		offset = 1
+		for i in range(self.lenx):
+			self.events.append([])
+			for j in range(self.leny):
+				self.events[i].append([])
+				if i==self.startLoc[0] and j ==self.startLoc[1]:
+					self.events[i][j] = "Start"
+				elif i==self.goalLoc[0] and j==self.goalLoc[1]:
+					self.events[i][j] = self.goal
+					offset = 2
+				else:
+					#print(i,j,i*self.leny+j-offset,indexes[i*self.leny+j-offset],self.eventlist[indexes[i*self.leny+j-offset]])
+					self.events[i][j] = self.eventlist[indexes[i*self.leny+j-offset]]
+
+	def get_event_name(self,x,y):
+		#print (self)
+		return self.events[x][y]
+
+
 class Spaceship:
-        def __init__(self,player=""):
-                self.x = 0
-                self.y = 0
-                self.image = ""
-                self.player = ""
-                self.fuel = 100
-                self.provisions = 100
-                self.hull = 100
-                self.hasWeapons = False
-                self.isHome = False
-                self.initialize(player)
+	def __init__(self,player=""):
+		self.x = 0
+		self.y = 0
+		self.image = ""
+		self.player = ""
+		self.fuel = 100
+		self.provisions = 100
+		self.hull = 100
+		self.item = ""
+		self.equipment = ""
+		#self.tool = ""
+		self.isHome = False
+		self.luck = 0
+		self.initialize(player)
 
-        def initialize(self,player):
-                if player:
-                        aux = get_event_from_name(player)
-                else:
-                        aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
-                print(aux.url)
-                self.player = get_image_from_url_player(aux)
-                self.player = cv.greensquare(self.player)
-                self.fuel = aux.fuel
-                self.provisions = aux.provisions
-                self.hull = aux.hull
+	def has_item(self):
+		return bool(self.item)
 
-        def move(self,x,y):
-                self.x = x
-                self.y = y
-                #self.fuel -= 10
+	def has_equipment(self):
+		return bool(self.equipment)
 
-        def reach_goal(self):
-                self.isHome = True
+	def acquire_item(self):
+		itemname = random.choice([*planets.Consumable().properties])
+		self.item = planets.Consumable(itemname)
+		
+	def acquire_equipment(self):
+		itemname = random.choice([*planets.Equipment().properties])
+		self.equipment = planets.Equipment(itemname)
+		self.equipment.on_get(self)
 
-        def modify_fuel(self,amount):
-                self.fuel = min(150,self.fuel+amount)
+	def remove_item(self):
+		self.item = ""
 
-        def modify_hull(self,amount):
-                self.hull = min(150,self.hull+amount)
+	def remove_equipment(self):
+		self.equipment = ""
+		self.equipment.on_lose(self)
 
-        def modify_provisions(self,amount):
-                self.provisions = min(150,self.provisions+amount)
+	def initialize(self,player):
+		if player:
+			aux = get_event_from_name(player)
+		else:
+			aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
+		print(aux.url)
+		self.player = get_image_from_url_player(aux)
+		self.player = cv.greensquare(self.player)
+		self.fuel = aux.fuel
+		self.provisions = aux.provisions
+		self.hull = aux.hull
+		self.item = ""
 
-        def is_dead(self):
-                return self.fuel<=0 or self.hull<=0 or self.provisions<=0
-                
-        def overhaul(self,img_path):
-                self.image = img_path
+	def move(self,x,y):
+		self.x = x
+		self.y = y
+		#self.fuel -= 10
+
+	def reach_goal(self):
+		self.isHome = True
+
+	def modify_fuel(self,amount):
+		self.fuel = min(150,self.fuel+amount)
+
+	def modify_hull(self,amount):
+		self.hull = min(150,self.hull+amount)
+
+	def modify_provisions(self,amount):
+		self.provisions = min(150,self.provisions+amount)
+
+	def is_dead(self):
+		return self.fuel<=0 or self.hull<=0 or self.provisions<=0
+
+	def overhaul(self,img_path):
+		self.image = img_path
+
+	def set_luck(self,luck):
+		self.luck += luck
 
 
 def upload_comment(graph, post_id, message="", img_path=None):
-        if img_path:
-                post = graph.put_photo(image=open(img_path, 'rb'),
-                                                           album_path='%s/comments' % (post_id),
-                                                           message=message)
-        else:
-                post = graph.put_object(parent_object=post_id,
-                                                                connection_name="comments",
-                                                                message=message)
-        return post
-   
+	if img_path:
+		post = graph.put_photo(image=open(img_path, 'rb'),
+							   album_path='%s/comments' % (post_id),
+							   message=message)
+	else:
+		post = graph.put_object(parent_object=post_id,
+								connection_name="comments",
+								message=message)
+	return post
+
 def upload_reply(graph, comment_id, message='',img_path=None):
-        upload_comment(graph,comment_id,message,img_path)
- 
+	upload_comment(graph,comment_id,message,img_path)
+
 def upload(message, access_token, img_path=None):
         graph = facebook.GraphAPI(access_token)
         if img_path:
@@ -227,85 +267,98 @@ def get_event_from_name(name):
 
 
 def gen_initial_image(spaceship,board):
-        img = Image.new("RGB",cv.canvas_size)
-        fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
-        img.paste(fuel,cv.fuel_position,fuel)
-        del fuel
-        provisions = Image.open("Resources/sanguche.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
-        img.paste(provisions,cv.provisions_position,provisions)
-        del provisions
-        hull = Image.open("Resources/hull.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
-        img.paste(hull,cv.hull_position,hull)
-        del hull
-        background = Image.open("Resources/Background.jpg").convert("RGBA").resize(cv.grid_size)
-        img.paste(background,cv.grid_position)
-        del background
-        arrow_right = Image.open("Resources/arrow_bien.png").convert("RGBA").resize(cv.arrow_size)
-        arrow_up = arrow_right.rotate(90)
-        arrow_left = arrow_up.rotate(90)
-        arrow_down = arrow_left.rotate(90)
-        reacs = Image.open("Resources/reactions.png").convert("RGBA")
-        wow = reacs.crop((1011,503,1446,937)).resize(cv.reaction_size)
-        like = reacs.crop((1011,0,1446,440)).resize(cv.reaction_size)
-        angery = reacs.crop((504,0,939,440)).resize(cv.reaction_size)
-        sad = reacs.crop((504,503,939,937)).resize(cv.reaction_size)
-        del reacs
-        img.paste(arrow_right,(cv.arrow_right_position),arrow_right)
-        img.paste(arrow_up,(cv.arrow_up_position),arrow_up)
-        img.paste(arrow_left,(cv.arrow_left_position),arrow_left)
-        img.paste(arrow_down,(cv.arrow_down_position),arrow_down)
-        img.paste(wow,cv.wow_position,wow)
-        img.paste(like,cv.like_position,like)
-        img.paste(angery,cv.angry_position,angery)
-        img.paste(sad,cv.sad_position,sad)
-        del arrow_up, arrow_right, arrow_left, arrow_down
-        del wow, like, angery, sad
-        spaceship.x = board.startLoc[0]
-        spaceship.y = board.startLoc[1]
-        img = add_icon(img,"Resources/Start_icon.png",spaceship.x,spaceship.y)
-        img.save("Reference_image.png")
+	img = Image.new("RGB",cv.canvas_size)
+	fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
+	img.paste(fuel,cv.fuel_position,fuel)
+	del fuel
+	provisions = Image.open("Resources/sanguche.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
+	img.paste(provisions,cv.provisions_position,provisions)
+	del provisions
+	hull = Image.open("Resources/hull.png").convert("RGBA").resize(cv.resource_icon_size)#transparent
+	img.paste(hull,cv.hull_position,hull)
+	del hull
+	background = Image.open("Resources/Background.jpg").convert("RGBA").resize(cv.grid_size)
+	img.paste(background,cv.grid_position)
+	del background
+	arrow_right = Image.open("Resources/arrow_bien.png").convert("RGBA").resize(cv.arrow_size)
+	arrow_up = arrow_right.rotate(90)
+	arrow_left = arrow_up.rotate(90)
+	arrow_down = arrow_left.rotate(90)
+	reacs = Image.open("Resources/reactions.png").convert("RGBA")
+	wow = reacs.crop((1011,503,1446,937)).resize(cv.reaction_size)
+	like = reacs.crop((1011,0,1446,440)).resize(cv.reaction_size)
+	angery = reacs.crop((504,0,939,440)).resize(cv.reaction_size)
+	sad = reacs.crop((504,503,939,937)).resize(cv.reaction_size)
+	love = reacs.crop((0,503,434,937)).resize(cv.reaction_size)
+	del reacs
+	img.paste(arrow_right,(cv.arrow_right_position),arrow_right)
+	img.paste(arrow_up,(cv.arrow_up_position),arrow_up)
+	img.paste(arrow_left,(cv.arrow_left_position),arrow_left)
+	img.paste(arrow_down,(cv.arrow_down_position),arrow_down)
+	img.paste(wow,cv.wow_position,wow)
+	img.paste(like,cv.like_position,like)
+	img.paste(angery,cv.angry_position,angery)
+	img.paste(sad,cv.sad_position,sad)
+	img.paste(love,cv.love_position,love)
+	del arrow_up, arrow_right, arrow_left, arrow_down
+	del wow, like, angery, sad, love
+	spaceship.x = board.startLoc[0]
+	spaceship.y = board.startLoc[1]
+	img = add_icon(img,"Resources/Start_icon.png",spaceship.x,spaceship.y)
+	img.save("Reference_image.png")
 
-        start = Image.open("Resources/Start.png").convert("RGBA").resize(cv.image_size)
-        img = add_event_image(img,start)
-        del start
-        img = add_spaceship(img,spaceship)
-        img = add_numbers(img,spaceship)
-        draw = ImageDraw.Draw(img)
-        draw.text(cv.big_text_position,"Start",font=get_font(get_fontsize("Start",draw)))
-        draw.text(cv.small_text_position,'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(board.goal),font=get_font(40))
-        img = add_crosses(img,spaceship)
-        del draw
-        img.save("Post_image.png")
+	start = Image.open("Resources/Start.png").convert("RGBA").resize(cv.image_size)
+	img = add_event_image(img,start)
+	del start
+	img = add_spaceship(img,spaceship)
+	img = add_numbers(img,spaceship)
+	draw = ImageDraw.Draw(img)
+	draw.text(cv.big_text_position,"Start",font=get_font(get_fontsize("Start",draw)))
+	#draw.text(cv.use_item_position,"Use\nitem",font=get_font(50))
+	#draw.text(cv.tool_text_position,"Tool: {}".format(spaceship.tool.name),font=get_font(cv.item_big_text_size))
+	#draw.text(cv.tool_desc_position,"{}".format(spaceship.tool.description),font=get_font(cv.item_small_text_size))
+	#draw.text(cv.item_text_position,"Item: {}".format(spaceship.item.name),font=get_font(cv.item_big_text_size))
+	#draw.text(cv.item_desc_position,"{}".format(spaceship.item.description),font=get_font(cv.item_small_text_size))
+	draw.text(cv.small_text_position,'Your journey begins!,travel space to find\n {}.\nUse reactions to move the ship'.format(board.goal),font=get_font(40))
+	add_item_text(img,spaceship)
+	img = add_crosses(img,spaceship)
+	del draw
+	img.save("Post_image.png")
 
-        return "Post_image.png"
+	return "Post_image.png"
 
 def update_image(spaceship,event):
-        #TODO: metodo correcto de insertar imagen
-        #print (event.text)
-        previous = Image.open("Reference_image.png")
-        if event.type!="Goal":
-                previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
-                previous.save("Reference_image.png")
-        try:
-                img_path = event.get_path()
-        except:
-                img_path = "Resources/failsafe.jpeg"
-        img = Image.open(img_path)
-        lenx = img.size[0]
-        leny = img.size[1]
-        if lenx > leny:
-                img = img.resize((1000,1000*leny//lenx))
-        elif leny < lenx:
-                img = img.resize((1000*lenx//leny),1000)
-        else:
-                img = img.resize(cv.image_size)
-        previous = add_event_image(previous,img)
-        previous = add_spaceship(previous,spaceship)
-        previous = add_numbers(previous,spaceship)
-        previous = add_crosses(previous,spaceship,event.type=="Portal")
-        previous = add_text(previous,event)
-        previous.save("Post_image.png")
-        return "Post_image.png"
+	#TODO: metodo correcto de insertar imagen
+	#print (event.text)
+	previous = Image.open("Reference_image.png")
+	if event.type!="Goal":
+		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
+		previous.save("Reference_image.png")
+	try:
+		img_path = event.get_path()
+		img = Image.open(img_path)
+	except:
+		img_path = "Resources/failsafe.jpeg"
+		img = Image.open(img_path)
+	lenx = img.size[0]
+	leny = img.size[1]
+	myratio = lenx/leny
+	idealratio = cv.image_ratio
+	if myratio > idealratio:
+		img = img.resize((cv.image_size[0],cv.image_size[0]*leny//lenx))
+	elif idealratio < myratio:
+		img = img.resize((cv.image_size[1]*lenx//leny,cv.image_size[1]))
+	else:
+		img = img.resize(cv.image_size)
+	previous = add_event_image(previous,img)
+	previous = add_spaceship(previous,spaceship)
+	previous = add_numbers(previous,spaceship)
+	previous = add_crosses(previous,spaceship,event.type=="Portal")
+	#print("event.text",event.text)
+	previous = add_text(previous,event)
+	previous = add_item_text(previous,spaceship)
+	previous.save("Post_image.png")
+	return "Post_image.png"
 
 def gen_goal_image():
         image = Image.open("Post_image.png")
@@ -323,18 +376,67 @@ def gen_gameover_image(board):
         return "Death_image.png"
 
 def add_text(img,event):
-        draw = ImageDraw.Draw(img)
-        draw.text((0,0),event.name,font=get_font(get_fontsize(event.name,draw)))
-        font1 = get_fontsize(event.text,draw)
-        font2 = get_fontsize(textwrap.fill(event.text,len(event.text)//2+1),draw)
-        font3 = get_fontsize(textwrap.fill(event.text,len(event.text)//3+2),draw)
-        if font1>=font2 and font1>=font3:
-                draw.text((0,200),event.text,font=get_font(font1))
-        elif font2>=font3:
-                draw.text((0,200),textwrap.fill(event.text,len(event.text)//2+1),font=get_font(font2))
-        else:
-                draw.text((0,200),textwrap.fill(event.text,len(event.text)//3+2),font=get_font(font3))
-        return img
+	draw = ImageDraw.Draw(img)
+	draw.text((0,0),event.name,font=get_font(get_fontsize(event.name,draw)))
+	size,lines = find_font(event.text,draw)
+	#font1 = get_fontsize(event.text,draw)
+	#font2 = get_fontsize(textwrap.fill(event.text,len(event.text)//2+1),draw)
+	#font3 = get_fontsize(textwrap.fill(event.text,len(event.text)//3+2),draw)
+	#if font1>=font2 and font1>=font3:
+	#	draw.text((0,200),event.text,font=get_font(font1))
+	#elif font2>=font3:
+	#	draw.text((0,200),textwrap.fill(event.text,len(event.text)//2+1),font=get_font(font2))
+	#else:
+	#	draw.text((0,200),textwrap.fill(event.text,len(event.text)//3+2),font=get_font(font3))
+	draw.text((0,200),textwrap.fill(event.text,len(event.text)//lines+lines-1),font=get_font(size))
+	return img
+
+def find_font(text,draw,x=800,y=200):
+	font1 = get_fontsize(text,draw,x,y)
+	font2 = get_fontsize(textwrap.fill(text,len(text)//2+1),draw,x,y)
+	font3 = get_fontsize(textwrap.fill(text,len(text)//3+2),draw,x,y)
+	if font1>=font2 and font1>=font3:
+		return font1, 1
+	elif font2>=font3:
+		return font2, 2
+	else:
+		return font3, 3
+
+def add_item_text(img,ship):
+	draw = ImageDraw.Draw(img)
+	if ship.has_item():
+		img.paste(Image.open(ship.item.path).convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+		itemname = "Item: "+ship.item.name
+		itemdesc = ship.item.description
+		idFont, idLines = find_font(itemdesc,draw,650,125)
+		descfont = idFont
+		draw.text(cv.item_desc_position,textwrap.fill(itemdesc,len(itemdesc)//idLines+idLines-1),font=get_font(descfont))
+		draw.text(cv.use_item_position,"Use\nitem",font=get_font(80))
+	else:
+		#img.paste(Image.open("Resources/borger.jpg").convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+		itemname = "Item: N/A"
+		itemdesc = " "
+	inFont, inLines = find_font(itemname,draw,650,150)
+	if ship.has_equipment():
+		img.paste(Image.open(ship.equipment.path).convert("RGBA").resize(cv.item_icon_size),cv.tool_icon_position)
+		toolname = "Equipment: "+ship.equipment.name
+		tooldesc = ship.equipment.description
+		tdFont, tdLines = find_font(tooldesc,draw,650,125)
+		descfont = tdFont
+		draw.text(cv.tool_desc_position,textwrap.fill(tooldesc,len(tooldesc)//tdLines+tdLines-1),font=get_font(descfont))
+	else:
+		#img.paste(Image.open("Resources/borger.jpg").convert("RGBA").resize(cv.item_icon_size),cv.item_icon_position)
+		toolname = "Equipment: N/A"
+		tooldesc = " "
+	tnFont, tnLines = find_font(toolname,draw,650,150)
+	#print("itemname ",itemname," itemdesc ",itemdesc)	
+	#namefont = inFont#min(tnFont,inFont)
+	#min(idFont,tdFont)
+
+	draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(tnFont))
+	draw.text(cv.item_text_position,textwrap.fill(itemname,len(itemname)//inLines+inLines-1),font=get_font(inFont))
+	
+	return img
 
 def add_icon(image,icon,x,y):
         ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
@@ -368,19 +470,21 @@ def get_fill(resource):
                 return "red"
         if resource<=40:
                 return "yellow"
-                return
+        return "white"
 
 def add_crosses(img,ship,is_portal=False):
-        draw = ImageDraw.Draw(img)
-        if ship.x==0 or is_portal:
-                draw.text(cv.cross_left_position,"X",font=get_font(140),fill="red")
-        if ship.x==planets.boardlenx-1 or is_portal:
-                draw.text(cv.cross_right_position,"X",font=get_font(140),fill="red")
-        if ship.y==0 or is_portal:
-                draw.text(cv.cross_up_position,"X",font=get_font(140),fill="red")
-        if ship.y==planets.boardleny-1 or is_portal:
-                draw.text(cv.cross_down_position,"X",font=get_font(140),fill="red")
-        return img
+	draw = ImageDraw.Draw(img)
+	if ship.x==0 or is_portal:
+		draw.text(cv.cross_left_position,"X",font=get_font(140),fill="red")
+	if ship.x==planets.boardlenx-1 or is_portal:
+		draw.text(cv.cross_right_position,"X",font=get_font(140),fill="red")
+	if ship.y==0 or is_portal:
+		draw.text(cv.cross_up_position,"X",font=get_font(140),fill="red")
+	if ship.y==planets.boardleny-1 or is_portal:
+		draw.text(cv.cross_down_position,"X",font=get_font(140),fill="red")
+	if not ship.has_item() or is_portal:
+		draw.text(cv.cross_item_position,"X",font=get_font(140),fill="red")
+	return img
 
 def get_font(size):
         try:#Linux
@@ -477,109 +581,118 @@ def make_vote_image():
 #[0:vote ship,1:first,2:normal turn]
 def main(turn=0,direction="",vote=True):
 
-        if direction:
-                gr = 0
-                p_id = 0
+	if direction:
+		gr = 0
+		p_id = 0
 
-        if turn==0:
-                gr, p_id, ship_list = vote_ship(direction)
-                np.save('data',[gr,p_id,ship_list])
-                return True
+	if turn==0:
+		gr, p_id, ship_list = vote_ship(direction)
+		np.save('data',[gr,p_id,ship_list])
+		return True
 
-        if turn==1:
-                #generar el tablero
-                board  =Board()
-                initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
-                if vote:
-                        data = np.load('data.npy',allow_pickle=True)
-                        gr = data[0]
-                        p_id = data[1]
-                        ship_list = data[2]
-                        ship = choose_ship(gr,p_id,ship_list,direction)
-                        spaceship = Spaceship(ship)
-                else:
-                        spaceship = Spaceship()#get_random_ship())
-                postImage = gen_initial_image(spaceship,board)
-                if direction:
-                        gr = 0
-                        p_id = 0
-                else:
-                        gr, p_id = upload(initial_message,getAccessToken(),postImage)
-                was_portal = False
-                np.save('data',[spaceship,gr,p_id,board,was_portal])
-                return True
-        else:
-                data = np.load("data.npy",allow_pickle=True)
-                spaceship = data[0]
-                previous_gr = data[1]
-                previous_id = data[2]
-                board = data[3]
-                was_portal = data[4]
+	if turn==1:
+		#generar el tablero
+		board  =Board()
+		initial_message = "Welcome traveler, move your ship across space to reach {} or perish in your quest to find it".format(board.goal)
+		if vote:
+			data = np.load('data.npy',allow_pickle=True)
+			gr = data[0]
+			p_id = data[1]
+			ship_list = data[2]
+			ship = choose_ship(gr,p_id,ship_list,direction)
+			spaceship = Spaceship(ship)
+		else:
+			spaceship = Spaceship()#get_random_ship())
+		postImage = gen_initial_image(spaceship,board)
+		if direction:
+			gr = 0
+			p_id = 0
+		else:
+			gr, p_id = upload(initial_message,getAccessToken(),postImage)
+		was_portal = False
+		np.save('data',[spaceship,gr,p_id,board,was_portal])
+		return True
+	else:
+		data = np.load("data.npy",allow_pickle=True)
+		spaceship = data[0]
+		previous_gr = data[1]
+		previous_id = data[2]
+		board = data[3]
+		was_portal = data[4]
 
-                if was_portal:
-                        spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
-                else:
-                        if direction:
-                                usertest = {
-                                        "up" : [0,-1],
-                                        "left" : [-1,0],
-                                        "right" : [1,0],
-                                        "down" : [0,1]
-                                        }
-                                movement = usertest[direction]
-                        else:
-                                reacts = get_reactions(previous_gr,previous_id)
-                                movement = get_input_from_reactions(reacts,spaceship)
-                        spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
-                        #spaceship.move(spaceship.x+1,spaceship.y+0)
-                        spaceship.modify_fuel(-5)
-                        spaceship.modify_provisions(-5)
+		if direction=='item':
+			event = spaceship.item
+			spaceship,message = spaceship.item.use(spaceship)
+			movement = [0,0]
+		else:
+			if was_portal:
+				spaceship.move(np.random.randint(board.lenx),np.random.randint(board.leny))
+			else:
+				if direction:
+					usertest = {
+						"up" : [0,-1],
+						"left" : [-1,0],
+						"right" : [1,0],
+						"down" : [0,1]
+						}
+					movement = usertest[direction]
+				else:
+					reacts = get_reactions(previous_gr,previous_id)
+					movement = get_input_from_reactions(reacts,spaceship)
+				spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
+				#spaceship.move(spaceship.x+1,spaceship.y+0)
+				spaceship.modify_fuel(-5)
+				spaceship.modify_provisions(-5)
 
-                event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
-                spaceship,message = event.action(spaceship)
+			event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
+			spaceship,message = event.action(spaceship)
+		if spaceship.has_equipment():
+			message += spaceship.equipment.on_turn(spaceship,event,was_portal)
+		if spaceship.isHome:
+			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
+			victory_path = update_image(spaceship,event)
+			gen_goal_image()
+			if direction:
+				print (message)
+			else:
+				#FACEBOOK
+				gr, p_id = upload(message,getAccessToken(),"Victory_image.png")
+			return False
+		if spaceship.is_dead():
+			message += '\nYou died before reaching your destination, better luck on the next voyage.'
+			print("event.text",event.text)
+			game_over_path = update_image(spaceship,event)
+			gen_gameover_image(board)
+			if direction:
+				print(message)
+			else:
+				#FACEBOOK
+				gr, p_id = upload(message,getAccessToken(),"Death_image.png")
+			np.save('data',[spaceship,board,event.get_type()=="Portal"])
+			return False
+		if not event.get_type()=="Portal":
+			message+="\n Use the reactions to move the ship."
 
-                if spaceship.isHome:
-                        message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
-                        victory_path = update_image(spaceship,event)
-                        gen_goal_image()
-                        if direction:
-                                print (message)
-                        else:
-                                #FACEBOOK
-                                gr, p_id = upload(message,getAccessToken(),"Victory_image.png")
-                        return False
-                if spaceship.is_dead():
-                        message += '\nYou died before reaching your destination, better luck on the next voyage.'
-                        game_over_path = update_image(spaceship,event)
-                        gen_gameover_image(board)
-                        if direction:
-                                print(message)
-                        else:
-                                #FACEBOOK
-                                gr, p_id = upload(message,getAccessToken(),"Death_image.png")
-                        np.save('data',[spaceship,board,event.get_type()=="Portal"])
-                        return False
-                if not event.get_type()=="Portal":
-                        message+="\n Use the reactions to move the ship."
-                img_path = update_image(spaceship,event)
-                if direction:
-                        print(message)
-                else:
-                        #FACEBOOK
-                        gr, p_id = upload(message,getAccessToken(),img_path)
-                        upload_comment(gr,p_id,"Beep boop: I'm a Space Bot. Right now the ship has {} fuel, {} provisions and {} hull integrity. For further details on how everything works check the post pinned at the top of the page.".format(spaceship.fuel,spaceship.provisions,spaceship.hull))
-                        space_comment = "SP"
-                        As = np.random.randint(1,100)
-                        for i in range(As):
-                                space_comment+="A"
-                        space_comment+="CE"
-                        upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
-                        upload_comment(gr,p_id,"You can add events in this form: https://docs.google.com/forms/d/e/1FAIpQLSfttY8c1XM-nrJpOw7mYZ0-0ulr9kCDfo-CGD63r6TxYzdoZw/viewform")
-                        if np.random.rand()<0.05:
+		img_path = update_image(spaceship,event)
+		if direction:
+			print(message)
+		else:
+			#FACEBOOK
+			gr, p_id = upload(message,getAccessToken(),img_path)
+			upload_comment(gr,p_id,"Beep boop: I'm a Space Bot. Right now the ship has {} fuel, {} provisions and {} hull integrity. For further details on how everything works check the post pinned at the top of the page.".format(spaceship.fuel,spaceship.provisions,spaceship.hull))
+			space_comment = "SP"
+			As = np.random.randint(1,100)
+			for i in range(As):
+				space_comment+="A"
+			space_comment+="CE"
+			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
+			upload_comment(gr,p_id,"You can add events in this form: https://docs.google.com/forms/d/e/1FAIpQLSfttY8c1XM-nrJpOw7mYZ0-0ulr9kCDfo-CGD63r6TxYzdoZw/viewform")
+			if np.random.rand()<0.01:
                             upload_comment(gr,p_id,"If you are feeling generous you can help to maintain this bot at paypal.me/DelRioFer")
-                        upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
-                np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
-                return True
+			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
+		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
+		return True
+
 
 def testUrls():
         arrayProperties = []
