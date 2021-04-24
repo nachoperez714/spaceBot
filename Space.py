@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-#import facebook
+import facebook
 from pathlib import Path
 import os
 import urllib.request
@@ -168,81 +168,83 @@ def upload_comment(graph, post_id, message="", img_path=None):
 def upload_reply(graph, comment_id, message='',img_path=None):
 	upload_comment(graph,comment_id,message,img_path)
 
+                self.image = img_path
+
 def upload(message, access_token, img_path=None):
-	graph = facebook.GraphAPI(access_token)
-	if img_path:
-		post = graph.put_photo(image=open(img_path, 'rb'),
-							   message=message)
-	else:
-		post = graph.put_object(parent_object='me',
-								connection_name='feed',
-								message=message)
-	return graph, post['post_id']
+        graph = facebook.GraphAPI(access_token)
+        if img_path:
+                post = graph.put_photo(image=open(img_path, 'rb'),
+                                                           message=message)
+        else:
+                post = graph.put_object(parent_object='me',
+                                                                connection_name='feed',
+                                                                message=message)
+        return graph, post['post_id']
 
 def getAccessToken(filename='access_token.txt'):
-	return Path(filename).read_text().strip()
+        return Path(filename).read_text().strip()
 
 def get_reactions(graph,post_id):
-	reactions = graph.get_connections(post_id,connection_name='reactions')
-	reactions = reactions['data']
-	reacts = []
-	for reaction in reactions:
-		reacts.append(reaction['type'])
-	#print (reacts)
-	return reacts
+        reactions = graph.get_connections(post_id,connection_name='reactions')
+        reactions = reactions['data']
+        reacts = []
+        for reaction in reactions:
+                reacts.append(reaction['type'])
+        #print (reacts)
+        return reacts
 
 def get_input_from_reactions(reacs,spaceship):
-	nlike = 0
-	nwow = 0
-	nsad = 0
-	nangry = 0
-	for reac in reacs:
-		if reac=='LIKE' and spaceship.y!=0:
-			nlike+=1
-		elif reac=='WOW' and spaceship.x!=planets.boardlenx-1:
-			nwow+=1
-		elif reac=='SAD' and spaceship.y!=planets.boardleny-1:
-			nsad+=1
-		elif reac=='ANGRY' and spaceship.x!=0:
-			nangry+=1
+        nlike = 0
+        nwow = 0
+        nsad = 0
+        nangry = 0
+        for reac in reacs:
+                if reac=='LIKE' and spaceship.y!=0:
+                        nlike+=1
+                elif reac=='WOW' and spaceship.x!=planets.boardlenx-1:
+                        nwow+=1
+                elif reac=='SAD' and spaceship.y!=planets.boardleny-1:
+                        nsad+=1
+                elif reac=='ANGRY' and spaceship.x!=0:
+                        nangry+=1
 
-	nreacts = [nlike,nwow,nsad,nangry]
-	nmax = max(nreacts)
-	if nmax==0:
-		return [0,0]
-	movement = [0,0]
-	if nlike==nmax:
-		movement[1]-=1
-	if nwow==nmax:
-		movement[0]+=1
-	if nsad==nmax:
-		movement[1]+=1
-	if nangry==nmax:
-		movement[0]-=1
-	return movement
+        nreacts = [nlike,nwow,nsad,nangry]
+        nmax = max(nreacts)
+        if nmax==0:
+                return [0,0]
+        movement = [0,0]
+        if nlike==nmax:
+                movement[1]-=1
+        if nwow==nmax:
+                movement[0]+=1
+        if nsad==nmax:
+                movement[1]+=1
+        if nangry==nmax:
+                movement[0]-=1
+        return movement
 
 def get_vote_from_reactions(reacs,ship_list):
-	nreacs = [0,0,0,0,0,0]
-	dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3}
-	for reac in reacs:
-		nreacs[dic[reac]]+=1
-	return ship_list[int(min(np.argmax(nreacs),len(ship_list)))]
+        nreacs = [0,0,0,0,0,0]
+        dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3,"HAHA":4}
+        for reac in reacs:
+                nreacs[dic[reac]]+=1
+        return ship_list[int(min(np.argmax(nreacs),len(ship_list)))]
 
 def get_event_from_name(name):
-	clas = [planets.Planet,
-		planets.Ship,
-		planets.Spaceport,
-		planets.BlackHole,
-		planets.Being,
-		planets.Asteroid,
-		planets.Portal,
-		planets.Start,
-		planets.Goal,
-		planets.Player
-		]
-	for ic, cla in enumerate(clas):
-		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
-			return cla(name)
+        clas = [planets.Planet,
+                planets.Ship,
+                planets.Spaceport,
+                planets.BlackHole,
+                planets.Being,
+                planets.Asteroid,
+                planets.Portal,
+                planets.Start,
+                planets.Goal,
+                planets.Player
+                ]
+        for ic, cla in enumerate(clas):
+                if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
+                        return cla(name)
 
 
 def gen_initial_image(spaceship,board):
@@ -337,19 +339,19 @@ def update_image(spaceship,event):
 	return "Post_image.png"
 
 def gen_goal_image():
-	image = Image.open("Post_image.png")
-	draw = ImageDraw.Draw(image)
-	draw.text(cv.end_text_position,"YOU WON",font=get_font(300),fill="green")
-	image.save("Victory_image.png")
-	return "Death_image.png"
+        image = Image.open("Post_image.png")
+        draw = ImageDraw.Draw(image)
+        draw.text(cv.end_text_position,"YOU WON",font=get_font(300),fill="green")
+        image.save("Victory_image.png")
+        return "Death_image.png"
 
 def gen_gameover_image(board):
-	image = Image.open("Post_image.png")
-	image = add_icon(image,"Resources/Goal_icon.png",board.goalLoc[0],board.goalLoc[1])
-	draw = ImageDraw.Draw(image)
-	draw.text(cv.end_text_position,"YOU DIED",font=get_font(300),fill="red")
-	image.save("Death_image.png")
-	return "Death_image.png"
+        image = Image.open("Post_image.png")
+        image = add_icon(image,"Resources/Goal_icon.png",board.goalLoc[0],board.goalLoc[1])
+        draw = ImageDraw.Draw(image)
+        draw.text(cv.end_text_position,"YOU DIED",font=get_font(300),fill="red")
+        image.save("Death_image.png")
+        return "Death_image.png"
 
 def add_text(img,event):
 	draw = ImageDraw.Draw(img)
@@ -401,38 +403,38 @@ def add_item_text(img,ship):
 	return img
 
 def add_icon(image,icon,x,y):
-	ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
-	image.paste(ic,(cv.grid_position[0]+cv.square_size[0]*x,cv.grid_position[1]+cv.square_size[1]*y),ic)
-	return image
+        ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
+        image.paste(ic,(cv.grid_position[0]+cv.square_size[0]*x,cv.grid_position[1]+cv.square_size[1]*y),ic)
+        return image
 
 def add_event_image(canvas,image):
-	canvas.paste(image,cv.image_position)
-	return canvas
+        canvas.paste(image,cv.image_position)
+        return canvas
 
 def add_spaceship(img,ship):
-	print(ship.player)
-	print(ship.image)
-	spaceshipng = Image.open(ship.player).resize(cv.square_size)
-	img.paste(spaceshipng,(cv.grid_position[0]+cv.square_size[0]*ship.x,cv.grid_position[1]+cv.square_size[1]*ship.y))
-	return img
+        print(ship.player)
+        print(ship.image)
+        spaceshipng = Image.open(ship.player).resize(cv.square_size)
+        img.paste(spaceshipng,(cv.grid_position[0]+cv.square_size[0]*ship.x,cv.grid_position[1]+cv.square_size[1]*ship.y))
+        return img
 
 def add_numbers(img,ship):
-	draw = ImageDraw.Draw(img)
-	draw.text(cv.fuel_text_position,str(ship.fuel),font=get_font(cv.resource_text_font),fill=get_fill(ship.fuel))
-	draw.text(cv.provisions_text_position,str(ship.provisions),font=get_font(cv.resource_text_font),fill=get_fill(ship.provisions))
-	draw.text(cv.hull_text_position,str(ship.hull),font=get_font(cv.resource_text_font),fill=get_fill(ship.hull))
-	return img
+        draw = ImageDraw.Draw(img)
+        draw.text(cv.fuel_text_position,str(ship.fuel),font=get_font(cv.resource_text_font),fill=get_fill(ship.fuel))
+        draw.text(cv.provisions_text_position,str(ship.provisions),font=get_font(cv.resource_text_font),fill=get_fill(ship.provisions))
+        draw.text(cv.hull_text_position,str(ship.hull),font=get_font(cv.resource_text_font),fill=get_fill(ship.hull))
+        return img
 
 def get_fill(resource):
-	if resource==150:
-		return "green"
-	if resource<=20 and resource>0:
-		return "orange"
-	if resource<=0:
-		return "red"
-	if resource<=40:
-		return "yellow"
-		return
+        if resource==150:
+                return "green"
+        if resource<=20 and resource>0:
+                return "orange"
+        if resource<=0:
+                return "red"
+        if resource<=40:
+                return "yellow"
+                return
 
 def add_crosses(img,ship,is_portal=False):
 	draw = ImageDraw.Draw(img)
@@ -449,89 +451,94 @@ def add_crosses(img,ship,is_portal=False):
 	return img
 
 def get_font(size):
-	try:#Linux
-		font = ImageFont.truetype("Lato-Medium.ttf",size)
-	except:#Windows
-		font = ImageFont.truetype("arial.ttf",size)
-	#mac users BTFO
-	return font
+        try:#Linux
+                font = ImageFont.truetype("Lato-Medium.ttf",size)
+        except:#Windows
+                font = ImageFont.truetype("arial.ttf",size)
+        #mac users BTFO
+        return font
 
 def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
-	pw = []
-	ph = []
-	for i in range(10):
-		font = get_font((i+1)*10)
-		ps = draw.textsize(text,font)
-		pw.append(ps[0])
-		ph.append(ps[1])
-	#print (pw, ph)
-	print ("pw ",pw," ph ",ph)
-	return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
+        pw = []
+        ph = []
+        for i in range(10):
+                font = get_font((i+1)*10)
+                ps = draw.textsize(text,font)
+                pw.append(ps[0])
+                ph.append(ps[1])
+        #print (pw, ph)
+        return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
 
 def get_image_from_url(url):
-	urllib.request.urlretrieve(url,'event_image')
-	return 'event_image'
+        urllib.request.urlretrieve(url,'event_image')
+        return 'event_image'
 
-def get_image_from_url_player(url):
-	urllib.request.urlretrieve(url,'player_image')
-	return 'player_image'
+def get_image_from_url_player(player):
+        #urllib.request.urlretrieve(url,'player_image')
+        #return 'player_image'
+        return player.path
 
 def vote_ship(direction=""):
-	img_path, ship_list = make_vote_image()
-	message = "The next voyage will start soon, pick your ship!"
-	if not direction:
-		gr, p_id = upload(message,getAccessToken(),img_path)
-		return gr, p_id, ship_list
-	else:
-		return 0,0,ship_list
+        img_path, ship_list = make_vote_image()
+        message = "The next voyage will start soon, pick your ship!"
+        if not direction:
+                gr, p_id = upload(message,getAccessToken(),img_path)
+                return gr, p_id, ship_list
+        else:
+                return 0,0,ship_list
 
 def choose_ship(gr,p_id,ship_list,direction=""):
-	if not direction:
-		reacts = get_reactions(gr,p_id)
-		return get_vote_from_reactions(reacts,ship_list)
-	else:
-		dic = {"like":0,"wow":1,"sad":2,"angry":3}
-		return ship_list[dic[direction]]
+        if not direction:
+                reacts = get_reactions(gr,p_id)
+                return get_vote_from_reactions(reacts,ship_list)
+        else:
+                dic = {"like":0,"wow":1,"sad":2,"angry":3}
+                return ship_list[dic[direction]]
 
 def make_vote_image():
-	img = Image.new("RGB",(1000,1000))
-	ships = random.sample([*planets.Player().properties],4)
-	reacs = Image.open("Resources/reactions.png").convert("RGBA")
-	wow = reacs.crop((1011,503,1446,937)).resize((150,150))
-	like = reacs.crop((1011,0,1446,440)).resize((150,150))
-	angery = reacs.crop((504,0,939,440)).resize((150,150))
-	sad = reacs.crop((504,503,939,937)).resize((150,150))
-	reacs = [like,wow,sad,angery]
-	xs = [0,1,0,1]
-	ys = [0,0,1,1]
-	for i, ship in enumerate(ships):
-		shipimg = Image.new("RGB",(495,495))
-		myship = get_event_from_name(ship)
-		shipicon = Image.open(get_image_from_url_player(myship.url)).convert("RGBA").resize((300,300))
-		shipimg.paste(shipicon,(0,190))
-		fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((100,100))
-		resources = Image.open("Resources/sanguche.png").convert("RGBA").resize((100,100))
-		hull = Image.open("Resources/hull.png").convert("RGBA").resize((100,100))
-		shipimg.paste(fuel,(300,190))
-		shipimg.paste(resources,(300,290))
-		shipimg.paste(hull,(300,390))
-		shipimg.paste(reacs[i],(0,0))
-		draw = ImageDraw.Draw(shipimg)
-		draw.text((400,190),str(myship.fuel),font=get_font(50))
-		draw.text((400,290),str(myship.provisions),font=get_font(50))
-		draw.text((400,390),str(myship.hull),font=get_font(50))
-		font1 = get_fontsize(ship,draw,345,190)
-		font2 = get_fontsize(textwrap.fill(ship,len(ship)//2+1),draw,345,190)
-		if font1>=font2:
-			draw.text((150,0),ship,font=get_font(font1))
-		else:
-			draw.text((150,0),textwrap.fill(ship,len(ship)//2+1),font=get_font(font2))
-		img.paste(shipimg,(xs[i]*505,ys[i]*505))
-	draw = ImageDraw.Draw(img)
-	draw.line([(500,0),(500,1000)],"white",10)
-	draw.line([(0,500),(1000,500)],"white",10)
-	img.save("vote_image.png")
-	return "vote_image.png", ships
+        img = Image.new("RGB",(1000,1000))
+        ships = random.sample([*planets.Player().properties],4)
+        reacs = Image.open("Resources/reactions.png").convert("RGBA")
+        wow = reacs.crop((1011,503,1446,937)).resize((150,150))
+        like = reacs.crop((1011,0,1446,440)).resize((150,150))
+        angery = reacs.crop((504,0,939,440)).resize((150,150))
+        sad = reacs.crop((504,503,939,937)).resize((150,150))
+        reacs = [like,wow,sad,angery]
+        xs = [0,1,0,1]
+        ys = [0,0,1,1]
+        for i, ship in enumerate(ships):
+                shipimg = Image.new("RGB",(495,495))
+                myship = get_event_from_name(ship)
+                shipicon = Image.open(get_image_from_url_player(myship)).convert("RGBA").resize((300,300))
+                shipimg.paste(shipicon,(0,190))
+                fuel = Image.open("Resources/naftabien.png").convert("RGBA").resize((100,100))
+                resources = Image.open("Resources/sanguche.png").convert("RGBA").resize((100,100))
+                hull = Image.open("Resources/hull.png").convert("RGBA").resize((100,100))
+                shipimg.paste(fuel,(300,190))
+                shipimg.paste(resources,(300,290))
+                shipimg.paste(hull,(300,390))
+                shipimg.paste(reacs[i],(0,0))
+                draw = ImageDraw.Draw(shipimg)
+                if ship=="Mystery Ship":
+                    draw.text((400,190),'???',font=get_font(50))
+                    draw.text((400,290),'???',font=get_font(50))
+                    draw.text((400,390),'???',font=get_font(50))
+                else:
+                    draw.text((400,190),str(myship.fuel),font=get_font(50))
+                    draw.text((400,290),str(myship.provisions),font=get_font(50))
+                    draw.text((400,390),str(myship.hull),font=get_font(50))
+                font1 = get_fontsize(ship,draw,345,190)
+                font2 = get_fontsize(textwrap.fill(ship,len(ship)//2+1),draw,345,190)
+                if font1>=font2:
+                        draw.text((150,0),ship,font=get_font(font1))
+                else:
+                        draw.text((150,0),textwrap.fill(ship,len(ship)//2+1),font=get_font(font2))
+                img.paste(shipimg,(xs[i]*505,ys[i]*505))
+        draw = ImageDraw.Draw(img)
+        draw.line([(500,0),(500,1000)],"white",10)
+        draw.line([(0,500),(1000,500)],"white",10)
+        img.save("vote_image.png")
+        return "vote_image.png", ships
 #
 #TURN
 #
@@ -647,64 +654,65 @@ def main(turn=0,direction="",vote=True):
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 		return True
 
-def testUrls():
-	arrayProperties = []
-	arrayUrls = []
-	brokenUrls = []
-	print("Planets: ",len([*planets.Planet().properties]))
-	print("Ships: ",len([*planets.Ship().properties]))
-	print("Beings: ",len([*planets.Being().properties]))
-	print("Asteroids: ",len([*planets.Asteroid().urls]))
-	print("Portals: ",len([*planets.Portal().urls]))
-	print("BlackHoles: ",len([*planets.BlackHole().urls]))
-	print("Spaceports: ",len([*planets.Spaceport().urls]))
-	print("Goals: ",len([*planets.Goal().urls]))
-	print("Players: ",len([*planets.Player().properties]))
 
-	arrayProperties+=[*planets.Planet().properties]
-	arrayProperties+=[*planets.Player().properties]
-	arrayProperties+=[*planets.Ship().properties]
-	arrayProperties+=[*planets.Being().properties]
-	arrayUrls+=[*planets.Asteroid().urls]
-	arrayUrls+=[*planets.Portal().urls]
-	arrayUrls+=[*planets.BlackHole().urls]
-	arrayUrls+=[*planets.Goal().urls]
-	arrayUrls+=[*planets.Spaceport().urls]
-	for name in arrayProperties:
-		try:
-			aux = get_event_from_name(name)
-			print(name)
-			urllib.request.urlretrieve(aux.url,'event_image')
-		except:
-			print(">arreglar esta ^")
-			brokenUrls+=name
-	for name in arrayUrls:
-		try:
-			aux = get_event_from_name(name)
-			print(name)
-			urllib.request.urlretrieve(aux.url,'event_image')
-		except:
-			print(">arreglar esta ^")
-			brokenUrls+=name
-	print("Broken urls: ",brokenUrls)
+def testUrls():
+        arrayProperties = []
+        arrayUrls = []
+        brokenUrls = ""
+        print("Planets: ",len([*planets.Planet().properties]))
+        print("Ships: ",len([*planets.Ship().properties]))
+        print("Beings: ",len([*planets.Being().properties]))
+        print("Asteroids: ",len([*planets.Asteroid().urls]))
+        print("Portals: ",len([*planets.Portal().urls]))
+        print("BlackHoles: ",len([*planets.BlackHole().urls]))
+        print("Spaceports: ",len([*planets.Spaceport().urls]))
+        print("Goals: ",len([*planets.Goal().urls]))
+        print("Players: ",len([*planets.Player().properties]))
+
+        arrayProperties+=[*planets.Planet().properties]
+        arrayProperties+=[*planets.Player().properties]
+        arrayProperties+=[*planets.Ship().properties]
+        arrayProperties+=[*planets.Being().properties] 
+        arrayUrls+=[*planets.Asteroid().urls]
+        arrayUrls+=[*planets.Portal().urls]
+        arrayUrls+=[*planets.BlackHole().urls]
+        arrayUrls+=[*planets.Goal().urls]
+        arrayUrls+=[*planets.Spaceport().urls]
+        for name in arrayProperties:
+                try:
+                        aux = get_event_from_name(name)
+                        #print(name)
+                        #urllib.request.urlretrieve(aux.url,'event_image')
+                        img = Image.open(aux.path)
+                except:
+                        print(">arreglar esta ^")
+                        brokenUrls+=name+"\n"
+        for name in arrayUrls:
+                try:
+                        aux = get_event_from_name(name)
+                        #print(name)
+                        #urllib.request.urlretrieve(aux.url,'event_image')
+                        img = Image.open(aux.path)
+                except:
+                        print(">arreglar esta ^")
+                        brokenUrls+=name+"\n"
+        print("Broken urls: ",brokenUrls)
 
 def localtest():
-	br = False
-	while not br:
-		b = input("Press n for a new one; wasd to move, x to use item or q to quit")
-		if b=="n":
-			main(1,"hola",False)
-		elif b=="w":
-			main(2,"up")
-		elif b=="a":
-			main(2,"left")
-		elif b=="s":
-			main(2,"down")
-		elif b=="d":
-			main(2,"right")
-		elif b=="q":
-			br = True
-		elif b=='x':
-			main(2,"item")
-		else:
-			print("That's not a valid command, try again")
+        br = False
+        while not br:
+                b = input("Press n for a new one; wasd to move or q to quit")
+                if b=="n":
+                        main(1,"hola",False)
+                elif b=="w":
+                        main(2,"up")
+                elif b=="a":
+                        main(2,"left")
+                elif b=="s":
+                        main(2,"down")
+                elif b=="d":
+                        main(2,"right")
+                elif b=="q":
+                        br = True
+                else:
+                        print("That's not a valid command, try again")
