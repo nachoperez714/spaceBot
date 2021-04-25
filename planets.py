@@ -470,7 +470,7 @@ class Planet(Event):
 			self.get_properties()
 
 	def good_action(self,spaceship):
-		if np.random.rand() < self.drop_rate and spaceship.provisions > 70:
+		if np.random.rand() < self.drop_rate and spaceship.provisions > 50:
 			if not(spaceship.item):
 				spaceship.acquire_item()
 				self.good_text = " You found an item! You found a {}".format(spaceship.item.name)
@@ -901,7 +901,7 @@ class Ship(Event):
 			self.get_properties()
 
 	def good_action(self,spaceship):
-		if spaceship.fuel > 70 and np.random.rand() < self.drop_rate:
+		if spaceship.fuel > 50 and np.random.rand() < self.drop_rate:
 			if not spaceship.has_equipment():
 				spaceship.acquire_equipment()
 				self.good_text = " You found equipment! You got {}".format(spaceship.equipment.name)
@@ -972,7 +972,7 @@ class Asteroid(Event):
 			self.set_path()
 
 	def good_action(self,spaceship):
-		if spaceship.hull > 70 and np.random.rand()<self.drop_rate:
+		if spaceship.hull > 50 and np.random.rand()<self.drop_rate:
 			if not spaceship.has_item():
 				spaceship.acquire_item()
 				self.good_text = " You got an item! You got {}".format(spaceship.item.name)
@@ -1035,7 +1035,7 @@ class Spaceport(Event):
 		fuel = spaceship.fuel
 		food = spaceship.provisions
 		hull = spaceship.hull
-		if food > 90 and fuel > 90 and hull > 90 and np.random.rand()<self.drop_rate:
+		if food > 70 and fuel > 70 and hull > 70 and np.random.rand()<self.drop_rate:
 			isitem = np.random.rand()<0.5
 			if isitem and not spaceship.has_item():
 				spaceship.acquire_item()

@@ -140,7 +140,7 @@ class Spaceship:
 			aux = get_event_from_name(player)
 		else:
 			aux = get_event_from_name(random.sample([*planets.Player().properties],1)[0])
-		print(aux.url)
+		#print(aux.url)
 		self.player = get_image_from_url_player(aux)
 		self.player = cv.greensquare(self.player)
 		self.fuel = aux.fuel

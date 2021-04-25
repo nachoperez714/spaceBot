@@ -9,7 +9,7 @@ def rreload(module):
     for attribute_name in dir(module):
         attribute = getattr(module,attribute_name)
         if type(attribute) is ModuleType and attribute_name=="planets":
-            rreload(atribute)
+            rreload(attribute)
 
 while True:
 	seguir = True
