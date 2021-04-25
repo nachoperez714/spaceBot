@@ -217,6 +217,7 @@ def get_input_from_reactions(reacs,spaceship):
         nwow = 0
         nsad = 0
         nangry = 0
+        nlove = 0
         for reac in reacs:
                 if reac=='LIKE' and spaceship.y!=0:
                         nlike+=1
@@ -226,9 +227,13 @@ def get_input_from_reactions(reacs,spaceship):
                         nsad+=1
                 elif reac=='ANGRY' and spaceship.x!=0:
                         nangry+=1
+                elif reac=='LOVE' and spaceship.has_item():
+                        nlove+=1
 
-        nreacts = [nlike,nwow,nsad,nangry]
+        nreacts = [nlike,nwow,nsad,nangry,nlove]
         nmax = max(nreacts)
+        if nmax==nlove:
+                return 'item'
         if nmax==0:
                 return [0,0]
         movement = [0,0]
@@ -331,7 +336,7 @@ def update_image(spaceship,event):
 	#TODO: metodo correcto de insertar imagen
 	#print (event.text)
 	previous = Image.open("Reference_image.png")
-	if event.type!="Goal":
+	if event.type!="Goal" and event.type!="Consumable":
 		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
 		previous.save("Reference_image.png")
 	try:
@@ -639,13 +644,20 @@ def main(turn=0,direction="",vote=True):
 				else:
 					reacts = get_reactions(previous_gr,previous_id)
 					movement = get_input_from_reactions(reacts,spaceship)
+					isItem = False
+					if movement=='item':
+						movement = [0,0]
+						isItem = True
 				spaceship.move(spaceship.x+movement[0],spaceship.y+movement[1])
 				#spaceship.move(spaceship.x+1,spaceship.y+0)
 				spaceship.modify_fuel(-5)
 				spaceship.modify_provisions(-5)
-
+		if not isItem:
 			event = get_event_from_name(board.get_event_name(spaceship.x,spaceship.y))
 			spaceship,message = event.action(spaceship)
+		else:
+			event = spaceship.item
+			spaceship,message = spaceship.item.use(spaceship)
 		if spaceship.has_equipment():
 			message += spaceship.equipment.on_turn(spaceship,event,was_portal)
 		if spaceship.isHome:
