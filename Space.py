@@ -619,6 +619,7 @@ def main(turn=0,direction="",vote=True):
 		return True
 	else:
 		data = np.load("data.npy",allow_pickle=True)
+		isItem = False
 		spaceship = data[0]
 		previous_gr = data[1]
 		previous_id = data[2]
@@ -644,7 +645,6 @@ def main(turn=0,direction="",vote=True):
 				else:
 					reacts = get_reactions(previous_gr,previous_id)
 					movement = get_input_from_reactions(reacts,spaceship)
-					isItem = False
 					if movement=='item':
 						movement = [0,0]
 						isItem = True
