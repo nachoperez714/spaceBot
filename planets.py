@@ -1483,13 +1483,13 @@ class Consumable(Item):
 		if "Type" in self.properties[self.name]:
 			self.type = self.properties[self.name]["Type"]
 
-	def destruct(self,spaceship):
+	def destruct(spaceship):
 		spaceship.modify_fuel(-spaceship.fuel)
 		spaceship.modify_provisions(-spaceship.provisions)
 		spaceship.modify_hull(-spaceship.hull)
 		return spaceship
 
-	def give_take_resources(self,settings,spaceship):
+	def give_take_resources(settings,spaceship):
 		if "provisions" in settings:
 			provdiff = int(settings.split("provisions")[1][0:2])
 			spaceship.modify_provisions(provdiff)
@@ -1566,7 +1566,7 @@ class Equipment(Item):
 	def Pass(self,spaceship):
 		pass
 
-	def give_luck(self,spaceship,amount):
+	def give_luck(spaceship,amount):
 		spaceship.set_luck(spaceship.luck+amount)
 
 	def replenish(self,spaceship,event,was_portal,settings):

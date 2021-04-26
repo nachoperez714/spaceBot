@@ -657,7 +657,7 @@ def main(turn=0,direction="",vote=True):
 			spaceship,message = event.action(spaceship)
 		else:
 			event = spaceship.item
-			spaceship,message = spaceship.item.use(spaceship)
+			spaceship,message = event.use(spaceship)
 		if spaceship.has_equipment():
 			message += spaceship.equipment.on_turn(spaceship,event,was_portal)
 		if spaceship.isHome:
