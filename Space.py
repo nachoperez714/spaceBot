@@ -336,7 +336,7 @@ def update_image(spaceship,event):
 	#TODO: metodo correcto de insertar imagen
 	#print (event.text)
 	previous = Image.open("Reference_image.png")
-	if event.type!="Goal" and event.type!="Consumable":
+	if event.type!="Goal" and event.type!="Consumable" and event.name!="Portal Gun":
 		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
 		previous.save("Reference_image.png")
 	try:
@@ -453,8 +453,8 @@ def add_event_image(canvas,image):
         return canvas
 
 def add_spaceship(img,ship):
-        print(ship.player)
-        print(ship.image)
+        #print(ship.player)
+        #print(ship.image)
         spaceshipng = Image.open(ship.player).resize(cv.square_size)
         img.paste(spaceshipng,(cv.grid_position[0]+cv.square_size[0]*ship.x,cv.grid_position[1]+cv.square_size[1]*ship.y))
         return img
