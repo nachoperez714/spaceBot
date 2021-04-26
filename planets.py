@@ -1483,7 +1483,7 @@ class Consumable(Item):
 		if "Type" in self.properties[self.name]:
 			self.type = self.properties[self.name]["Type"]
 
-	def destruct(spaceship):
+	def destruct(self,spaceship):
 		spaceship.modify_fuel(-spaceship.fuel)
 		spaceship.modify_provisions(-spaceship.provisions)
 		spaceship.modify_hull(-spaceship.hull)
@@ -1502,7 +1502,7 @@ class Consumable(Item):
 		return spaceship
 
 	def warp(self,spaceship):
-		spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
+		pass#spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
 		return spaceship
 
 class Equipment(Item):

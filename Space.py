@@ -680,9 +680,9 @@ def main(turn=0,direction="",vote=True):
 			else:
 				#FACEBOOK
 				gr, p_id = upload(message,getAccessToken(),"Death_image.png")
-			np.save('data',[spaceship,board,event.get_type()=="Portal"])
+			np.save('data',[spaceship,board,event.type=="Portal"])
 			return False
-		if not event.get_type()=="Portal":
+		if not event.type=="Portal":
 			message+="\n Use the reactions to move the ship."
 
 		img_path = update_image(spaceship,event)
