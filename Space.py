@@ -209,7 +209,7 @@ def get_reactions(graph,post_id):
         reacts = []
         for reaction in reactions:
                 reacts.append(reaction['type'])
-        #print (reacts)
+        print (reacts)
         return reacts
 
 def get_input_from_reactions(reacs,spaceship):

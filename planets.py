@@ -1489,7 +1489,7 @@ class Consumable(Item):
 		spaceship.modify_hull(-spaceship.hull)
 		return spaceship
 
-	def give_take_resources(settings,spaceship):
+	def give_take_resources(self,settings,spaceship):
 		if "provisions" in settings:
 			provdiff = int(settings.split("provisions")[1][0:2])
 			spaceship.modify_provisions(provdiff)
