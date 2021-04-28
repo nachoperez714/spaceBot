@@ -1444,19 +1444,19 @@ class Consumable(Item):
 			},
 			"Cookie" : {
 				"url" : "space_cookie",
-				"use" : functools.partial(self.give_take_resources,settings="provisions10"),
+				"use" : functools.partialmethod(self.give_take_resources,settings="provisions10"),
 				"description" : "Gain 10 provisions",
 				"text" : "You ate a delicious cookie"
 			},
 			"Ship parts" : {
 				"url" : "ship_parts",
-				"use" : functools.partial(self.give_take_resources,settings="hull10"),
+				"use" : functools.partialmethod(self.give_take_resources,settings="hull10"),
 				"description" : "Gain 10 hull",
 				"text" : "You patched some of the holes in the hull"
 			},
 			"Oil barrel" : {
 				"url" : "oil_barrel",
-				"use" : functools.partial(self.give_take_resources,settings="fuel10"),
+				"use" : functools.partialmethod(self.give_take_resources,settings="fuel10"),
 				"description" : "Gain 10 fuel",
 				"text" : "You filled your fuel tank a little bit"
 			},

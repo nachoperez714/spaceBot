@@ -232,7 +232,7 @@ def get_input_from_reactions(reacs,spaceship):
 
         nreacts = [nlike,nwow,nsad,nangry,nlove]
         nmax = max(nreacts)
-        if nmax==nlove:
+        if nmax==nlove and nmax!=0:
                 return 'item'
         if nmax==0:
                 return [0,0]
