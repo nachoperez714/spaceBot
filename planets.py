@@ -1444,19 +1444,19 @@ class Consumable(Item):
 			},
 			"Cookie" : {
 				"url" : "space_cookie",
-				"use" : functools.partialmethod(self.give_take_resources,settings="provisions10"),
+				"use" : functools.partial(self.give_take_resources,settings="provisions10"),
 				"description" : "Gain 10 provisions",
 				"text" : "You ate a delicious cookie"
 			},
 			"Ship parts" : {
 				"url" : "ship_parts",
-				"use" : functools.partialmethod(self.give_take_resources,settings="hull10"),
+				"use" : functools.partial(self.give_take_resources,settings="hull10"),
 				"description" : "Gain 10 hull",
 				"text" : "You patched some of the holes in the hull"
 			},
 			"Oil barrel" : {
 				"url" : "oil_barrel",
-				"use" : functools.partialmethod(self.give_take_resources,settings="fuel10"),
+				"use" : functools.partial(self.give_take_resources,settings="fuel10"),
 				"description" : "Gain 10 fuel",
 				"text" : "You filled your fuel tank a little bit"
 			},
@@ -1489,7 +1489,7 @@ class Consumable(Item):
 		spaceship.modify_hull(-spaceship.hull)
 		return spaceship
 
-	def give_take_resources(self,settings,spaceship):
+	def give_take_resources(self,spaceship,settings=""):
 		if "provisions" in settings:
 			provdiff = int(settings.split("provisions")[1][0:2])
 			spaceship.modify_provisions(provdiff)
@@ -1518,35 +1518,35 @@ class Equipment(Item):
 			"Lucky charm" : {
 				"url" : "lucky_charm",
 				"description" : "Makes you lucky",
-				"on_get" : functools.partialmethod(self.give_luck,amount=1),
-				"on_lose" : functools.partialmethod(self.give_luck,amount=-1)
+				"on_get" : functools.partial(self.give_luck,amount=1),
+				"on_lose" : functools.partial(self.give_luck,amount=-1)
 			},
 			"Solar Panels" : {
 				"url" : "solar_panels",
 				"description" : "Moving doesn't cost fuel",
-				"on_turn" : functools.partialmethod(self.replenish,settings="fuel05")
+				"on_turn" : functools.partial(self.replenish,settings="fuel05")
 			},
 			"On-board Farm" : {
 				"url" : "on-board_farm",
 				"description" : "Moving doesn't cost food",
-				"on_turn" : functools.partialmethod(self.replenish,settings="provisions05")
+				"on_turn" : functools.partial(self.replenish,settings="provisions05")
 			},
 			"Laser Weapons" : {
 				"url" : "laser_weapons",
 				"description" : "Win all ship battles",
-				"on_turn" : functools.partialmethod(self.no_u,Type="Ship",reuse=True)
+				"on_turn" : functools.partial(self.no_u,Type="Ship",reuse=True)
 			},
 			"Shield" : {
 				"url" : "shield",
 				"description" : "Avoid hull damage",
 				#"on_get" : "",
-				"on_turn" : functools.partialmethod(self.save,Type="hull",reuse=True),
+				"on_turn" : functools.partial(self.save,Type="hull",reuse=True),
 				#"on_lose" : ""
 			},
 			"God Killer" : {
 				"url" : "god_killer",
 				"description" : "Next Being won't kill you",
-				"on_turn" : functools.partialmethod(self.no_u,Type="Being",reuse=False)
+				"on_turn" : functools.partial(self.no_u,Type="Being",reuse=False)
 			}
 		}
 		if name:
@@ -1569,7 +1569,7 @@ class Equipment(Item):
 	def give_luck(self,spaceship,amount):
 		spaceship.set_luck(spaceship.luck+amount)
 
-	def replenish(self,spaceship,event,was_portal,settings):
+	def replenish(self,spaceship,event,was_portal,settings=""):
 		if not was_portal:
 			if "provisions" in settings:
 				provdiff = int(settings.split("provisions")[1][0:2])
@@ -1582,7 +1582,7 @@ class Equipment(Item):
 				spaceship.modify_hull(hulldiff)
 		return ""
 
-	def no_u(self,spaceship,event,was_portal,Type,reuse):
+	def no_u(self,spaceship,event,was_portal,Type="",reuse=False):
 		if Type in event.type and not event.isGood:
 			spaceship = event.unmake(spaceship)
 			spaceship = event.good_action(spaceship)
@@ -1591,7 +1591,7 @@ class Equipment(Item):
 			return " But you avoided bad things with your equipment"
 		return ""
 
-	def save(self,spaceship,event,Type,reuse):
+	def save(self,spaceship,event,Type="",reuse=False):
 		if event.isGood: return ""
 
 		if Type=="hull":
