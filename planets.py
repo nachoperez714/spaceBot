@@ -1591,7 +1591,7 @@ class Equipment(Item):
 			return " But you avoided bad things with your equipment"
 		return ""
 
-	def save(self,spaceship,event,Type="",reuse=False):
+	def save(self,spaceship,event,was_portal,Type="",reuse=False):
 		if event.isGood: return ""
 
 		if Type=="hull":
