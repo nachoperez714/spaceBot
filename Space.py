@@ -96,6 +96,45 @@ class Board:
 		#print (self)
 		return self.events[x][y]
 
+	def reveal(self,x,y):
+		name = self.get_event_name(x,y)
+		event = get_event_from_name(name)
+		icon = event.icon
+		previous = Image.open("Reference_image.png")
+		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
+		previous.save("Reference_image.png")
+
+	def reveal_type(self,Type):
+		for x in range(self.lenx):
+			for y in range(self.leny):
+				if get_event_from_name(self.get_event_name(x,y)).type==Type:
+					self.reveal(x,y)
+
+	def reveal_around(self,pos):
+		x,y = pos
+		if x==0:
+			xs = [x,x+1]
+		elif x==self.lenx-1:
+			xs = [x-1,x]
+		else:
+			xs = [x-1,x,x+1]
+		if y==0:
+			ys = [y,y+1]
+		elif y==self.leny-1:
+			ys = [y-1,y]
+		else:
+			ys = [y-1,y,y+1]
+		for X in xs:
+			for Y in ys:
+				self.reveal(X,Y)
+
+	def reveal_line(self,y):
+		for x in range(self.lenx):
+			self.reveal(x,y)
+
+	def reveal_column(self,x):
+		for y in range(self.leny):
+			self.reveal(x,y)
 
 class Spaceship:
 	def __init__(self,player=""):
@@ -190,85 +229,82 @@ def upload_reply(graph, comment_id, message='',img_path=None):
 	upload_comment(graph,comment_id,message,img_path)
 
 def upload(message, access_token, img_path=None):
-        graph = facebook.GraphAPI(access_token)
-        if img_path:
-                post = graph.put_photo(image=open(img_path, 'rb'),
-                                                           message=message)
-        else:
-                post = graph.put_object(parent_object='me',
-                                                                connection_name='feed',
-                                                                message=message)
-        return graph, post['post_id']
+	graph = facebook.GraphAPI(access_token)
+	if img_path:
+		post = graph.put_photo(image=open(img_path, 'rb'),message=message)
+	else:
+		post = graph.put_object(parent_object='me',connection_name='feed',message=message)
+	return graph, post['post_id']
 
 def getAccessToken(filename='access_token.txt'):
-        return Path(filename).read_text().strip()
+	return Path(filename).read_text().strip()
 
 def get_reactions(graph,post_id):
-        reactions = graph.get_connections(post_id,connection_name='reactions')
-        reactions = reactions['data']
-        reacts = []
-        for reaction in reactions:
-                reacts.append(reaction['type'])
-        print (reacts)
-        return reacts
+	reactions = graph.get_connections(post_id,connection_name='reactions')
+	reactions = reactions['data']
+	reacts = []
+	for reaction in reactions:
+		reacts.append(reaction['type'])
+	print (reacts)
+	return reacts
 
 def get_input_from_reactions(reacs,spaceship):
-        nlike = 0
-        nwow = 0
-        nsad = 0
-        nangry = 0
-        nlove = 0
-        for reac in reacs:
-                if reac=='LIKE' and spaceship.y!=0:
-                        nlike+=1
-                elif reac=='WOW' and spaceship.x!=planets.boardlenx-1:
-                        nwow+=1
-                elif reac=='SAD' and spaceship.y!=planets.boardleny-1:
-                        nsad+=1
-                elif reac=='ANGRY' and spaceship.x!=0:
-                        nangry+=1
-                elif reac=='LOVE' and spaceship.has_item():
-                        nlove+=1
+	nlike = 0
+	nwow = 0
+	nsad = 0
+	nangry = 0
+	nlove = 0
+	for reac in reacs:
+		if reac=='LIKE' and spaceship.y!=0:
+			nlike+=1
+		elif reac=='WOW' and spaceship.x!=planets.boardlenx-1:
+			nwow+=1
+		elif reac=='SAD' and spaceship.y!=planets.boardleny-1:
+			nsad+=1
+		elif reac=='ANGRY' and spaceship.x!=0:
+			nangry+=1
+		elif reac=='LOVE' and spaceship.has_item():
+			nlove+=1
 
-        nreacts = [nlike,nwow,nsad,nangry,nlove]
-        nmax = max(nreacts)
-        if nmax==nlove and nmax!=0:
-                return 'item'
-        if nmax==0:
-                return [0,0]
-        movement = [0,0]
-        if nlike==nmax:
-                movement[1]-=1
-        if nwow==nmax:
-                movement[0]+=1
-        if nsad==nmax:
-                movement[1]+=1
-        if nangry==nmax:
-                movement[0]-=1
-        return movement
+	nreacts = [nlike,nwow,nsad,nangry,nlove]
+	nmax = max(nreacts)
+	if nmax==nlove and nmax!=0:
+		return 'item'
+	if nmax==0:
+		return [0,0]
+	movement = [0,0]
+	if nlike==nmax:
+		movement[1]-=1
+	if nwow==nmax:
+		movement[0]+=1
+	if nsad==nmax:
+		movement[1]+=1
+	if nangry==nmax:
+		movement[0]-=1
+	return movement
 
 def get_vote_from_reactions(reacs,ship_list):
-        nreacs = [0,0,0,0,0,0]
-        dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3,"HAHA":4}
-        for reac in reacs:
-                nreacs[dic[reac]]+=1
-        return ship_list[int(min(np.argmax(nreacs),len(ship_list)))]
+	nreacs = [0,0,0,0,0,0]
+	dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3,"HAHA":4}
+	for reac in reacs:
+		nreacs[dic[reac]]+=1
+	return ship_list[int(min(np.argmax(nreacs),len(ship_list)))]
 
 def get_event_from_name(name):
-        clas = [planets.Planet,
-                planets.Ship,
-                planets.Spaceport,
-                planets.BlackHole,
-                planets.Being,
-                planets.Asteroid,
-                planets.Portal,
-                planets.Start,
-                planets.Goal,
-                planets.Player
-                ]
-        for ic, cla in enumerate(clas):
-                if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
-                        return cla(name)
+	clas = [planets.Planet,
+	planets.Ship,
+	planets.Spaceport,
+	planets.BlackHole,
+	planets.Being,
+	planets.Asteroid,
+	planets.Portal,
+	planets.Start,
+	planets.Goal,
+	planets.Player
+	]
+	for ic, cla in enumerate(clas):
+		if name in list(cla().properties.keys()) or name in list(cla().urls.keys()):
+			return cla(name)
 
 
 def gen_initial_image(spaceship,board):
@@ -332,7 +368,7 @@ def gen_initial_image(spaceship,board):
 
 	return "Post_image.png"
 
-def update_image(spaceship,event):
+def update_image(spaceship,event,board):
 	#TODO: metodo correcto de insertar imagen
 	#print (event.text)
 	previous = Image.open("Reference_image.png")
@@ -366,19 +402,19 @@ def update_image(spaceship,event):
 	return "Post_image.png"
 
 def gen_goal_image():
-        image = Image.open("Post_image.png")
-        draw = ImageDraw.Draw(image)
-        draw.text(cv.end_text_position,"YOU WON",font=get_font(300),fill="green")
-        image.save("Victory_image.png")
-        return "Death_image.png"
+	image = Image.open("Post_image.png")
+	draw = ImageDraw.Draw(image)
+	draw.text(cv.end_text_position,"YOU WON",font=get_font(300),fill="green")
+	image.save("Victory_image.png")
+	return "Death_image.png"
 
 def gen_gameover_image(board):
-        image = Image.open("Post_image.png")
-        image = add_icon(image,"Resources/Goal_icon.png",board.goalLoc[0],board.goalLoc[1])
-        draw = ImageDraw.Draw(image)
-        draw.text(cv.end_text_position,"YOU DIED",font=get_font(300),fill="red")
-        image.save("Death_image.png")
-        return "Death_image.png"
+	image = Image.open("Post_image.png")
+	image = add_icon(image,"Resources/Goal_icon.png",board.goalLoc[0],board.goalLoc[1])
+	draw = ImageDraw.Draw(image)
+	draw.text(cv.end_text_position,"YOU DIED",font=get_font(300),fill="red")
+	image.save("Death_image.png")
+	return "Death_image.png"
 
 def add_text(img,event):
 	draw = ImageDraw.Draw(img)
@@ -444,38 +480,38 @@ def add_item_text(img,ship):
 	return img
 
 def add_icon(image,icon,x,y):
-        ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
-        image.paste(ic,(cv.grid_position[0]+cv.square_size[0]*x,cv.grid_position[1]+cv.square_size[1]*y),ic)
-        return image
+	ic = Image.open(icon).convert("RGBA").resize(cv.square_size)
+	image.paste(ic,(cv.grid_position[0]+cv.square_size[0]*x,cv.grid_position[1]+cv.square_size[1]*y),ic)
+	return image
 
 def add_event_image(canvas,image):
-        canvas.paste(image,cv.image_position)
-        return canvas
+	canvas.paste(image,cv.image_position)
+	return canvas
 
 def add_spaceship(img,ship):
-        #print(ship.player)
-        #print(ship.image)
-        spaceshipng = Image.open(ship.player).resize(cv.square_size)
-        img.paste(spaceshipng,(cv.grid_position[0]+cv.square_size[0]*ship.x,cv.grid_position[1]+cv.square_size[1]*ship.y))
-        return img
+	#print(ship.player)
+	#print(ship.image)
+	spaceshipng = Image.open(ship.player).resize(cv.square_size)
+	img.paste(spaceshipng,(cv.grid_position[0]+cv.square_size[0]*ship.x,cv.grid_position[1]+cv.square_size[1]*ship.y))
+	return img
 
 def add_numbers(img,ship):
-        draw = ImageDraw.Draw(img)
-        draw.text(cv.fuel_text_position,str(ship.fuel),font=get_font(cv.resource_text_font),fill=get_fill(ship.fuel))
-        draw.text(cv.provisions_text_position,str(ship.provisions),font=get_font(cv.resource_text_font),fill=get_fill(ship.provisions))
-        draw.text(cv.hull_text_position,str(ship.hull),font=get_font(cv.resource_text_font),fill=get_fill(ship.hull))
-        return img
+	draw = ImageDraw.Draw(img)
+	draw.text(cv.fuel_text_position,str(ship.fuel),font=get_font(cv.resource_text_font),fill=get_fill(ship.fuel))
+	draw.text(cv.provisions_text_position,str(ship.provisions),font=get_font(cv.resource_text_font),fill=get_fill(ship.provisions))
+	draw.text(cv.hull_text_position,str(ship.hull),font=get_font(cv.resource_text_font),fill=get_fill(ship.hull))
+	return img
 
 def get_fill(resource):
-        if resource==150:
-                return "green"
-        if resource<=20 and resource>0:
-                return "orange"
-        if resource<=0:
-                return "red"
-        if resource<=40:
-                return "yellow"
-        return "white"
+	if resource==150:
+		return "green"
+	if resource<=20 and resource>0:
+		return "orange"
+	if resource<=0:
+		return "red"
+	if resource<=40:
+		return "yellow"
+	return "white"
 
 def add_crosses(img,ship,is_portal=False):
 	draw = ImageDraw.Draw(img)
@@ -492,49 +528,49 @@ def add_crosses(img,ship,is_portal=False):
 	return img
 
 def get_font(size):
-        try:#Linux
-                font = ImageFont.truetype("Lato-Medium.ttf",size)
-        except:#Windows
-                font = ImageFont.truetype("arial.ttf",size)
-        #mac users BTFO
-        return font
+	try:#Linux
+		font = ImageFont.truetype("Lato-Medium.ttf",size)
+	except:#Windows
+		font = ImageFont.truetype("arial.ttf",size)
+	#mac users BTFO
+	return font
 
 def get_fontsize(text,draw,maxlenx = 800, maxleny = 200):
-        pw = []
-        ph = []
-        for i in range(10):
-                font = get_font((i+1)*10)
-                ps = draw.textsize(text,font)
-                pw.append(ps[0])
-                ph.append(ps[1])
-        #print (pw, ph)
-        return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
+	pw = []
+	ph = []
+	for i in range(10):
+		font = get_font((i+1)*10)
+		ps = draw.textsize(text,font)
+		pw.append(ps[0])
+		ph.append(ps[1])
+	#print (pw, ph)
+	return int(min(10*maxlenx//np.mean(np.diff(pw)),10*maxleny//np.mean(np.diff(ph))))
 
 def get_image_from_url(url):
-        urllib.request.urlretrieve(url,'event_image')
-        return 'event_image'
+	urllib.request.urlretrieve(url,'event_image')
+	return 'event_image'
 
 def get_image_from_url_player(player):
-        #urllib.request.urlretrieve(url,'player_image')
-        #return 'player_image'
-        return player.path
+	#urllib.request.urlretrieve(url,'player_image')
+	#return 'player_image'
+	return player.path
 
 def vote_ship(direction=""):
-        img_path, ship_list = make_vote_image()
-        message = "The next voyage will start soon, pick your ship!"
-        if not direction:
-                gr, p_id = upload(message,getAccessToken(),img_path)
-                return gr, p_id, ship_list
-        else:
-                return 0,0,ship_list
+	img_path, ship_list = make_vote_image()
+	message = "The next voyage will start soon, pick your ship!"
+	if not direction:
+		gr, p_id = upload(message,getAccessToken(),img_path)
+		return gr, p_id, ship_list
+	else:
+		return 0,0,ship_list
 
 def choose_ship(gr,p_id,ship_list,direction=""):
-        if not direction:
-                reacts = get_reactions(gr,p_id)
-                return get_vote_from_reactions(reacts,ship_list)
-        else:
-                dic = {"like":0,"wow":1,"sad":2,"angry":3}
-                return ship_list[dic[direction]]
+	if not direction:
+		reacts = get_reactions(gr,p_id)
+		return get_vote_from_reactions(reacts,ship_list)
+	else:
+		dic = {"like":0,"wow":1,"sad":2,"angry":3}
+		return ship_list[dic[direction]]
 
 def make_vote_image():
         img = Image.new("RGB",(1000,1000))
@@ -628,7 +664,7 @@ def main(turn=0,direction="",vote=True):
 
 		if direction=='item':
 			event = spaceship.item
-			spaceship,message = spaceship.item.use(spaceship)
+			spaceship,message = spaceship.item.use(spaceship,board)
 			movement = [0,0]
 		else:
 			if was_portal:
@@ -657,12 +693,12 @@ def main(turn=0,direction="",vote=True):
 			spaceship,message = event.action(spaceship)
 		else:
 			event = spaceship.item
-			spaceship,message = event.use(spaceship)
+			spaceship,message = event.use(spaceship,board)
 		if spaceship.has_equipment():
-			message += spaceship.equipment.on_turn(spaceship,event,was_portal)
+			message += spaceship.equipment.on_turn(spaceship,event,was_portal,board)
 		if spaceship.isHome:
 			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
-			victory_path = update_image(spaceship,event)
+			victory_path = update_image(spaceship,event,board)
 			gen_goal_image()
 			if direction:
 				print (message)
@@ -673,7 +709,7 @@ def main(turn=0,direction="",vote=True):
 		if spaceship.is_dead():
 			message += '\nYou died before reaching your destination, better luck on the next voyage.'
 			print("event.text",event.text)
-			game_over_path = update_image(spaceship,event)
+			game_over_path = update_image(spaceship,event,board)
 			gen_gameover_image(board)
 			if direction:
 				print(message)
@@ -685,7 +721,7 @@ def main(turn=0,direction="",vote=True):
 		if not event.type=="Portal":
 			message+="\n Use the reactions to move the ship."
 
-		img_path = update_image(spaceship,event)
+		img_path = update_image(spaceship,event,board)
 		if direction:
 			print(message)
 		else:
@@ -699,8 +735,8 @@ def main(turn=0,direction="",vote=True):
 			space_comment+="CE"
 			upload_comment(gr,p_id,space_comment,"Resources/Space_Core.png")
 			upload_comment(gr,p_id,"You can add events in this form: https://docs.google.com/forms/d/e/1FAIpQLSfttY8c1XM-nrJpOw7mYZ0-0ulr9kCDfo-CGD63r6TxYzdoZw/viewform")
-			if np.random.rand()<0.01:
-                            upload_comment(gr,p_id,"If you are feeling generous you can help to maintain this bot at paypal.me/DelRioFer")
+			if np.random.rand()<0.05:
+				upload_comment(gr,p_id,"If you are feeling generous you can help to maintain this bot at paypal.me/DelRioFer")
 			upload_comment(previous_gr,previous_id,"The ship has moved on, check the latest post")
 		np.save('data',[spaceship,gr,p_id,board,event.get_type()=="Portal"])
 		return True

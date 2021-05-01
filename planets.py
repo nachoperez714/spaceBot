@@ -1467,13 +1467,43 @@ class Consumable(Item):
 				"text" : "You get transported across the universe",
 				"Type" : "Portal"
 			},
+			"Godtuner" : {
+				"url" : "godtuner",
+				"use" : functools.partial(self.show,settings="TypeBeing"),
+				"description" : "Reveal all beings",
+				"text" : "You scanned the universe for Higher Beings"
+			},
+			"Space Compass" : {
+				"url" : "space_compass",
+				"use" : functools.partial(self.show,settings="TypeGoal"),
+				"description" : "Reveal the goal on the map",
+				"text" : "You found the goal, race to it!"
+			},
+			"Space Road Map" : {
+				"url" : "space_road_map",
+				"use" : functools.partial(self.show,settings="TypeSpaceport"),
+				"description" : "Reveal all spaceports",
+				"text" : "You found all the spaceports"
+			},
+			"H Telescope" : {
+				"url" : "h_telescope",
+				"use" : functools.partial(self.show,settings="Line"),
+				"description" : "Reveal the entire line",
+				"text" : "You scanned a line of space"
+			},
+			"V Telescope" : {
+				"url" : "v_telescope",
+				"use" : functools.partial(self.show,settings="Column"),
+				"description" : "Reveal the entire column",
+				"text" : "You scanned a column of space"
+			},
 		}
 		if name:
 			super().set_path()
 			self.get_properties()
 
-	def use(self,spaceship):
-		self.properties[self.name]["use"](spaceship)
+	def use(self,spaceship,board):
+		self.properties[self.name]["use"](spaceship,board)
 		spaceship.remove_item()
 		return spaceship,self.pretext+". "+self.text
 
@@ -1483,13 +1513,13 @@ class Consumable(Item):
 		if "Type" in self.properties[self.name]:
 			self.type = self.properties[self.name]["Type"]
 
-	def destruct(self,spaceship):
+	def destruct(self,spaceship,board):
 		spaceship.modify_fuel(-spaceship.fuel)
 		spaceship.modify_provisions(-spaceship.provisions)
 		spaceship.modify_hull(-spaceship.hull)
 		return spaceship
 
-	def give_take_resources(self,spaceship,settings=""):
+	def give_take_resources(self,spaceship,board,settings=""):
 		if "provisions" in settings:
 			provdiff = int(settings.split("provisions")[1][0:2])
 			spaceship.modify_provisions(provdiff)
@@ -1501,8 +1531,18 @@ class Consumable(Item):
 			spaceship.modify_hull(hulldiff)
 		return spaceship
 
-	def warp(self,spaceship):
+	def warp(self,spaceship,board):
 		pass#spaceship.move(np.random.randint(0,boardlenx),np.random.randint(0,boardleny))
+		return spaceship
+
+	def show(self,spaceship,board,settings=""):
+		if "Line" in settings:
+			board.reveal_line(spaceship.y)
+		elif "Column" in settings:
+			board.reveal_column(spaceship.x)
+		elif "Type" in settings:
+			Type = settings.split("Type")[1]
+			board.reveal_type(Type)
 		return spaceship
 
 class Equipment(Item):
@@ -1547,6 +1587,11 @@ class Equipment(Item):
 				"url" : "god_killer",
 				"description" : "Next Being won't kill you",
 				"on_turn" : functools.partial(self.no_u,Type="Being",reuse=False)
+			},
+			"Radar" : {
+				"url" : "radar",
+				"description" : "Reveal stuff around you",
+				"on_turn" : self.scan
 			}
 		}
 		if name:
@@ -1566,10 +1611,10 @@ class Equipment(Item):
 	def Pass(self,spaceship):
 		pass
 
-	def give_luck(self,spaceship,amount):
+	def give_luck(self,spaceship,amount=0):
 		spaceship.set_luck(spaceship.luck+amount)
 
-	def replenish(self,spaceship,event,was_portal,settings=""):
+	def replenish(self,spaceship,event,was_portal,board,settings=""):
 		if not was_portal:
 			if "provisions" in settings:
 				provdiff = int(settings.split("provisions")[1][0:2])
@@ -1582,7 +1627,7 @@ class Equipment(Item):
 				spaceship.modify_hull(hulldiff)
 		return ""
 
-	def no_u(self,spaceship,event,was_portal,Type="",reuse=False):
+	def no_u(self,spaceship,event,was_portal,board,Type="",reuse=False):
 		if Type in event.type and not event.isGood:
 			spaceship = event.unmake(spaceship)
 			spaceship = event.good_action(spaceship)
@@ -1591,7 +1636,10 @@ class Equipment(Item):
 			return " But you avoided bad things with your equipment"
 		return ""
 
-	def save(self,spaceship,event,was_portal,Type="",reuse=False):
+	def scan(self,spaceship,event,was_portal,board):
+		board.reveal_around((spaceship.x,spaceship.y))
+
+	def save(self,spaceship,event,was_portal,board,Type="",reuse=False):
 		if event.isGood: return ""
 
 		if Type=="hull":
