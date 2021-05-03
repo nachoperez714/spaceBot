@@ -101,7 +101,7 @@ class Board:
 		event = get_event_from_name(name)
 		icon = event.icon
 		previous = Image.open("Reference_image.png")
-		previous = add_icon(previous,event.icon,spaceship.x,spaceship.y)
+		previous = add_icon(previous,event.icon,x,y)
 		previous.save("Reference_image.png")
 
 	def reveal_type(self,Type):
