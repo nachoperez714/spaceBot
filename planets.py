@@ -1608,7 +1608,7 @@ class Equipment(Item):
 		if "on_lose" in self.properties[self.name]:
 			self.on_lose = self.properties[self.name]["on_lose"]
 
-	def Pass(self,spaceship):
+	def Pass(self,spaceship,event,was_portal,board):
 		pass
 
 	def give_luck(self,spaceship,amount=0):
