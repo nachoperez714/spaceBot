@@ -1609,7 +1609,7 @@ class Equipment(Item):
 			self.on_lose = self.properties[self.name]["on_lose"]
 
 	def Pass(self,spaceship=0,event=0,was_portal=0,board=0):
-		pass
+		return ""
 
 	def give_luck(self,spaceship,amount=0):
 		spaceship.set_luck(spaceship.luck+amount)
@@ -1638,6 +1638,7 @@ class Equipment(Item):
 
 	def scan(self,spaceship,event,was_portal,board):
 		board.reveal_around((spaceship.x,spaceship.y))
+                return ""
 
 	def save(self,spaceship,event,was_portal,board,Type="",reuse=False):
 		if event.isGood: return ""
