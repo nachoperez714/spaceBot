@@ -1638,7 +1638,7 @@ class Equipment(Item):
 
 	def scan(self,spaceship,event,was_portal,board):
 		board.reveal_around((spaceship.x,spaceship.y))
-                return ""
+		return ""
 
 	def save(self,spaceship,event,was_portal,board,Type="",reuse=False):
 		if event.isGood: return ""
