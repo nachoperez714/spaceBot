@@ -8,7 +8,7 @@ def rreload(module):
     reload(module)
     for attribute_name in dir(module):
         attribute = getattr(module,attribute_name)
-        if type(attribute) is ModuleType and attribute_name=="planets":
+        if type(attribute) is ModuleType and attribute_name=="planets" or attribute_name=="canvas":
             rreload(attribute)
 
 while True:
