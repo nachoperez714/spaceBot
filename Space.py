@@ -694,7 +694,7 @@ def main(turn=0,direction="",vote=True):
 		else:
 			event = spaceship.item
 			spaceship,message = event.use(spaceship,board)
-		if spaceship.has_equipment():
+		if spaceship.has_equipment() and not isItem:
 			message += spaceship.equipment.on_turn(spaceship,event,was_portal,board)
 		if spaceship.isHome:
 			message += '\nCongratulations, you have reached your destination, see you in the next voyage.'
