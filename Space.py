@@ -285,7 +285,7 @@ def get_input_from_reactions(reacs,spaceship):
 
 def get_vote_from_reactions(reacs,ship_list):
 	nreacs = [0,0,0,0,0,0]
-	dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3,"HAHA":4}
+        dic = {"LIKE":0,"WOW":1,"SAD":2,"ANGRY":3,"HAHA":4,"CARE":4}
 	for reac in reacs:
 		nreacs[dic[reac]]+=1
 	return ship_list[int(min(np.argmax(nreacs),len(ship_list)))]
