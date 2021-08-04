@@ -1171,7 +1171,7 @@ class Being(Event):
 				"good" : "You have grown fat from strength. +100 to all stats.",
 				"bad"  : "Your light fades.",
 				"url"  : "leviathan"
-				},	
+				},
 			"Hellstar Remina" : {
 				"good" : "Junji Ito is a fine fellow. +100 to all stats.",
 				"bad"  : "The lovecraftian planet licks your ship. It kills you.",
@@ -1419,7 +1419,7 @@ class Item:
 
 	def set_url(self):
 		self.url = self.properties[self.name]["url"]
-	
+
 	def get_path(self):
 		return self.path
 
@@ -1441,6 +1441,12 @@ class Consumable(Item):
 				"use": self.destruct,
 				"description":'Blow up the ship',
 				"text": "Your ship has been destroyed"
+			},
+			"Faulty Self Destruct Button": {
+				"url": "self_destruct_button",
+				"use": self.faulty_destruct,
+				"description":'Might blow up the ship',
+				"text": "Your ship may have been destroyed"
 			},
 			"Cookie" : {
 				"url" : "space_cookie",
@@ -1478,6 +1484,12 @@ class Consumable(Item):
 				"use" : functools.partial(self.show,settings="TypeGoal"),
 				"description" : "Reveal the goal on the map",
 				"text" : "You found the goal, race to it!"
+			},
+			"Faulty Space Compass" : {
+				"url" : "space_compass",
+				"use" : functools.partial(self.show,settings="TypeGoal&Being"),
+				"description" : "Reveal the goal and beings on the map. But you dont know which is which",
+				"text" : "Uuhh..."
 			},
 			"Space Road Map" : {
 				"url" : "space_road_map",
@@ -1519,6 +1531,12 @@ class Consumable(Item):
 		spaceship.modify_hull(-spaceship.hull)
 		return spaceship
 
+	def faulty_destruct(self,spaceship,board):
+		if np.random.randint(0,1) == 1:
+			self.destruct()
+		else:
+			return spaceship
+
 	def give_take_resources(self,spaceship,board,settings=""):
 		if "provisions" in settings:
 			provdiff = int(settings.split("provisions")[1][0:2])
@@ -1541,8 +1559,9 @@ class Consumable(Item):
 		elif "Column" in settings:
 			board.reveal_column(spaceship.x)
 		elif "Type" in settings:
-			Type = settings.split("Type")[1]
-			board.reveal_type(Type)
+			Types = settings.split("Type")[1].split("&")
+			for type in Types:
+				board.reveal_type(type,Types.size()>1)
 		return spaceship
 
 class Equipment(Item):
@@ -1663,6 +1682,3 @@ class Equipment(Item):
 				spaceship.modify_fuel(fueldict[event.type])
 			if not reuse: spaceship.remove_equipment()
 			return " You avoided losing fuel with your equipment"
-
-
-

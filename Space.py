@@ -96,19 +96,19 @@ class Board:
 		#print (self)
 		return self.events[x][y]
 
-	def reveal(self,x,y):
+	def reveal(self,x,y,mystery=False):
 		name = self.get_event_name(x,y)
 		event = get_event_from_name(name)
-		icon = event.icon
+		icon = "Pictures/Player/mystery_ship.png" if mystery else event.icon
 		previous = Image.open("Reference_image.png")
-		previous = add_icon(previous,event.icon,x,y)
+		previous = add_icon(previous,icon,x,y)
 		previous.save("Reference_image.png")
 
-	def reveal_type(self,Type):
+	def reveal_type(self,Type,mystery=False):
 		for x in range(self.lenx):
 			for y in range(self.leny):
 				if get_event_from_name(self.get_event_name(x,y)).type==Type:
-					self.reveal(x,y)
+					self.reveal(x,y,mystery)
 
 	def reveal_around(self,pos):
 		x,y = pos
@@ -161,7 +161,7 @@ class Spaceship:
 	def acquire_item(self):
 		itemname = random.choice([*planets.Consumable().properties])
 		self.item = planets.Consumable(itemname)
-		
+
 	def acquire_equipment(self):
 		itemname = random.choice([*planets.Equipment().properties])
 		self.equipment = planets.Equipment(itemname)
@@ -470,13 +470,13 @@ def add_item_text(img,ship):
 		toolname = "Equipment: N/A"
 		tooldesc = " "
 	tnFont, tnLines = find_font(toolname,draw,650,150)
-	#print("itemname ",itemname," itemdesc ",itemdesc)	
+	#print("itemname ",itemname," itemdesc ",itemdesc)
 	#namefont = inFont#min(tnFont,inFont)
 	#min(idFont,tdFont)
 
 	draw.text(cv.tool_text_position,textwrap.fill(toolname,len(toolname)//tnLines+tnLines-1),font=get_font(tnFont))
 	draw.text(cv.item_text_position,textwrap.fill(itemname,len(itemname)//inLines+inLines-1),font=get_font(inFont))
-	
+
 	return img
 
 def add_icon(image,icon,x,y):
@@ -759,7 +759,7 @@ def testUrls():
         arrayProperties+=[*planets.Planet().properties]
         arrayProperties+=[*planets.Player().properties]
         arrayProperties+=[*planets.Ship().properties]
-        arrayProperties+=[*planets.Being().properties] 
+        arrayProperties+=[*planets.Being().properties]
         arrayUrls+=[*planets.Asteroid().urls]
         arrayUrls+=[*planets.Portal().urls]
         arrayUrls+=[*planets.BlackHole().urls]
